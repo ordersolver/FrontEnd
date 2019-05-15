@@ -4,17 +4,21 @@ import Home from "./Components/Home";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import NavBar from "./Components/NavBar";
+import './App.css'
 function App() {
   return (
       <div>
-        <NavBar>
-        </NavBar>
-        <br>
+          <container className={"NavBarr"}>
+              <NavBar>
+              </NavBar>
+          </container>
+          <container className={"Homee"}>
+              <Home>
+              </Home>
+          </container>
 
-        </br>
-        <Home>
-        </Home>
       </div>
+
 
   );
 }

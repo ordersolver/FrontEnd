@@ -1,12 +1,17 @@
-NavBar{
-    background: #949494;
-}
-.perrita{
-    background: #949494;
+.Menu{
+    background: #eaeaea;
     text-decoration-color: black;
     text-emphasis-color: black;
     display: block;
-    margin: 0;
-    padding: 0;
+    margin: 15px;
+    width: 100%;
+}
 
+.products{
+    background: #282c34;
+    text-decoration-color: black;
+    text-emphasis-color: black;
+    display: block;
+    margin: 15px;
+    width: 100%;
 }
