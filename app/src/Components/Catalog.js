@@ -7,7 +7,7 @@ import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Card from "react-bootstrap/Card";
-export default class Home extends Component {
+export default class Catalog extends Component {
     render(){
         return (
             <div>
