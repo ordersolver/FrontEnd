@@ -18,4 +18,8 @@
   color: black;
   padding: 25px;
 }
-
+.Footerr{
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+}

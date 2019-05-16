@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
+
 import './All.css';
 export default class NavBar extends Component {
     render(){
@@ -16,9 +18,12 @@ export default class NavBar extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="#login">Iniciar Sesión</Nav.Link>
-                        <Nav.Link href="#register">Registrarse</Nav.Link>
-
+                        <Row>
+                            <Col>
+                                <Nav.Link href="#login" >Iniciar Sesión</Nav.Link>
+                                <Nav.Link href="#register">Registrarse</Nav.Link>
+                            </Col>
+                        </Row>
                     </Nav>
                     <Nav>
                         <NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">

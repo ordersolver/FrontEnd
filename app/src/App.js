@@ -16,7 +16,10 @@ function App() {
               <Home>
               </Home>
           </container>
-
+          <container className={"Footerr"}>
+              <Footer>
+              </Footer>
+          </container>
       </div>
 
 
