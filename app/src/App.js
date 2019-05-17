@@ -1,9 +1,12 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Catalog from "./Components/Catalog";
-import Footer from "./Components/Footer";
-import Header from "./Components/Header";
 import './App.css'
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Catalog from "./Components/Catalog";
+
+
+
 function App() {
   return (
       <div>
