@@ -7,7 +7,7 @@ import Catalog from "./Components/Catalog";
 
 
 
-function App() {
+function Landing() {
   return (
       <div>
           <container className={"NavBarr"}>
@@ -25,4 +25,4 @@ function App() {
       </div>
   );
 }
-export default App;
+export default Landing;
