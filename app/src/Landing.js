@@ -1,10 +1,13 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Catalog from "./Components/Catalog";
-import Footer from "./Components/Footer";
-import Header from "./Components/Header";
 import './App.css'
-function App() {
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Catalog from "./Components/Catalog";
+
+
+
+function Landing() {
   return (
       <div>
           <container className={"NavBarr"}>
@@ -22,4 +25,4 @@ function App() {
       </div>
   );
 }
-export default App;
+export default Landing;
