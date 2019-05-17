@@ -8,7 +8,7 @@ export default class Header extends Component {
     render(){
         return (
             <Navbar collapseOnSelect bs expand="lg" bg={"info"} variant={"light"}>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="/catalog">
                         <Figure.Image
                             width={180}
                             height={80}
@@ -20,8 +20,8 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                <Nav.Link href="#login" >Iniciar Sesión</Nav.Link>
-                                <Nav.Link href="#register">Registrarse</Nav.Link>
+                                <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
+                                <Nav.Link href="/reg">Registrarse</Nav.Link>
                             </Col>
                         </Row>
                     </Nav>
@@ -33,7 +33,7 @@ export default class Header extends Component {
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#logoff">Cerrar sesión</NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link eventKey={2} href="#catalog">
+                        <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>
                         <Nav.Link href="#cart">

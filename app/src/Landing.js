@@ -3,26 +3,32 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import Catalog from "./Components/Catalog";
+import RouterIndex from './Routes/RouterIndex';
 
+export default class Landing extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = [];
+    }
 
+    render(){
+        return (
+              <div>
+                  <container className={"NavBarr"}>
+                      <Header>
+                      </Header>
+                  </container>
+                  <Router >
+                      <container className={"Homee"}>
+                            <RouterIndex/>
+                      </container>
+                  </Router>
+                  <container className={"Footerr"}>
+                      <Footer>
+                      </Footer>
+                  </container>
+              </div>
+        );
+    }
 
-function Landing() {
-  return (
-      <div>
-          <container className={"NavBarr"}>
-              <Header>
-              </Header>
-          </container>
-          <container className={"Homee"}>
-              <Catalog>
-              </Catalog>
-          </container>
-          <container className={"Footerr"}>
-              <Footer>
-              </Footer>
-          </container>
-      </div>
-  );
 }
-export default Landing;
