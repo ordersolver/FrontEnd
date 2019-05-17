@@ -20,30 +20,49 @@ export default class Reg extends Component {
             <div>
                 <Container>
                     <Row >
-                        <form onSubmit={this.handleSubmit}>
-                            <FormGroup controlId="email" bsSize="large">
-                                <FormLabel>Correo Electronico</FormLabel>
-                                <FormControl
-                                    autoFocus
-                                    type="email"
-                                />
-                            </FormGroup>
-                            <FormGroup controlId="password" bsSize="large">
-                                <FormLabel>Contraseña</FormLabel>
-                                <FormControl
-                                    autoFocus
-                                    type="password"
-                                />
-                            </FormGroup>
-
-                            <Button
-                                block
-                                bsSize="large"
-                            >
-                                Registrarme
-                            </Button>
-                        </form>
+                        <Col>
+                            <form onSubmit={this.handleSubmit}>
+                                <FormGroup controlId="email" bsSize="large">
+                                    <FormLabel>Correo Electronico</FormLabel>
+                                    <FormControl
+                                        autoFocus
+                                        type="email"
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="password" bsSize="large">
+                                    <FormLabel>Contraseña</FormLabel>
+                                    <FormControl
+                                        autoFocus
+                                        type="password"
+                                    />
+                                </FormGroup>
+                            </form>
+                        </Col>
+                        <Col>
+                            <form onSubmit={this.handleSubmit}>
+                                <FormGroup controlId="email" bsSize="large">
+                                    <FormLabel>Verificacion Correo Electronico</FormLabel>
+                                    <FormControl
+                                        autoFocus
+                                        type="email"
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="password" bsSize="large">
+                                    <FormLabel>Verificacion Contraseña</FormLabel>
+                                    <FormControl
+                                        autoFocus
+                                        type="password"
+                                    />
+                                </FormGroup>
+                            </form>
+                        </Col>
                     </Row>
+                    <Button
+                        block
+                        bsSize="large"
+                    >
+                        Registrarme
+                    </Button>
                 </Container>
                 <Container >
                     <Row>

@@ -9,6 +9,7 @@ export default class RouterIndex extends Component {
     render(){
         return (
             <div>
+                <Route path="/" exact component={Catalog}/>
                 <Route path="/log" exact component={Log}/>
                 <Route path="/catalog" exact component={Catalog}/>
                 <Route path="/reg" exact component={Reg}/>

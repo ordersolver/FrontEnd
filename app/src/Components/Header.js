@@ -8,7 +8,7 @@ export default class Header extends Component {
     render(){
         return (
             <Navbar collapseOnSelect bs expand="lg" bg={"info"} variant={"light"}>
-                <Navbar.Brand href="/catalog">
+                <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
                             height={80}

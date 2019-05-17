@@ -4,6 +4,7 @@ import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
+import Catalog from "./Components/Catalog";
 
 export default class Landing extends React.Component {
     constructor(props){
@@ -18,9 +19,9 @@ export default class Landing extends React.Component {
                       <Header>
                       </Header>
                   </container>
-                  <Router >
+                  <Router>
                       <container className={"Homee"}>
-                            <RouterIndex/>
+                          <RouterIndex/>
                       </container>
                   </Router>
                   <container className={"Footerr"}>
