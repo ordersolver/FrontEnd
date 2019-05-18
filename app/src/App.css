@@ -1,0 +1,25 @@
+.NavBarr {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: compact;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(7px + 2vmin);
+  color: white;
+}
+
+.Homee {
+  background-color: #eaeaea;
+  min-height: 100vh;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(7px + 2vmin);
+  color: black;
+  padding: 25px;
+}
+.Footerr{
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+}

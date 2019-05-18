@@ -1,0 +1,17 @@
+.Menu{
+    background: #eaeaea;
+    text-decoration-color: black;
+    text-emphasis-color: black;
+    display: block;
+    margin: 15px;
+    width: 100%;
+}
+
+.products{
+    background: #282c34;
+    text-decoration-color: black;
+    text-emphasis-color: black;
+    display: block;
+    margin: 15px;
+    width: 100%;
+}
