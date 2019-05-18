@@ -6,7 +6,7 @@ import './All.css';
 export default class Footer extends Component {
     render(){
         return (
-                <Navbar expand="lg" bg={"info"} variant={"light"}>
+                <Navbar expand="lg" bg={"primary"} variant={"light"}>
                     <Navbar.Brand>
                         <Figure.Image
                             width={50}
