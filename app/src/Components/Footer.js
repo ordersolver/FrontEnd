@@ -18,9 +18,9 @@ export default class Footer extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                <Nav.Item>xxx-xx-xx</Nav.Item>
-                                <Nav.Item>Carrera 23 # 45-48 SSR. Barrio Santa Lucia</Nav.Item>
-                                <Nav.Item>espumasmym@gmail.com</Nav.Item>
+                                <Nav.Item>(Por definir)</Nav.Item>
+                                <Nav.Item>(Por definir)</Nav.Item>
+                                <Nav.Item>(Por definir)</Nav.Item>
                             </Col>
                         </Row>
                     </Nav>
