@@ -11,8 +11,11 @@ export default class Log extends Component {
         this.state={
             email: '',
             password:''
-        }
+        };
+        this.input = React.createRef();
+        this.input2 =React.createRef();
         this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     change(e){
@@ -24,20 +27,20 @@ export default class Log extends Component {
             });
         let auxdata = {
             auth: {
-                email: this.state.email,
-                password: this.state.password
+                email: this.input.current.value,
+                password: this.input2.current.value
             }
-        }
+        };
         console.log(auxdata)
     }
 
     submit(e) {
         let data = {
             auth: {
-                email: this.state.email,
-                password: this.state.password
+                email: this.input.current.value,
+                password: this.input2.current.value
             }
-        }
+        };
         e.preventDefault();
         axios.post('http://localhost:5000/user_token', data)
             .then(res => localStorage.setItem('the-JWT', res.data))
@@ -62,8 +65,7 @@ export default class Log extends Component {
                                     <FormControl
                                         autoFocus
                                         type="email"
-                                        value={this.state.email}
-                                        onChange={e => this.change(e)}
+                                        ref={this.input}
                                     />
                                 </FormGroup>
                                 <FormGroup controlId="password" bsSize="large" >
@@ -71,8 +73,7 @@ export default class Log extends Component {
                                     <FormControl
                                         autoFocus
                                         type="password"
-                                        value={this.state.password}
-                                        onChange={e => this.change(e)}
+                                        ref={this.input2}
                                     />
                                 </FormGroup>
                                 <Button
