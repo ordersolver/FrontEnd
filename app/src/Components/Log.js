@@ -14,8 +14,13 @@ export default class Log extends Component {
             password:''
         }
         this.change = this.change.bind(this);
+
     }
+
+
+
     change(e){
+        e.preventDefault();
         this.setState(
             {
                 [e.target.name]: e.target.value
@@ -23,17 +28,18 @@ export default class Log extends Component {
         )
     }
 
-    submit(e){
+    submit(e) {
+        let data = {
+            auth: {
+                email: this.state.email,
+                password: this.state.password
+            }
+        }
         e.preventDefault();
-        axios.post('http://localhost:5000/user_token',{
-            headers:{
-                'auth': '"auth"',
-            },
-            email: this.state.email,
-            password: this.state.password
-        }).then(res => localStorage.setItem('the-JWT', res.data))
+        axios.post('http://localhost:5000/user_token', data)
+            .then(res => localStorage.setItem('the-JWT', res.data))
             .catch(function () {
-                console.log("Vida hpta")
+                console.log(data)
             })
     }
 
@@ -48,25 +54,28 @@ export default class Log extends Component {
                         <Col>
 
                             <form onSubmit={e => this.submit(e)}>
-                                <FormGroup controlId="email" bsSize="large" onChange={e => this.change(e)} value={this.state.email}>
+                                <FormGroup controlId="email" bsSize="large" >
                                     <FormLabel>Correo Electronico</FormLabel>
                                     <FormControl
                                         autoFocus
                                         type="email"
+                                        value={this.state.email}
+                                        onChange={e => this.change(e)}
                                     />
                                 </FormGroup>
-                                <FormGroup controlId="password" bsSize="large" onChange={e => this.change(e)} value={this.state.password}>
+                                <FormGroup controlId="password" bsSize="large" >
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl
                                         autoFocus
                                         type="password"
+                                        value={this.state.password}
+                                        onChange={e => this.change(e)}
                                     />
                                 </FormGroup>
                                 <Button
                                     block
                                     bsSize="large"
                                     type="submit"
-
                                 >
                                     Iniciar Sesion
                                 </Button>
@@ -89,6 +98,7 @@ export default class Log extends Component {
                             <Button
                                 block
                                 bsSize="large"
+
                             >
                                 <FormLabel>Inicio de sesion por Facebook  </FormLabel>
                                 <FormLabel >  </FormLabel>
