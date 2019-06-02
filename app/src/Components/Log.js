@@ -23,9 +23,9 @@ export default class Log extends Component {
         e.preventDefault();
         this.setState(
             {
-                [e.target.name]: e.target.value
-            }
-        )
+                email: e.target.email,
+                password: e.target.password
+            });
     }
 
     submit(e) {
