@@ -53,7 +53,6 @@ export default class Log extends Component {
                 <Container>
                     <Row >
                         <Col>
-
                             <form onSubmit={e => this.submit(e)}>
                                 <FormGroup controlId="email" bsSize="large" >
                                     <FormLabel>Correo Electronico</FormLabel>
