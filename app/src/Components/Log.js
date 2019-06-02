@@ -3,16 +3,38 @@ import {Link} from 'react-router-dom';
 import {Button, FormGroup, FormControl, FormLabel, Row, Col, Image, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
-import {FacebookIcon} from "react-share";
+import axios from 'axios';
 
 
 export default class Log extends Component {
     constructor(props){
         super(props);
         this.state={
-            username:'',
+            email:'',
             password:''
         }
+        this.change = this.change.bind(this);
+    }
+    change(e){
+        this.setState(
+            {
+                [e.target.name]: e.target.value
+            }
+        )
+    }
+
+    submit(e){
+        e.preventDefault();
+        axios.post('http://localhost:5000/user_token',{
+            headers:{
+                'auth': '"auth"',
+            },
+            email: this.state.email,
+            password: this.state.password
+        }).then(res => localStorage.setItem('the-JWT', res.data))
+            .catch(function () {
+                console.log("Vida hpta")
+            })
     }
 
     render(){
@@ -24,27 +46,27 @@ export default class Log extends Component {
                 <Container>
                     <Row >
                         <Col>
-                            <form onSubmit={this.handleSubmit}>
-                                <FormGroup controlId="email" bsSize="large">
+
+                            <form onSubmit={e => this.submit(e)}>
+                                <FormGroup controlId="email" bsSize="large" onChange={e => this.change(e)} value={this.state.email}>
                                     <FormLabel>Correo Electronico</FormLabel>
                                     <FormControl
                                         autoFocus
                                         type="email"
-                                        placeholder="Correo Electronico"
                                     />
                                 </FormGroup>
-                                <FormGroup controlId="password" bsSize="large">
+                                <FormGroup controlId="password" bsSize="large" onChange={e => this.change(e)} value={this.state.password}>
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl
                                         autoFocus
                                         type="password"
-                                        placeholder="Contraseña"
                                     />
                                 </FormGroup>
                                 <Button
                                     block
                                     bsSize="large"
                                     type="submit"
+
                                 >
                                     Iniciar Sesion
                                 </Button>
@@ -58,7 +80,6 @@ export default class Log extends Component {
                                 <div style={{'text-align':'center'}}>
                                     <h6><Nav.Link href="#restablecer">Restablecer Contraseña</Nav.Link></h6>
                                 </div>
-
                             </form>
                         </Col>
                         <Col>

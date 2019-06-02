@@ -4,7 +4,7 @@ import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
-import Catalog from "./Components/Catalog";
+import LoggedHeader from "./Components/LoggedHeader";
 
 export default class Landing extends React.Component {
     constructor(props){
@@ -14,11 +14,12 @@ export default class Landing extends React.Component {
 
     render(){
         return (
-              <div>
+              <div className={"Background"}>
                   <container className={"NavBarr"}>
                       <Header>
                       </Header>
                   </container>
+                  <br></br>
                   <Router>
                       <container className={"Homee"}>
                           <RouterIndex/>
