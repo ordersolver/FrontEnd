@@ -5,6 +5,7 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
 import {getJWT} from "./Helpers/JWT";
+import { CookiesProvider } from 'react-cookie';
 
 export default class Landing extends React.Component {
     constructor(props){
@@ -18,6 +19,7 @@ export default class Landing extends React.Component {
 
     render(){
         return (
+            <CookiesProvider>
               <div className={"Background"}>
                   <container className={"NavBarr"}>
                       <Header>
@@ -34,7 +36,9 @@ export default class Landing extends React.Component {
                       </Footer>
                   </container>
               </div>
+            </CookiesProvider>
         );
     }
 
 }
+Landing.defaultProps = {};

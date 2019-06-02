@@ -6,7 +6,13 @@ import User from '../Components/User';
 import { Route } from "react-router-dom";
 import {clearLocal, getJWT} from "../Helpers/JWT";
 
-export default class RouterIndex extends Component {
+const Api = require('../lib/Api.js');
+
+class RouterIndex extends Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
+
     render(){
         return (
             <div>
@@ -50,3 +56,4 @@ export default class RouterIndex extends Component {
 
     }
 }
+export default withCookies(RouterIndex)

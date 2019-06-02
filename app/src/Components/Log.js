@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Image, Nav} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Alert, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
-
+const Api = require('../lib/Api.js');
 
 export default class Log extends Component {
     defaultState() {
@@ -84,6 +84,7 @@ export default class Log extends Component {
                 password: this.state.password.value
             }
         };
+        console.log(data);
         e.preventDefault();
         this.setState({
             formSubmitted: true,
@@ -121,20 +122,20 @@ export default class Log extends Component {
                 <Container>
                     <Row >
                         <Col>
-
                             <form onSubmit={e => this.submit(e)}>
                                 <FormGroup controlId="email" bsSize="large" >
                                     <FormLabel>Correo Electronico</FormLabel>
                                     <FormControl
-                                        autoFocus
+                                        autofocus
                                         type="email"
                                         onChange={this.setEmail}
                                     />
+
                                 </FormGroup>
                                 <FormGroup controlId="password" bsSize="large" >
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl
-                                        autoFocus
+                                        autofocus
                                         type="password"
                                         onChange={this.setPassword}
                                     />
