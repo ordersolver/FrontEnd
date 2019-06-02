@@ -6,12 +6,8 @@ import User from '../Components/User';
 import { Route } from "react-router-dom";
 import {clearLocal, getJWT} from "../Helpers/JWT";
 
-const Api = require('../lib/Api.js');
+export default class RouterIndex extends Component {
 
-class RouterIndex extends Component {
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
 
     render(){
         return (
@@ -39,21 +35,4 @@ class RouterIndex extends Component {
             </div>
         );
     }
-
-    defaultState() {
-        return {
-            cookieName: 'rails-react-token-auth-jwt',
-            email: undefined,
-            jwt: undefined,
-            user_id: undefined,
-            pages: []
-        }
-    }
-    constructor(props) {
-        super(props)
-
-        this.state = this.defaultState();
-
-    }
 }
-export default withCookies(RouterIndex)
