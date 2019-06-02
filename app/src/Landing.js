@@ -4,12 +4,16 @@ import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
-import LoggedHeader from "./Components/LoggedHeader";
+import {getJWT} from "./Helpers/JWT";
 
 export default class Landing extends React.Component {
     constructor(props){
         super(props);
-        this.state = [];
+        this.state = {
+            jwt: ""
+        };
+        const jwt = getJWT();
+
     }
 
     render(){

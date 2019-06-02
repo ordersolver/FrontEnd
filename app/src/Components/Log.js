@@ -3,6 +3,7 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Image, Nav} from "r
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
+import {clearLocal, getJWT} from "../Helpers/JWT";
 
 
 export default class Log extends Component {
@@ -25,13 +26,6 @@ export default class Log extends Component {
                 email: e.target.email,
                 password: e.target.password
             });
-        let auxdata = {
-            auth: {
-                email: this.input.current.value,
-                password: this.input2.current.value
-            }
-        };
-        console.log(auxdata)
     }
 
     submit(e) {
@@ -45,8 +39,9 @@ export default class Log extends Component {
         axios.post('http://localhost:5000/user_token', data)
             .then(res => localStorage.setItem('the-JWT', res.data))
             .catch(function () {
-                console.log(data)
+                clearLocal()
             })
+        const jwt = getJWT();
     }
 
     render(){
