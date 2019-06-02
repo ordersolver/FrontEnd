@@ -25,6 +25,7 @@ export default class Log extends Component {
     }
     constructor(props){
         super(props);
+        
         this.state=this.defaultState();
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
