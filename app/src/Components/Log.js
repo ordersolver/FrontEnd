@@ -7,18 +7,67 @@ import {clearLocal, getJWT} from "../Helpers/JWT";
 
 
 export default class Log extends Component {
+    defaultState() {
+        return {
+            email: {
+                value: '',
+                error: 'Correo es requerido.'
+            },
+            password: {
+                value: '',
+                error: 'Contraseña es requerida.'
+            },
+            submit: {
+                error: ''
+            },
+            formSubmitted: false
+        }
+    }
     constructor(props){
         super(props);
-        this.state={
-            email: '',
-            password:''
-        };
-        this.input = React.createRef();
-        this.input2 =React.createRef();
+        this.state=this.defaultState();
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
-
+    setEmail(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
+        this.setState({
+            email: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setPassword(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Contraseña es requerida.' : '';
+        this.setState({
+            password: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    getFormErrors() {
+        let fields = ['email', 'password', 'submit'];
+        let errors = [];
+        fields.map(field => {
+            let fieldError = this.state[field].error || '';
+            if (fieldError.length > 0) {
+                errors.push(fieldError)
+            }
+        })
+        return errors
+    }
     change(e){
         e.preventDefault();
         this.setState(
@@ -31,17 +80,36 @@ export default class Log extends Component {
     submit(e) {
         let data = {
             auth: {
-                email: this.input.current.value,
-                password: this.input2.current.value
+                email: this.state.email.value,
+                password: this.state.password.value
             }
         };
         e.preventDefault();
+        this.setState({
+            formSubmitted: true,
+            submit: {
+                error: ''
+            }
+        });
+        if (this.getFormErrors().length > 0) {
+            return false
+        }
         axios.post('http://localhost:5000/user_token', data)
             .then(res => localStorage.setItem('the-JWT', res.data))
             .catch(function () {
                 clearLocal()
-            })
+            });
         const jwt = getJWT();
+        if (jwt) {
+
+        }
+        else {
+            this.setState({
+                submit: {
+                    error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
+                }
+            })
+        }
     }
 
     render(){
@@ -60,7 +128,7 @@ export default class Log extends Component {
                                     <FormControl
                                         autoFocus
                                         type="email"
-                                        ref={this.input}
+                                        onChange={this.setEmail}
                                     />
                                 </FormGroup>
                                 <FormGroup controlId="password" bsSize="large" >
@@ -68,9 +136,20 @@ export default class Log extends Component {
                                     <FormControl
                                         autoFocus
                                         type="password"
-                                        ref={this.input2}
+                                        onChange={this.setPassword}
                                     />
                                 </FormGroup>
+                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                <FormLabel >
+                                    <ul>
+                                        {
+                                            this.getFormErrors().map((message) =>
+                                                <li key={'error_message_'+1}>{message}</li>
+                                            )
+                                        }
+                                    </ul>
+                                </FormLabel>
+                                }
                                 <Button
                                     block
                                     bsSize="large"

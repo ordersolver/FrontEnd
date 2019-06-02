@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
 import {Col, Container, Row} from "react-bootstrap";
+import {clearLocal, getJWT} from "../Helpers/JWT";
 
 import './All.css';
 export default class Header extends Component {
@@ -20,8 +21,20 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
-                                <Nav.Link href="/reg">Registrarse</Nav.Link>
+                                {!getJWT() &&
+                                <Nav.Item>
+                                    <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
+                                    <Nav.Link href="/reg">Registrarse</Nav.Link>
+                                </Nav.Item>
+                                }
+
+                                {getJWT() &&
+                                <Nav.Item >
+                                    <Nav.Link href="/" >Cerrar Sesion</Nav.Link>
+                                </Nav.Item>
+
+                                }
+
                             </Col>
                         </Row>
                     </Nav>
