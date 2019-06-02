@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {Button, FormGroup, FormControl, FormLabel, Row, Col, Image, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
@@ -10,14 +9,11 @@ export default class Log extends Component {
     constructor(props){
         super(props);
         this.state={
-            email:'',
+            email: '',
             password:''
         }
         this.change = this.change.bind(this);
-
     }
-
-
 
     change(e){
         e.preventDefault();
@@ -26,6 +22,13 @@ export default class Log extends Component {
                 email: e.target.email,
                 password: e.target.password
             });
+        let auxdata = {
+            auth: {
+                email: this.state.email,
+                password: this.state.password
+            }
+        }
+        console.log(auxdata)
     }
 
     submit(e) {
