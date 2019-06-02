@@ -20,8 +20,18 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
-                                <Nav.Link href="/reg">Registrarse</Nav.Link>
+                                {!this.props.jwt &&
+                                    <Nav.Item>
+                                        <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
+                                        <Nav.Link href="/reg">Registrarse</Nav.Link>
+                                    </Nav.Item>
+                                }
+
+                                {this.props.jwt &&
+                                    <Nav.Item >
+                                        <Nav.Link href="/" >Salir de la sesion</Nav.Link>
+                                    </Nav.Item>
+                                }
                             </Col>
                         </Row>
                     </Nav>
