@@ -1,17 +1,118 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Image, Nav} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Alert, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
-import {FacebookIcon} from "react-share";
-
+import axios from 'axios';
+import {clearLocal, getJWT} from "../Helpers/JWT";
+import Landing from "../Landing";
+import * as ReactDOM from "react-dom";
+import {Redirect} from "react-router-dom";
 
 export default class Log extends Component {
+    defaultState() {
+        return {
+            email: {
+                value: '',
+                error: 'Correo es requerido.'
+            },
+            password: {
+                value: '',
+                error: 'Contraseña es requerida.'
+            },
+            submit: {
+                error: ''
+            },
+            formSubmitted: false
+        }
+    }
     constructor(props){
         super(props);
-        this.state={
-            username:'',
-            password:''
+        
+        this.state=this.defaultState();
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
+        this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
+    }
+    setEmail(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
+        this.setState({
+            email: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setPassword(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Contraseña es requerida.' : '';
+        this.setState({
+            password: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    getFormErrors() {
+        let fields = ['email', 'password', 'submit'];
+        let errors = [];
+        fields.map(field => {
+            let fieldError = this.state[field].error || '';
+            if (fieldError.length > 0) {
+                errors.push(fieldError)
+            }
+        })
+        return errors
+    }
+    change(e){
+        e.preventDefault();
+        this.setState(
+            {
+                email: e.target.email,
+                password: e.target.password
+            });
+    }
+
+    submit(e) {
+        let data = {
+            auth: {
+                email: this.state.email.value,
+                password: this.state.password.value
+            }
+        };
+        console.log(data);
+        e.preventDefault();
+        this.setState({
+            formSubmitted: true,
+            submit: {
+                error: ''
+            }
+        });
+        if (this.getFormErrors().length > 0) {
+            return false
+        }
+        axios.post('http://localhost:5000/user_token', data)
+            .then(res => localStorage.setItem('the-JWT', res.data))
+            .catch(function () {
+                clearLocal()
+            });
+        const jwt = getJWT();
+        if (jwt) {
+
+        }
+        else {
+            this.setState({
+                submit: {
+                    error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
+                }
+            })
         }
     }
 
@@ -24,23 +125,35 @@ export default class Log extends Component {
                 <Container>
                     <Row >
                         <Col>
-                            <form onSubmit={this.handleSubmit}>
-                                <FormGroup controlId="email" bsSize="large">
+                            <form onSubmit={e => this.submit(e)}>
+                                <FormGroup controlId="email" bsSize="large" >
                                     <FormLabel>Correo Electronico</FormLabel>
                                     <FormControl
-                                        autoFocus
+                                        autofocus
                                         type="email"
-                                        placeholder="Correo Electronico"
+                                        onChange={this.setEmail}
                                     />
+
                                 </FormGroup>
-                                <FormGroup controlId="password" bsSize="large">
+                                <FormGroup controlId="password" bsSize="large" >
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl
-                                        autoFocus
+                                        autofocus
                                         type="password"
-                                        placeholder="Contraseña"
+                                        onChange={this.setPassword}
                                     />
                                 </FormGroup>
+                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                <FormLabel >
+                                    <ul>
+                                        {
+                                            this.getFormErrors().map((message) =>
+                                                <li key={'error_message_'+1}>{message}</li>
+                                            )
+                                        }
+                                    </ul>
+                                </FormLabel>
+                                }
                                 <Button
                                     block
                                     bsSize="large"
@@ -58,7 +171,6 @@ export default class Log extends Component {
                                 <div style={{'text-align':'center'}}>
                                     <h6><Nav.Link href="#restablecer">Restablecer Contraseña</Nav.Link></h6>
                                 </div>
-
                             </form>
                         </Col>
                         <Col>
@@ -68,6 +180,7 @@ export default class Log extends Component {
                             <Button
                                 block
                                 bsSize="large"
+
                             >
                                 <FormLabel>Inicio de sesion por Facebook  </FormLabel>
                                 <FormLabel >  </FormLabel>
