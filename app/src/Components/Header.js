@@ -27,25 +27,20 @@ export default class Header extends Component {
                                     <Nav.Link href="/reg">Registrarse</Nav.Link>
                                 </Nav.Item>
                                 }
-
-                                {getJWT() &&
-                                <Nav.Item >
-                                    <Nav.Link href="/" >Cerrar Sesion</Nav.Link>
-                                </Nav.Item>
-
-                                }
-
                             </Col>
                         </Row>
                     </Nav>
                     <Nav>
-                        <NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
-                            <NavDropdown.Item href="#profile">Perfil</NavDropdown.Item>
-                            <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#logoff">Cerrar sesión</NavDropdown.Item>
-                        </NavDropdown>
+                        {getJWT() &&
+                            < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
+                                <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
+                                <NavDropdown.Item href="#profile">Perfil</NavDropdown.Item>
+                                <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
+                                <NavDropdown.Divider />
+
+                                <NavDropdown.Item href="/" >Cerrar Sesion </NavDropdown.Item>
+                            </NavDropdown>
+                        }
                         <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>

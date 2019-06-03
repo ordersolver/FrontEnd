@@ -14,7 +14,6 @@ export default class Landing extends React.Component {
             jwt: ""
         };
         const jwt = getJWT();
-
     }
 
     render(){

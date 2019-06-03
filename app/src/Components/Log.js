@@ -4,7 +4,9 @@ import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
-const Api = require('../lib/Api.js');
+import Landing from "../Landing";
+import * as ReactDOM from "react-dom";
+import {Redirect} from "react-router-dom";
 
 export default class Log extends Component {
     defaultState() {

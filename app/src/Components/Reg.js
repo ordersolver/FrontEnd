@@ -9,6 +9,7 @@ import axios from "axios";
 import {clearLocal} from "../Helpers/JWT";
 
 export default class Reg extends Component {
+    state = { isAuth: false };
     constructor(props){
         super(props);
         this.state={
@@ -77,6 +78,16 @@ export default class Reg extends Component {
               email: this.input9.current.value
           }
       };
+        alert(
+            ' Correo: ' + data.user.email+
+            ' Contraseña: ' + data.user.password+
+            ' Nombre: '+data.user.nombre+
+            ' Apellido: '+ data.user.apellidos+
+            ' Direccion: '+ data.user.direccion+
+            ' Tipo de documento '+ data.user.tipo_documento+
+            ' Numero de doucmento'+ data.user.no_id+
+            ' Telefono '+ data.user.telefono
+        );
         console.log(data)
         e.preventDefault();
         axios.post('http://localhost:5000/users', data).
