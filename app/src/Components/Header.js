@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
 import {Col, Container, Row} from "react-bootstrap";
-import {clearLocal, getJWT} from "../Helpers/JWT";
+import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
 
 import './All.css';
 export default class Header extends Component {
@@ -38,7 +38,7 @@ export default class Header extends Component {
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
 
-                                <NavDropdown.Item href="/" >Cerrar Sesion </NavDropdown.Item>
+                                <NavDropdown.Item  onClick={deleteJWT} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
                         <Nav.Link eventKey={2} href="/catalog">
