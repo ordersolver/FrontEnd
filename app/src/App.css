@@ -4,7 +4,7 @@
   display: compact;
   flex-direction: column;
   justify-content: center;
-  font-size: calc(7px + 2vmin);
+  font-size: calc(2px + 2vmin);
   color: white;
 }
 
@@ -22,4 +22,8 @@
   display: inline-block;
   position: absolute;
   width: 100%;
+}
+
+.Background{
+  background-color: #eaeaea;
 }

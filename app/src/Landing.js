@@ -4,21 +4,27 @@ import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
-import Catalog from "./Components/Catalog";
+import {getJWT} from "./Helpers/JWT";
+import { CookiesProvider } from 'react-cookie';
 
 export default class Landing extends React.Component {
     constructor(props){
         super(props);
-        this.state = [];
+        this.state = {
+            jwt: ""
+        };
+        const jwt = getJWT();
     }
 
     render(){
         return (
-              <div>
+            <CookiesProvider>
+              <div className={"Background"}>
                   <container className={"NavBarr"}>
                       <Header>
                       </Header>
                   </container>
+                  <br></br>
                   <Router>
                       <container className={"Homee"}>
                           <RouterIndex/>
@@ -29,7 +35,9 @@ export default class Landing extends React.Component {
                       </Footer>
                   </container>
               </div>
+            </CookiesProvider>
         );
     }
 
 }
+Landing.defaultProps = {};
