@@ -98,7 +98,7 @@ export default class Log extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('http://localhost:5000/user_token', data)
+        axios.post('https://ordersolvermaster.herokuapp.com/user_token', data)
             .then(res => localStorage.setItem('the-JWT', res.data))
             .catch(function () {
                 clearLocal()

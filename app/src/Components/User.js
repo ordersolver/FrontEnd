@@ -32,7 +32,7 @@ class User extends Component{
     getData(e){
         let jwt = getJWT();
         console.log(jwt)
-        axios.get('http://localhost:5000/users/current', {headers: {Authorization: `Bearer ${jwt}`}})
+        axios.get('https://ordersolvermaster.herokuapp.com/users/current', {headers: {Authorization: `Bearer ${jwt}`}})
             .then(
                 res => this.state=res.data
             ).catch(

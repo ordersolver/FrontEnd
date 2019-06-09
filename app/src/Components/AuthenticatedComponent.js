@@ -17,7 +17,7 @@ export default class AuthenticatedComponent extends Component{
             this.props.history.push('/Login')
         }
 
-        axios.get('http://localhost:5000/users/current', {headers: {Authorization: `Bearer ${jwt}`}}).then(res => res.setState({
+        axios.get('https://ordersolvermaster.herokuapp.com/users/current', {headers: {Authorization: `Bearer ${jwt}`}}).then(res => res.setState({
             user: res.data
         }));
 

@@ -90,7 +90,7 @@ export default class Reg extends Component {
         );
         console.log(data)
         e.preventDefault();
-        axios.post('http://localhost:5000/users', data).
+        axios.post('https://ordersolvermaster.herokuapp.com/users', data).
         then(function(){
             console.log("Lit")
         })
