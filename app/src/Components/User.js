@@ -8,6 +8,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import Image from "react-bootstrap/Image";
 
 class User extends Component{
     constructor(props){
@@ -20,8 +21,6 @@ class User extends Component{
                 apellidos: "",
                 direccion: "",
                 telefono: "",
-                password: "",
-                password_confirmation: "",
                 email: ""
             },
             loading: true
@@ -74,6 +73,101 @@ class User extends Component{
                                     </p>
                                 </Container>
                             </Jumbotron>
+
+                            <Container>
+                                <Row className={"justify-content-md-center"}>
+                                    <Col xs="" className={"justify-content-center"}><Image src="https://image.flaticon.com/icons/png/512/16/16363.png" rounded /></Col>
+                                </Row>
+                            </Container>
+                            <br></br>
+                            <br></br>
+                            <Container>
+                                <Row>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Nombre</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.nombre}
+                                                    <p>
+
+                                                    </p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Apellidos</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.apellidos}
+                                                    <p>
+
+                                                    </p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Tipo de documento, y documento</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.no_id}
+                                                    <p>
+
+                                                    </p>
+                                                    {this.state.user.tipo_documento}
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                                <br></br>
+                                <Row>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Direccion</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.direccion}
+                                                    <p>
+
+                                                    </p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Telefono</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.telefono}
+                                                    <p>
+
+                                                    </p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col md={"auto"}>
+                                        <Card style={{ width: '20rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>Correo electrónico</Card.Title>
+                                                <Card.Text>
+                                                    {this.state.user.email}
+                                                    <p>
+
+                                                    </p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </Container>
+                            <br></br>
                         </div>}
             </div>
         )
