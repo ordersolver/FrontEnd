@@ -1,15 +1,64 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Form, Figure,ToggleButtonGroup,ToggleButton} from "react-bootstrap";
-
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import axios from "axios";
-import {clearLocal} from "../Helpers/JWT";
+import {getJWT} from "../Helpers/JWT";
 
 export default class Reg extends Component {
-    state = { isAuth: false };
+
+    componentDidMount() {
+        const jwt = getJWT();
+        if(jwt.length > 0){
+            console.log(jwt)
+        }
+    }
+
+    defaultState(){
+        return{
+            isAuth: false,
+            no_id: {
+                value: '',
+                error: 'ID es requerido.'
+            },
+            tipo_documento: {
+                value: '',
+                error: 'Tipo de documento es requerido.'
+            },
+            nombre: {
+                value: '',
+                error: 'Nombre es requerido.'
+            },
+            apellidos: {
+                value: '',
+                error: 'ID es requerido.'
+            },
+            direccion: {
+                value: '',
+                error: 'Dirección es requerida.'
+            },
+            telefono: {
+                value: '',
+                error: 'Teléfono es requerido.'
+            },
+            password: {
+                value: '',
+                error: 'Contraseña es requerida.'
+            },
+            password_confirmation: {
+                value: '',
+                error: 'Contraseñas no coinciden'
+            },
+            email: {
+                value: '',
+                error: 'e-mail es requerido.'
+            },
+            submit: {
+                error: '',
+            },
+            formSubmitted: false
+        }
+    }
     constructor(props){
         super(props);
         this.state={
@@ -23,6 +72,7 @@ export default class Reg extends Component {
             password_confirmation: "",
             email: ""
         };
+
         this.input = React.createRef();
         this.input2 =React.createRef();
         this.input3 =React.createRef();
@@ -48,57 +98,32 @@ export default class Reg extends Component {
                 password_confirmation: e.target.password_confirmation,
                 email: e.target.email
             });
-        let data2 = {
-            user: {
-                no_id: this.input.current.value,
-                tipo_documento: this.input2.current.value,
-                nombre: this.input3.current.value,
-                apellidos: this.input4.current.value,
-                direccion: this.input5.current.value,
-                telefono: this.input6.current.value,
-                password: this.input7.current.value,
-                password_confirmation: this.input8.current.value,
-                email: this.input9.current.value
-            }
-        };
-        console.log(data2);
     }
 
     submit(e){
-      let data = {
-          user:{
-              no_id: this.input.current.value,
-              tipo_documento: this.input2.current.value,
-              nombre: this.input3.current.value,
-              apellidos: this.input4.current.value,
-              direccion: this.input5.current.value,
-              telefono: this.input6.current.value,
-              password: this.input7.current.value,
-              password_confirmation: this.input8.current.value,
-              email: this.input9.current.value
-          }
-      };
-        alert(
-            ' Correo: ' + data.user.email+
-            ' Contraseña: ' + data.user.password+
-            ' Nombre: '+data.user.nombre+
-            ' Apellido: '+ data.user.apellidos+
-            ' Direccion: '+ data.user.direccion+
-            ' Tipo de documento '+ data.user.tipo_documento+
-            ' Numero de doucmento'+ data.user.no_id+
-            ' Telefono '+ data.user.telefono
-        );
-        console.log(data)
-        e.preventDefault();
-        axios.post('http://localhost:5000/users', data).
-        then(function(){
-            console.log("Lit")
-        })
-        .catch(function () {
-            console.log("Erdaa")
-        })
+            let data = {
+                user:{
+                    no_id: this.input.current.value,
+                    tipo_documento: this.input2.current.value,
+                    nombre: this.input3.current.value,
+                    apellidos: this.input4.current.value,
+                    direccion: this.input5.current.value,
+                    telefono: this.input6.current.value,
+                    password: this.input7.current.value,
+                    password_confirmation: this.input8.current.value,
+                    email: this.input9.current.value
+                }
+            };
+            console.log(data)
+            e.preventDefault();
+            axios.post('https://ordersolverdevelop.herokuapp.com/users', data).
+            then(function(){
+                this.props.history.push('/catalog')
+            })
+            .catch(function () {
+                console.log("Ups")
+            })
     }
-
 
     render(){
         return (
@@ -130,13 +155,6 @@ export default class Reg extends Component {
                                         type="email"
                                         placeholder="Correo"
                                         ref={this.input9}
-                                    />
-                                </FormGroup>
-                                <FormGroup controlId="email_confirmation" bsSize="large">
-                                    <FormControl
-                                        autoFocus
-                                        type="email"
-                                        placeholder="Verificar Correo"
                                     />
                                 </FormGroup>
                                 </Col>

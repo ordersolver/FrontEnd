@@ -6,6 +6,18 @@ import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
 
 import './All.css';
 export default class Header extends Component {
+
+    constructor(props){
+        super(props);
+        this.state="un-logged"
+    }
+
+    componentDidMount() {
+        const jwt = getJWT();
+        if(jwt){
+        }
+    }
+
     render(){
         return (
             <Navbar collapseOnSelect bs expand="lg" bg={"primary"} variant={"light"}>
@@ -34,7 +46,7 @@ export default class Header extends Component {
                         {getJWT() &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
-                                <NavDropdown.Item href="#profile">Perfil</NavDropdown.Item>
+                                <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
 

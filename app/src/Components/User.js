@@ -29,18 +29,28 @@ class User extends Component{
         this.output9 =React.createRef();
     }
 
-    getData(e){
-        let jwt = getJWT();
-        console.log(jwt)
-        axios.get('http://localhost:5000/users/current', {headers: {Authorization: `Bearer ${jwt}`}})
-            .then(
-                res => this.state=res.data
-            ).catch(
-            console.log("")
-        )
+    getData(){
+        const jwt = getJWT();
+        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                this.user = res.data;
+                console.log(this.user)
+            })
+            .catch(function(){
+                console.log("Try again xd")
+                }
+            )
+
     }
 
     componentDidMount() {
+        const jwt = getJWT();
+        if(!jwt){
+            this.props.history.push('/log')
+        }
+        if(jwt){
+            console.log("Si sirvo");
+        }
         this.getData();
     }
 
