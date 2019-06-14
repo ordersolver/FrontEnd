@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Alert, Nav} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
-import Landing from "../Landing";
-import * as ReactDOM from "react-dom";
-import {Redirect} from "react-router-dom";
 
 export default class Log extends Component {
+
     defaultState() {
         return {
             email: {
@@ -22,18 +20,19 @@ export default class Log extends Component {
             submit: {
                 error: ''
             },
-            formSubmitted: false
+            formSubmitted: false,
+            isLoading: false
         }
     }
     constructor(props){
         super(props);
-        
         this.state=this.defaultState();
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
+
     setEmail(e) {
         let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
@@ -79,8 +78,29 @@ export default class Log extends Component {
                 password: e.target.password
             });
     }
+    doSomething(){
+        let jwt = getJWT();
+        console.log(jwt);
+        if (jwt) {
+            console.log("So far so good")
+            this.setState({
+                submit:{
+                    error: "Iniciaste sesión correctamente."
+                }
+            })
+        }
+        if(!jwt){
+            console.log(JSON.parse(jwt));
+            this.setState({
+                submit: {
+                    error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
+                }
+            })
+        }
+    }
 
     submit(e) {
+        this.setState({isLoading: true});
         let data = {
             auth: {
                 email: this.state.email.value,
@@ -98,23 +118,19 @@ export default class Log extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('https://ordersolvermaster.herokuapp.com/user_token', data)
-            .then(res => localStorage.setItem('the-JWT', res.data))
+
+        axios.post('https://ordersolverdevelop.herokuapp.com/user_token', data)
+            .then(res => {
+                    localStorage.setItem('the-JWT', res.data.jwt)
+                    this.props.history.push('/catalog')
+                }
+            )
             .catch(function () {
                 clearLocal()
             });
-        const jwt = getJWT();
-        if (jwt) {
-
-        }
-        else {
-            this.setState({
-                submit: {
-                    error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
-                }
-            })
-        }
+        this.doSomething()
     }
+
 
     render(){
         return (

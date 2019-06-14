@@ -10,19 +10,11 @@ export default class AuthenticatedComponent extends Component{
         };
 
     }
-
     componentDidMount() {
         const jwt = getJWT();
         if(!jwt){
-            this.props.history.push('/Login')
+            this.props.history.push('/log')
         }
-
-        axios.get('https://ordersolvermaster.herokuapp.com/users/current', {headers: {Authorization: `Bearer ${jwt}`}}).then(res => res.setState({
-            user: res.data
-        }));
-
     }
-
-
 
 }
