@@ -31,7 +31,7 @@ export default class Reg extends Component {
             },
             apellidos: {
                 value: '',
-                error: 'ID es requerido.'
+                error: 'Apellidos son  requerido.'
             },
             direccion: {
                 value: '',
@@ -51,7 +51,7 @@ export default class Reg extends Component {
             },
             email: {
                 value: '',
-                error: 'e-mail es requerido.'
+                error: 'E-mail es requerido.'
             },
             submit: {
                 error: '',
