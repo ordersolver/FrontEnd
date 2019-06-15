@@ -76,7 +76,7 @@ export default class Reg extends Component {
         this.submit = this.submit.bind(this);
     }
     getFormErrors() {
-        let fields = ['email', 'password','password_confirmation', 'submit'];
+        let fields = ['email', 'password','password_confirmation','no_id','tipo_documento','nombre','apellidos','direccion','telefono', 'submit'];
         let errors = [];
         fields.map(field => {
             let fieldError = this.state[field].error || '';
