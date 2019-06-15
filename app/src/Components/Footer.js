@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {FacebookIcon,TwitterIcon,WhatsappIcon,LineIcon,} from 'react-share';
-import {Link} from 'react-router-dom';
+import {FacebookIcon,TwitterIcon,WhatsappIcon} from 'react-share';
 import {Nav, Figure, Navbar, Row, Col} from "react-bootstrap";
 import './All.css';
 export default class Footer extends Component {
     render(){
         return (
-                <Navbar expand="lg" bg={"primary"} variant={"light"}>
+                <Navbar expand="lg" bg={"warning"} variant={"light"}>
                     <Navbar.Brand>
                         <Figure.Image
                             width={50}
@@ -30,6 +29,9 @@ export default class Footer extends Component {
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link href="https://twitter.com/"><TwitterIcon round size={32} /></Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link href=""><WhatsappIcon round size={32} /></Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar>

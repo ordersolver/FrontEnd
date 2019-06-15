@@ -10,7 +10,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Image from "react-bootstrap/Image";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-
+import 'bulma/css/bulma.css';
 class User extends Component{
     constructor(props){
         super(props);
@@ -24,7 +24,8 @@ class User extends Component{
                 telefono: "",
                 email: ""
             },
-            loading: true
+            loading: true,
+            selectedFile: null
         };
     }
 
@@ -34,7 +35,7 @@ class User extends Component{
             this.props.history.push('/log')
         }
         if(jwt){
-            console.log("Si sirvo");
+            console.log("All right ma'boye");
         }
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
@@ -53,7 +54,18 @@ class User extends Component{
 
 
     fileSelectedHandler = event => {
-        console.log(event.target.files[0]);
+        this.setState({
+            selectedFile: event.target.files[0]
+        })
+    }
+
+    fileUploadHandler = () => {
+        const fd = new FormData();
+        fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
+        axios.post('', fd)
+            .then(res =>{
+                console.log(res);
+            })
     }
 
     render() {
@@ -73,7 +85,7 @@ class User extends Component{
                         <div>
                             <Jumbotron fluid>
                                 <Container>
-                                    <h1>¡Hola, {this.state.user.nombre}! </h1>
+                                    <h1>¡Hola, {this.state.user.nombre}!</h1>
                                     <p>
                                         Este es tu espacio personal, donde puedes verificar que tus datos sean correctos.
                                     </p>
@@ -87,7 +99,7 @@ class User extends Component{
                                 <Row>
                                     <ButtonToolbar>
                                         <input type={"file"} onChange={this.fileSelectedHandler}/>
-                                        <Button type={"primary"}>Subir</Button>
+                                        <Button type={"primary"} onClick={this.fileUploadHandler}>Subir</Button>
                                     </ButtonToolbar>
                                 </Row>
                             </Container>
