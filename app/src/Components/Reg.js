@@ -7,58 +7,7 @@ import {getJWT} from "../Helpers/JWT";
 
 export default class Reg extends Component {
 
-    componentDidMount() {
-        const jwt = getJWT();
-        if(jwt.length > 0){
-            console.log(jwt)
-        }
-    }
 
-    defaultState(){
-        return{
-            isAuth: false,
-            no_id: {
-                value: '',
-                error: 'ID es requerido.'
-            },
-            tipo_documento: {
-                value: '',
-                error: 'Tipo de documento es requerido.'
-            },
-            nombre: {
-                value: '',
-                error: 'Nombre es requerido.'
-            },
-            apellidos: {
-                value: '',
-                error: 'ID es requerido.'
-            },
-            direccion: {
-                value: '',
-                error: 'Dirección es requerida.'
-            },
-            telefono: {
-                value: '',
-                error: 'Teléfono es requerido.'
-            },
-            password: {
-                value: '',
-                error: 'Contraseña es requerida.'
-            },
-            password_confirmation: {
-                value: '',
-                error: 'Contraseñas no coinciden'
-            },
-            email: {
-                value: '',
-                error: 'e-mail es requerido.'
-            },
-            submit: {
-                error: '',
-            },
-            formSubmitted: false
-        }
-    }
     constructor(props){
         super(props);
         this.state={
@@ -121,7 +70,7 @@ export default class Reg extends Component {
                 this.props.history.push('/catalog')
             })
             .catch(function () {
-                console.log("Ups")
+                console.log()
             })
     }
 

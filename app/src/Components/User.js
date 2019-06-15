@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Image from "react-bootstrap/Image";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 
 class User extends Component{
     constructor(props){
@@ -50,6 +51,11 @@ class User extends Component{
             )
     }
 
+
+    fileSelectedHandler = event => {
+        console.log(event.target.files[0]);
+    }
+
     render() {
         return(
             <div>
@@ -77,6 +83,12 @@ class User extends Component{
                             <Container>
                                 <Row className={"justify-content-md-center"}>
                                     <Col xs="" className={"justify-content-center"}><Image src="https://image.flaticon.com/icons/png/512/16/16363.png" rounded /></Col>
+                                </Row>
+                                <Row>
+                                    <ButtonToolbar>
+                                        <input type={"file"} onChange={this.fileSelectedHandler}/>
+                                        <Button type={"primary"}>Subir</Button>
+                                    </ButtonToolbar>
                                 </Row>
                             </Container>
                             <br></br>

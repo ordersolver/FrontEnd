@@ -6,8 +6,10 @@ import User from '../Components/User';
 import { Route , Redirect } from "react-router-dom";
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import Landing from "../Landing";
+import {Provider} from 'react-redux';
 
 export default class RouterIndex extends Component {
+
 
 
     render(){
