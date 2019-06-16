@@ -9,12 +9,19 @@ import Card from "react-bootstrap/Card";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
+import {Document, Page,ReactPDF} from "react-pdf";
+import myPdf from './Complejidad.pdf';
+
 
 export default class Catalog extends Component {
-
+    onDocumentLoadSuccess({ numPages }) {
+        this.setState({ numPages });
+    };
     constructor(props){
         super(props);
         this.state = {
+            numPages: null,
+            pageNumber: 1,
             product: [{
                 id: "",
                 nombre : "",
@@ -86,9 +93,15 @@ export default class Catalog extends Component {
                 </Col>
             )
 
-        })
+        });
         return (
+
             <div>
+                <Container>
+                    <ReactPDF file={myPdf}/>
+                    <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
+
+                </Container>
                 <Container fluid>
                     <Row>
                         <Col></Col>
