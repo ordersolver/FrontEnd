@@ -7,6 +7,7 @@ import { Route , Redirect } from "react-router-dom";
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import Landing from "../Landing";
 import {Provider} from 'react-redux';
+import AddProduct from "../Components/AddProduct";
 
 export default class RouterIndex extends Component {
 
@@ -18,6 +19,7 @@ export default class RouterIndex extends Component {
                 <Route path="/" exact component={Catalog}/>
                 <Route path="/catalog" exact component={Catalog}/>
                 <Route path="/user" exact component={User}/>
+                <Route path="/newproduct" exact component={AddProduct}/>
                 {!getJWT() &&
                     <Route exact path="/log"  render={() => (
                         !getJWT() ? (
