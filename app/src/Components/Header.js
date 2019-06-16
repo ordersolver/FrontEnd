@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
 import {Col, Container, Row} from "react-bootstrap";
 import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
+import { GoogleLogout } from 'react-google-login';
 
 import './All.css';
 export default class Header extends Component {
@@ -49,7 +50,6 @@ export default class Header extends Component {
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
-
                                 <NavDropdown.Item  onClick={deleteJWT} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
