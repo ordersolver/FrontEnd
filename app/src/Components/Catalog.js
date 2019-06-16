@@ -1,15 +1,92 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Jumbotron, Row, Col, Image, Button, Container, Figure, Dropdown} from "react-bootstrap";
+import { Row, Col, Button, Container, Figure, Dropdown} from "react-bootstrap";
 import './All.css';
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Card from "react-bootstrap/Card";
+import ProductCard from './ProductCard';
+import axios from 'axios';
+import {getJWT} from "../Helpers/JWT";
 
 export default class Catalog extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            product: [{
+                id: "",
+                nombre : "",
+                categoria: "",
+                descripcion: "",
+                valor: "",
+                cassata: "",
+                densidad: "",
+                grosor: "",
+                lamina: "",
+                medidas: "",
+                tipo_tela: "",
+            }],
+            user: {
+                no_id: "",
+                tipo_documento: "",
+                nombre: "",
+                apellidos: "",
+                direccion: "",
+                telefono: "",
+                email: "",
+                rols:[{
+                    rolID: "",
+                    rolName: ""
+                }]
+            },
+            loading: true
+        }
+    }
+
+    componentDidMount() {
+        const jwt = getJWT();
+        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                this.user = res.data;
+                console.log(this.user);
+                this.setState({
+                    user: res.data
+                })
+            })
+            .catch(function(){
+                    console.log("Try again xd")
+                }
+            )
+        axios.get('http://ordersolverdevelop.herokuapp.com/products/index')
+            .then(
+                res=>{
+                    this.product=res.data;
+                    this.setState({
+                        product: res.data,
+                        loading: false
+                    })
+                    console.log(this.product);
+                }
+            )
+            .catch(
+
+            )
+    }
+
+
     render(){
+        let ProductCards = this.state.product.map(product => {
+            return(
+                <Col md={"auto"}>
+                    <ProductCard product={product}>
+
+                    </ProductCard>
+                </Col>
+            )
+
+        })
         return (
             <div>
                 <Container fluid>
@@ -96,88 +173,23 @@ export default class Catalog extends Component {
                                             </DropdownButton>
                                         ))}
                                     </ListGroup.Item>
+                                    {this.state.user.rols[0].rolName === "administrador" ?
+                                        <Button variant={"danger"}>Añadir producto</Button>
+
+                                        :
+
+                                        <div>
+
+                                        </div>
+                                    }
                                 </ListGroup>
+
                             </Container>
                         </Col>
-
                         <Col xs={9}>
                             <Container>
                                 <Row>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 1</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 2</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 3</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                                <hr></hr>
-                                <Row>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 1</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 2</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col md={"auto"}>
-                                        <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
-                                            <Card.Body>
-                                                <Card.Title>Producto 3</Card.Title>
-                                                <Card.Text>
-                                                    Descripción del producto
-                                                </Card.Text>
-                                                <Button variant="primary">Detalles</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
+                                    {ProductCards}
                                 </Row>
                             </Container>
                         </Col>

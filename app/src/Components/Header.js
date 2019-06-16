@@ -20,7 +20,7 @@ export default class Header extends Component {
 
     render(){
         return (
-            <Navbar collapseOnSelect bs expand="lg" bg={"primary"} variant={"light"}>
+            <Navbar collapseOnSelect bs expand="lg" bg={"warning"} variant={"light"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}

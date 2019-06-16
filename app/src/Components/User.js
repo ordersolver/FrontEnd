@@ -11,7 +11,10 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Image from "react-bootstrap/Image";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import 'bulma/css/bulma.css';
+import SplitButton from "react-bootstrap/SplitButton";
+import Alert from "react-bootstrap/Alert";
 class User extends Component{
+
     constructor(props){
         super(props);
         this.state= {
@@ -22,7 +25,11 @@ class User extends Component{
                 apellidos: "",
                 direccion: "",
                 telefono: "",
-                email: ""
+                email: "",
+                rols:[{
+                    rolID: "",
+                    rolName: ""
+                }]
             },
             loading: true,
             selectedFile: null
@@ -40,7 +47,7 @@ class User extends Component{
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
                 this.user = res.data;
-                console.log(this.user.nombre);
+                console.log(this.user);
                 this.setState({
                     loading: false,
                     user: res.data
@@ -85,7 +92,7 @@ class User extends Component{
                         <div>
                             <Jumbotron fluid>
                                 <Container>
-                                    <h1>¡Hola, {this.state.user.nombre}!</h1>
+                                    <p>¡Hola, {this.state.user.nombre}!</p>
                                     <p>
                                         Este es tu espacio personal, donde puedes verificar que tus datos sean correctos.
                                     </p>
@@ -182,6 +189,7 @@ class User extends Component{
                                                 <Card.Title>Correo electrónico</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.email}
+                                                    {JSON.stringify(this.state.user.rols[0].rolName)}
                                                     <p>
 
                                                     </p>
@@ -192,6 +200,37 @@ class User extends Component{
                                 </Row>
                             </Container>
                             <br></br>
+                            <hr></hr>
+                            <br></br>
+                            {this.state.user.rols[0].rolName === "administrador" ?
+                                <div>
+                                    <Container>
+                                        <Row className={"justify-content-md-center"}>
+                                            <Alert variant={"danger"} >Bienvenido a la zona del administrador</Alert>
+                                        </Row>
+                                        <Row className={"justify-content-md-center"}>
+                                            <Col xs="" className={"justify-content-center"}>
+                                                <ButtonToolbar>
+                                                    <Button variant={"danger"}>Ver usuarios registrados</Button>
+                                                    <Button variant={"danger"}>Ver órdenes</Button>
+                                                </ButtonToolbar>
+                                            </Col>
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                :
+
+                                <div>
+                                    <Container>
+                                        <Row className={"justify-content-md-center"}>
+                                            <h1>Eres un usuario promedio xd</h1>
+                                        </Row>
+                                    </Container>
+
+                                </div>
+
+                            }
                         </div>}
             </div>
         )
