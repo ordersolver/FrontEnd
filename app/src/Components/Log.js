@@ -4,11 +4,32 @@ import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 
+
+const responseGoogle = (response) => {
+    console.log(response);
+};
 export default class Log extends Component {
+    responseFacebook(response) {
+        // console.log(response);
+
+        this.setState({
+            isLoggedIn: true,
+            userID: response.userID,
+            name: response.name,
+            email: response.email.value,
+            picture: response.picture.data.url
+        });
+    };
 
     defaultState() {
         return {
+            isLoggedIn: false,
+            userID: '',
+            name:'',
+            picture:'',
             email: {
                 value: '',
                 error: 'Correo es requerido.'
@@ -148,6 +169,7 @@ export default class Log extends Component {
                                         autofocus
                                         type="email"
                                         onChange={this.setEmail}
+
                                     />
 
                                 </FormGroup>
@@ -193,20 +215,23 @@ export default class Log extends Component {
                             <br/>
                             <br/>
                             <br/>
-                            <Button
-                                block
-                                bsSize="large"
-
-                            >
-                                <FormLabel>Inicio de sesion por Facebook  </FormLabel>
-                                <FormLabel >  </FormLabel>
-                            </Button>
-                            <Button
-                                block
-                                bsSize="large"
-                            >
-                                <FormLabel>Inicio de sesion por Google</FormLabel>
-                            </Button>
+                            <Row>
+                                <FacebookLogin
+                                    appId="1088597931155576"
+                                    autoLoad
+                                    callback={this.responseFacebook}
+                                    size="small"
+                                     />
+                            </Row>
+                            <Row>
+                                <GoogleLogin
+                                    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                                    buttonText="Login"
+                                    size="large"
+                                    onSuccess={responseGoogle}
+                                    onFailure={responseGoogle}
+                                />
+                            </Row>
                         </Col>
                     </Row>
 
@@ -217,4 +242,6 @@ export default class Log extends Component {
             </div>
         );
     }
+
 }
+
