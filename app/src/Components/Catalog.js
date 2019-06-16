@@ -8,6 +8,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Card from "react-bootstrap/Card";
 import ProductCard from './ProductCard';
 import axios from 'axios';
+import {getJWT} from "../Helpers/JWT";
 
 export default class Catalog extends Component {
 
@@ -27,17 +28,44 @@ export default class Catalog extends Component {
                 medidas: "",
                 tipo_tela: "",
             }],
+            user: {
+                no_id: "",
+                tipo_documento: "",
+                nombre: "",
+                apellidos: "",
+                direccion: "",
+                telefono: "",
+                email: "",
+                rols:[{
+                    rolID: "",
+                    rolName: ""
+                }]
+            },
             loading: true
         }
     }
 
     componentDidMount() {
+        const jwt = getJWT();
+        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                this.user = res.data;
+                console.log(this.user);
+                this.setState({
+                    user: res.data
+                })
+            })
+            .catch(function(){
+                    console.log("Try again xd")
+                }
+            )
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index')
             .then(
                 res=>{
                     this.product=res.data;
                     this.setState({
-                        product: res.data
+                        product: res.data,
+                        loading: false
                     })
                     console.log(this.product);
                 }
@@ -145,7 +173,17 @@ export default class Catalog extends Component {
                                             </DropdownButton>
                                         ))}
                                     </ListGroup.Item>
+                                    {this.state.user.rols[0].rolName === "administrador" ?
+                                        <Button variant={"danger"}>Añadir producto</Button>
+
+                                        :
+
+                                        <div>
+
+                                        </div>
+                                    }
                                 </ListGroup>
+
                             </Container>
                         </Col>
                         <Col xs={9}>
