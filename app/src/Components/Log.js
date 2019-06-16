@@ -16,31 +16,16 @@ export default class Log extends Component {
     logOut = () => {
         this.setState({isLoggedIn: false, token: '', user: null})
     };
-    signup(res, type) {
-        let postData;
-        if (type === 'facebook' && res.email) {
-            postData = {
-                name: res.name,
-                provider: type,
-                email: res.email,
-                provider_id: res.id,
-                token: res.accessToken,
-                provider_pic: res.picture.data.url
-            };
-        }
-
-        if (type === 'google' && res.w3.U3) {
-            postData = {
-                name: res.w3.ig,
-                provider: type,
-                email: res.w3.U3,
-                provider_id: res.El,
-                token: res.Zi.access_token,
-                provider_pic: res.w3.Paa
-            };
-        }
-    }
-
+    responseFacebook(response) {
+        console.log(response);
+        this.setState({
+            isLoggedIn: true,
+            userID: response.userID,
+            name: response.name,
+            email: response.email,
+            picture: response.picture.data.url
+        });
+    };
     responseGoogle(response){
         console.log(response);
         this.setState({
@@ -51,7 +36,7 @@ export default class Log extends Component {
             token: response.Zi.access_token,
             provider_pic: response.w3.Paa,
             email: {
-                value: response.email,
+                value: response.w3.U3,
                 error: ''
             },
             submit: {
@@ -94,6 +79,7 @@ export default class Log extends Component {
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
         this.responseGoogle=this.responseGoogle.bind(this);
+        this.responseFacebook=this.responseFacebook.bind(this);
         this.logOut=this.logOut.bind(this);
     }
 
@@ -292,15 +278,24 @@ export default class Log extends Component {
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
                                         buttonText="Login"
-                                        size="large"
                                         onSuccess={responseGoogle}
-                                        onFailure={responseGoogle}
+                                        onFailure={this.logOut}
+                                        cookiePolicy={'single_host_origin'}
                                     />
-                                 ||
+                                ||
                                     <Col>
                                         <p>Bienvenido</p>
-                                        <div>
-                                            {this.state.email.value}
+                                        <div
+                                            style={{
+                                                width: "400px",
+                                                margin: "auto",
+                                                background: "#f4f4f4",
+                                                padding: "20px"
+                                            }}
+                                        >
+                                            <img src={this.state.provider_pic} alt={this.state.name}/>
+                                            <h2>Welcome {this.state.name}</h2>
+                                            Email: {this.state.email.value}
                                         </div>
                                         <div>
                                             <button onClick={this.logOut} className="button">
@@ -309,7 +304,6 @@ export default class Log extends Component {
                                         </div>
                                     </Col>
                                 }
-
                             </Row>
                         </Col>
                     </Row>
