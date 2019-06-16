@@ -82,7 +82,7 @@ class User extends Component{
                         <div>
                             <Container>
                                 <Row className={"justify-content-md-center"}>
-                                    <Col xs="" className={"justify-content-center"}><Spinner animation="grow" variant="primary" /></Col>
+                                    <Col xs="" className={"justify-content-center"}><Spinner animation="grow" variant="warning" /></Col>
                                 </Row>
                             </Container>
                         </div>

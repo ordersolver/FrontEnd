@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import { Redirect } from 'react-router-dom'
 import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import {clearLocal, getJWT} from "../Helpers/JWT";
 import Store from "../Redux/Store"
 
 export default class Log extends Component {

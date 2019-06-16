@@ -5,11 +5,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Pagination from "react-bootstrap/Pagination";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 
 export default class Catalog extends Component {
 
@@ -43,7 +41,7 @@ export default class Catalog extends Component {
                 }]
             },
             loading: true,
-            page: 1
+            page: 6
         }
         this.pageselect = React.createRef();
     }
