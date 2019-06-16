@@ -84,7 +84,7 @@ export default class Reg extends Component {
             if (fieldError.length > 0) {
                 errors.push(fieldError)
             }
-        })
+        });
         return errors
     }
     setEmail(e) {

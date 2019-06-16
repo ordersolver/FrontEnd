@@ -174,7 +174,7 @@ export default class Catalog extends Component {
                                         ))}
                                     </ListGroup.Item>
                                     {this.state.user.rols[0].rolName === "administrador" ?
-                                        <Button variant={"danger"}>Añadir producto</Button>
+                                        <Button variant={"danger"} href="/newproduct">Añadir producto</Button>
 
                                         :
 

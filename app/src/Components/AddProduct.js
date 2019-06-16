@@ -8,6 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/es/Button";
+import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 
 export default class AddProduct extends Component{
 
@@ -23,6 +24,7 @@ export default class AddProduct extends Component{
             },
             descripcion:{
                 value: '',
+                error: 'Descripción es requerida.'
             },
             medidas:{
                 value: '',
@@ -51,12 +53,27 @@ export default class AddProduct extends Component{
             valor:{
                 value: '',
                 error: 'Precio es requerido.'
-            }
+            },
+            formSubmitted: false,
+            isLoading: false
         }
     }
 
     constructor(props){
         super(props);
+        this.state=this.defaultState();
+        this.setNombre = this.setNombre.bind(this);
+        this.setCategoria = this.setCategoria.bind(this);
+        this.setDescripcion = this.setDescripcion.bind(this);
+        this.setMedidas = this.setMedidas.bind(this);
+        this.setGrosor = this.setGrosor.bind(this);
+        this.setDensidad = this.setDensidad.bind(this);
+        this.setTipo_tela = this.setTipo_tela.bind(this);
+        this.setLamina = this.setLamina.bind(this);
+        this.setCassata = this.setCassata.bind(this);
+        this.setValor = this.setValor.bind(this);
+        this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
         this.state = {
             user: {
                 no_id: "",
@@ -71,8 +88,7 @@ export default class AddProduct extends Component{
                     rolName: ""
                 }]
             },
-
-            loading: true
+            loading: true,
         }
     }
 
@@ -92,6 +108,212 @@ export default class AddProduct extends Component{
                     console.log("Try again xd")
                 }
             )
+    }
+
+    getFormErrors() {
+        let fields = ['nombre', 'categoria','descripcion','medidas','grosor','densidad','tipo_tela','lamina','cassata', 'valor'];
+        let errors = [];
+        fields.map(field => {
+            let fieldError = this.state[field].error || '';
+            if (fieldError.length > 0) {
+                errors.push(fieldError)
+            }
+        });
+        return errors
+    }
+
+    setNombre(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Nombre es requerido.' : '';
+        this.setState({
+            nombre: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setCategoria(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Categoria es requerido.' : '';
+        this.setState({
+            categoria: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setDescripcion(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Descripción es requerido.' : '';
+        this.setState({
+            descripcion: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setMedidas(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Medidas son requerida.' : '';
+        this.setState({
+            medidas: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setGrosor(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Grosor es requerido.' : '';
+        this.setState({
+            grosor: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setDensidad(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Densidad es requerida.' : '';
+        this.setState({
+            densidad: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setTipo_tela(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Tipo de tela es requerido.' : '';
+        this.setState({
+            tipo_tela: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setLamina(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Lamina es requerida.' : '';
+        this.setState({
+            lamina: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setCassata(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Cassata es requerida.' : '';
+        this.setState({
+            cassata: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setValor(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Valor es requerido.' : '';
+        this.setState({
+            valor: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    change(e){
+        e.preventDefault();
+        this.setState(
+            {
+                nombre: e.target.nombre,
+                categoria: e.target.nombre,
+                descripcion: e.target.descripcion,
+                medidas: e.target.medidas,
+                grosor: e.target.grosor,
+                densidad: e.target.densidad,
+                tipo_tela: e.target.tipo_tela,
+                lamina: e.target.lamina,
+                cassata: e.target.cassata,
+                valor: e.target.valor
+            }
+        );
+    }
+
+    submit(e){
+        e.preventDefault();
+        this.setState({isLoading: true});
+        let data = {
+            nombre: this.state.nombre.value,
+            categoria: this.state.categoria.value,
+            descripcion: this.state.descripcion.value,
+            medidas: this.state.medidas.value,
+            grosor: this.state.grosor.value,
+            densidad: this.state.densidad.value,
+            tipo_tela: this.state.tipo_tela.value,
+            lamina: this.state.lamina.value,
+            cassata: this.state.cassata.value,
+            valor: this.state.valor.value
+        };
+        console.log(data);
+
+        this.setState({
+            formSubmitted: true,
+            submit: {
+                error: ''
+            }
+        });
+        console.log(data);
+        if (this.getFormErrors().length > 0) {
+            return false
+        }
+        axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
+            .then(function () {
+                console.log("Oki")
+            })
+            .catch(function () {
+                console.log("Ups")
+            })
     }
 
     render(){
@@ -114,7 +336,97 @@ export default class AddProduct extends Component{
                                 <Container>
                                     <Row>
                                         <Jumbotron fluid>
-
+                                            <FormLabel>{this.state.user.nombre}, introduce el producto a agregar</FormLabel>
+                                            <form onSubmit={e => this.submit(e)}>
+                                                <FormGroup controlId="nombre" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Nombre"
+                                                        onChange={this.setNombre}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="categoria" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Categoría"
+                                                        onChange={this.setCategoria}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="descripcion" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        as={"textarea"}
+                                                        type="text"
+                                                        placeholder="Descripción"
+                                                        onChange={this.setDescripcion}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="medidas" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Medidas"
+                                                        onChange={this.setMedidas}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="grosor" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Grosor"
+                                                        onChange={this.setGrosor}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="densidad" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Densidad"
+                                                        onChange={this.setDensidad}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="tipo_tela" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Tipo de la tela"
+                                                        onChange={this.setTipo_tela}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="lamina" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Lámina"
+                                                        onChange={this.setLamina}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="cassata" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Cassata"
+                                                        onChange={this.setCassata}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup controlId="valor" bsSize="large">
+                                                    <FormControl
+                                                        autoFocus
+                                                        type="text"
+                                                        placeholder="Valor"
+                                                        onChange={this.setValor}
+                                                    />
+                                                </FormGroup>
+                                                <Button
+                                                    block
+                                                    bsSize="large"
+                                                    type="submit"
+                                                >
+                                                    Crear
+                                                </Button>
+                                            </form>
                                         </Jumbotron>
                                     </Row>
                                 </Container>
