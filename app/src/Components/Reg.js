@@ -7,6 +7,7 @@ import {getJWT} from "../Helpers/JWT";
 
 export default class Reg extends Component {
 
+
     componentDidMount() {
         const jwt = getJWT();
         {jwt &&
@@ -254,6 +255,7 @@ export default class Reg extends Component {
                     password: this.state.password.value
                 }
             };
+
         console.log(data);
         e.preventDefault();
         this.setState({
