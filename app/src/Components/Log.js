@@ -7,16 +7,29 @@ import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 
-const responseFacebook = (response) => {
-    console.log(response);
-};
+
 const responseGoogle = (response) => {
     console.log(response);
 };
 export default class Log extends Component {
+    responseFacebook(response) {
+        // console.log(response);
+
+        this.setState({
+            isLoggedIn: true,
+            userID: response.userID,
+            name: response.name,
+            email: response.email.value,
+            picture: response.picture.data.url
+        });
+    };
 
     defaultState() {
         return {
+            isLoggedIn: false,
+            userID: '',
+            name:'',
+            picture:'',
             email: {
                 value: '',
                 error: 'Correo es requerido.'
@@ -205,7 +218,7 @@ export default class Log extends Component {
                                 <FacebookLogin
                                     appId="1088597931155576"
                                     autoLoad
-                                    callback={responseFacebook}
+                                    callback={this.responseFacebook}
                                      />
                             </Row>
                             <Row>
