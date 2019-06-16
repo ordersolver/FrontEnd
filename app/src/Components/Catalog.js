@@ -5,10 +5,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Card from "react-bootstrap/Card";
+import Pagination from "react-bootstrap/Pagination";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 
 export default class Catalog extends Component {
 
@@ -41,8 +42,10 @@ export default class Catalog extends Component {
                     rolName: ""
                 }]
             },
-            loading: true
+            loading: true,
+            page: 1
         }
+        this.pageselect = React.createRef();
     }
 
     componentDidMount() {
@@ -50,7 +53,6 @@ export default class Catalog extends Component {
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
                 this.user = res.data;
-                console.log(this.user);
                 this.setState({
                     user: res.data
                 })
@@ -59,7 +61,11 @@ export default class Catalog extends Component {
                     console.log("Try again xd")
                 }
             );
-        axios.get('http://ordersolverdevelop.herokuapp.com/products/index')
+        let items = {
+            page: this.state.page,
+            per_page: 6,
+        }
+        axios.get('http://ordersolverdevelop.herokuapp.com/products/index', {params:items})
             .then(
                 res=>{
                     this.product=res.data;
@@ -75,6 +81,23 @@ export default class Catalog extends Component {
             )
     }
 
+    pagemenosmenos(){
+        this.setState(
+            {
+                page: this.state.page - 1
+            }
+        )
+        console.log(this.state.page)
+    }
+
+    pagemmasmas(){
+        this.setState(
+            {
+                page: this.state.page + 1
+            }
+        )
+        console.log(this.state.page)
+    }
 
     render(){
         let ProductCards = this.state.product.map(product => {
@@ -191,8 +214,16 @@ export default class Catalog extends Component {
                                 <Row>
                                     {ProductCards}
                                 </Row>
+                                <Row>
+
+                                    <Col>
+                                    </Col>
+                                </Row>
                             </Container>
                         </Col>
+                    </Row>
+                    <Row>
+
                     </Row>
                 </Container>
             </div>
