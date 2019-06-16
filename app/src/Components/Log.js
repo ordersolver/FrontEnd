@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import { Redirect } from 'react-router-dom'
 import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
+import Store from "../Redux/Store"
 
 export default class Log extends Component {
 
@@ -21,7 +23,8 @@ export default class Log extends Component {
                 error: ''
             },
             formSubmitted: false,
-            isLoading: false
+            isLoading: false,
+            jwt: ""
         }
     }
     constructor(props){
@@ -32,6 +35,7 @@ export default class Log extends Component {
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
+
 
     setEmail(e) {
         let newVal = e.target.value || '';
@@ -47,7 +51,7 @@ export default class Log extends Component {
         })
     }
     setPassword(e) {
-        let newVal = e.target.value || ''
+        let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Contraseña es requerida.' : '';
         this.setState({
             password: {
@@ -67,7 +71,7 @@ export default class Log extends Component {
             if (fieldError.length > 0) {
                 errors.push(fieldError)
             }
-        })
+        });
         return errors
     }
     change(e){
@@ -78,26 +82,6 @@ export default class Log extends Component {
                 password: e.target.password
             });
     }
-    doSomething(){
-        let jwt = getJWT();
-        console.log(jwt);
-        if (jwt) {
-            console.log("So far so good")
-            this.setState({
-                submit:{
-                    error: "Iniciaste sesión correctamente."
-                }
-            })
-        }
-        if(!jwt){
-            console.log(JSON.parse(jwt));
-            this.setState({
-                submit: {
-                    error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
-                }
-            })
-        }
-    }
 
     submit(e) {
         this.setState({isLoading: true});
@@ -107,7 +91,6 @@ export default class Log extends Component {
                 password: this.state.password.value
             }
         };
-        console.log(data);
         e.preventDefault();
         this.setState({
             formSubmitted: true,
@@ -121,15 +104,34 @@ export default class Log extends Component {
 
         axios.post('https://ordersolverdevelop.herokuapp.com/user_token', data)
             .then(res => {
-                    localStorage.setItem('the-JWT', res.data.jwt)
+                    this.jwt = res.data.jwt;
+                    this.setState({
+                        jwt: res.data.jwt
+                    });
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    console.log(this.state.jwt);
+                    if (this.state.jwt) {
+                        console.log("So far so good");
+                        this.setState({
+                            submit:{
+                                error: "Iniciaste sesión correctamente."
+                            }
+                        });
+                    }
                     this.props.history.push('/catalog')
                 }
             )
-            .catch(function () {
-                clearLocal()
+            .catch(res=>{
+                    this.setState({
+                        submit:{
+                            error: "No has podido iniciar sesión correctamente, intenta de nuevo."
+                        }
+                    })
             });
-        this.doSomething()
+
     }
+
+
 
 
     render(){
@@ -164,7 +166,7 @@ export default class Log extends Component {
                                     <ul>
                                         {
                                             this.getFormErrors().map((message) =>
-                                                <li key={'error_message_'+1}>{message}</li>
+                                                <h1 key={'error_message_'+1}>{message}</h1>
                                             )
                                         }
                                     </ul>
