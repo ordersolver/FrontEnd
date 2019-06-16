@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Figure} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
@@ -12,16 +12,22 @@ const responseGoogle = (response) => {
     console.log(response);
 };
 export default class Log extends Component {
+    componentClicked = () => console.log("clicked");
     responseFacebook(response) {
-        // console.log(response);
-
+        console.log(response);
         this.setState({
             isLoggedIn: true,
             userID: response.userID,
             name: response.name,
-            email: response.email.value,
-            picture: response.picture.data.url
-        });
+            picture: response.picture.data.url,
+            email: {
+                value: response.email,
+                error: ''
+            },
+            submit: {
+                error: ''
+            }
+        })
     };
 
     defaultState() {
@@ -45,6 +51,7 @@ export default class Log extends Component {
             isLoading: false
         }
     }
+
     constructor(props){
         super(props);
         this.state=this.defaultState();
@@ -52,6 +59,7 @@ export default class Log extends Component {
         this.setPassword = this.setPassword.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
+        this.responseFacebook=this.responseFacebook.bind(this);
     }
 
     setEmail(e) {
@@ -216,12 +224,33 @@ export default class Log extends Component {
                             <br/>
                             <br/>
                             <Row>
-                                <FacebookLogin
-                                    appId="1088597931155576"
-                                    autoLoad
-                                    callback={this.responseFacebook}
-                                    size="small"
-                                     />
+                                {!this.state.isLoggedIn &&
+                                    <FacebookLogin
+                                        appId="343238832957751"
+                                        autoLoad={true}
+                                        fields="name,email,picture"
+                                        onClick={this.componentClicked}
+                                        callback={this.responseFacebook}
+                                    />
+                                    ||
+                                    <Col>
+                                        <div
+                                            style={{
+                                                width: "400px",
+                                                margin: "auto",
+                                                background: "#f4f4f4",
+                                                padding: "20px"
+                                            }}
+                                        >
+                                            <img src={this.state.picture} alt={this.state.name} />
+                                            <h2>Welcome {this.state.name}</h2>
+                                            Email: {this.state.email.value}
+                                        </div>
+
+                                    </Col>
+                                }
+
+
                             </Row>
                             <Row>
                                 <GoogleLogin
