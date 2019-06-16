@@ -58,7 +58,7 @@ export default class Catalog extends Component {
             .catch(function(){
                     console.log("Try again xd")
                 }
-            )
+            );
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index')
             .then(
                 res=>{
@@ -66,7 +66,7 @@ export default class Catalog extends Component {
                     this.setState({
                         product: res.data,
                         loading: false
-                    })
+                    });
                     console.log(this.product);
                 }
             )
@@ -86,7 +86,7 @@ export default class Catalog extends Component {
                 </Col>
             )
 
-        })
+        });
         return (
             <div>
                 <Container fluid>

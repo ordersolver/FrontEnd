@@ -64,7 +64,7 @@ class User extends Component{
         this.setState({
             selectedFile: event.target.files[0]
         })
-    }
+    };
 
     fileUploadHandler = () => {
         const fd = new FormData();
@@ -73,7 +73,7 @@ class User extends Component{
             .then(res =>{
                 console.log(res);
             })
-    }
+    };
 
     render() {
         return(
