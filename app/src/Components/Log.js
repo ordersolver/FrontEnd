@@ -169,6 +169,7 @@ export default class Log extends Component {
                                         autofocus
                                         type="email"
                                         onChange={this.setEmail}
+
                                     />
 
                                 </FormGroup>
@@ -219,12 +220,14 @@ export default class Log extends Component {
                                     appId="1088597931155576"
                                     autoLoad
                                     callback={this.responseFacebook}
+                                    size="small"
                                      />
                             </Row>
                             <Row>
                                 <GoogleLogin
                                     clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
                                     buttonText="Login"
+                                    size="large"
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                 />
