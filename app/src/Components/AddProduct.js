@@ -14,9 +14,9 @@ export default class AddProduct extends Component{
 
     defaultState(){
         return{
-            nombre:{
+            nombreP:{
                 value: '',
-                error: 'Nombre es requerido.'
+                error: 'Nombre del producto es requerido.'
             },
             categoria:{
                 value: '',
@@ -54,27 +54,6 @@ export default class AddProduct extends Component{
                 value: '',
                 error: 'Precio es requerido.'
             },
-            formSubmitted: false,
-            isLoading: false
-        }
-    }
-
-    constructor(props){
-        super(props);
-        this.state=this.defaultState();
-        this.setNombre = this.setNombre.bind(this);
-        this.setCategoria = this.setCategoria.bind(this);
-        this.setDescripcion = this.setDescripcion.bind(this);
-        this.setMedidas = this.setMedidas.bind(this);
-        this.setGrosor = this.setGrosor.bind(this);
-        this.setDensidad = this.setDensidad.bind(this);
-        this.setTipo_tela = this.setTipo_tela.bind(this);
-        this.setLamina = this.setLamina.bind(this);
-        this.setCassata = this.setCassata.bind(this);
-        this.setValor = this.setValor.bind(this);
-        this.change = this.change.bind(this);
-        this.submit = this.submit.bind(this);
-        this.state = {
             user: {
                 no_id: "",
                 tipo_documento: "",
@@ -89,7 +68,26 @@ export default class AddProduct extends Component{
                 }]
             },
             loading: true,
+            formSubmitted: false,
+            isLoading: false
         }
+    }
+
+    constructor(props){
+        super(props);
+        this.state=this.defaultState();
+        this.setNombreP = this.setNombreP.bind(this);
+        this.setCategoria = this.setCategoria.bind(this);
+        this.setDescripcion = this.setDescripcion.bind(this);
+        this.setMedidas = this.setMedidas.bind(this);
+        this.setGrosor = this.setGrosor.bind(this);
+        this.setDensidad = this.setDensidad.bind(this);
+        this.setTipo_tela = this.setTipo_tela.bind(this);
+        this.setLamina = this.setLamina.bind(this);
+        this.setCassata = this.setCassata.bind(this);
+        this.setValor = this.setValor.bind(this);
+        this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     componentDidMount() {
@@ -111,7 +109,7 @@ export default class AddProduct extends Component{
     }
 
     getFormErrors() {
-        let fields = ['nombre', 'categoria','descripcion','medidas','grosor','densidad','tipo_tela','lamina','cassata', 'valor'];
+        let fields = ['nombreP', 'categoria','descripcion','medidas','grosor','densidad','tipo_tela','lamina','cassata', 'valor'];
         let errors = [];
         fields.map(field => {
             let fieldError = this.state[field].error || '';
@@ -122,11 +120,11 @@ export default class AddProduct extends Component{
         return errors
     }
 
-    setNombre(e) {
+    setNombreP(e) {
         let newVal = e.target.value || '';
-        let errorMessage = newVal.length === 0 ? 'Nombre es requerido.' : '';
+        let errorMessage = newVal.length === 0 ? 'Nombre del producto es requerido.' : '';
         this.setState({
-            nombre: {
+            nombreP: {
                 value: newVal,
                 error: errorMessage
             },
@@ -266,8 +264,8 @@ export default class AddProduct extends Component{
         e.preventDefault();
         this.setState(
             {
-                nombre: e.target.nombre,
-                categoria: e.target.nombre,
+                nombreP: e.target.nombreP,
+                categoria: e.target.categoria,
                 descripcion: e.target.descripcion,
                 medidas: e.target.medidas,
                 grosor: e.target.grosor,
@@ -284,7 +282,7 @@ export default class AddProduct extends Component{
         e.preventDefault();
         this.setState({isLoading: true});
         let data = {
-            nombre: this.state.nombre.value,
+            nombreP: this.state.nombreP.value,
             categoria: this.state.categoria.value,
             descripcion: this.state.descripcion.value,
             medidas: this.state.medidas.value,
@@ -328,7 +326,7 @@ export default class AddProduct extends Component{
         }
         return(
             <div>
-                    <div>
+                <div>
                     {
                         this.state.user.rols[0].rolName === "administrador" ?
                             <div>
@@ -338,12 +336,12 @@ export default class AddProduct extends Component{
                                         <Jumbotron fluid>
                                             <FormLabel>{this.state.user.nombre}, introduce el producto a agregar</FormLabel>
                                             <form onSubmit={e => this.submit(e)}>
-                                                <FormGroup controlId="nombre" bsSize="large">
+                                                <FormGroup controlId="nombreP" bsSize="large">
                                                     <FormControl
                                                         autoFocus
                                                         type="text"
                                                         placeholder="Nombre"
-                                                        onChange={this.setNombre}
+                                                        onChange={this.setNombreP}
                                                     />
                                                 </FormGroup>
                                                 <FormGroup controlId="categoria" bsSize="large">
@@ -427,7 +425,21 @@ export default class AddProduct extends Component{
                                                     Crear
                                                 </Button>
                                             </form>
+
                                         </Jumbotron>
+                                        <Col>
+                                            {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                            <FormLabel>
+                                                <ul>
+                                                    {
+                                                        this.getFormErrors().map((message) =>
+                                                            <li key={'error_message_' + 1}>{message}</li>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </FormLabel>
+                                            }
+                                        </Col>
                                     </Row>
                                 </Container>
                             </div>
@@ -438,7 +450,7 @@ export default class AddProduct extends Component{
                                 <p>Tienes que ser administrador para acceder aquí.</p>
                             </div>
                     }
-                    </div>
+                </div>
 
             </div>
 
