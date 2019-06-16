@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
-import GoogleLogin from 'react-google-login';
+import {GoogleLogin,GoogleLogout} from 'react-google-login';
 
 
 const responseGoogle = (response) => {
@@ -13,13 +13,43 @@ const responseGoogle = (response) => {
 };
 export default class Log extends Component {
     componentClicked = () => console.log("clicked");
-    responseFacebook(response) {
+    logOut = () => {
+        this.setState({isLoggedIn: false, token: '', user: null})
+    };
+    signup(res, type) {
+        let postData;
+        if (type === 'facebook' && res.email) {
+            postData = {
+                name: res.name,
+                provider: type,
+                email: res.email,
+                provider_id: res.id,
+                token: res.accessToken,
+                provider_pic: res.picture.data.url
+            };
+        }
+
+        if (type === 'google' && res.w3.U3) {
+            postData = {
+                name: res.w3.ig,
+                provider: type,
+                email: res.w3.U3,
+                provider_id: res.El,
+                token: res.Zi.access_token,
+                provider_pic: res.w3.Paa
+            };
+        }
+    }
+
+    responseGoogle(response){
         console.log(response);
         this.setState({
             isLoggedIn: true,
-            userID: response.userID,
-            name: response.name,
-            picture: response.picture.data.url,
+            name: response.w3.ig,
+            provider: 'google',
+            provider_id: response.El,
+            token: response.Zi.access_token,
+            provider_pic: response.w3.Paa,
             email: {
                 value: response.email,
                 error: ''
@@ -35,7 +65,11 @@ export default class Log extends Component {
             isLoggedIn: false,
             userID: '',
             name:'',
+            provider:'',
             picture:'',
+            provider_id:'',
+            token:'',
+            provider_pic:'',
             email: {
                 value: '',
                 error: 'Correo es requerido.'
@@ -59,7 +93,8 @@ export default class Log extends Component {
         this.setPassword = this.setPassword.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
-        this.responseFacebook=this.responseFacebook.bind(this);
+        this.responseGoogle=this.responseGoogle.bind(this);
+        this.logOut=this.logOut.bind(this);
     }
 
     setEmail(e) {
@@ -253,13 +288,28 @@ export default class Log extends Component {
 
                             </Row>
                             <Row>
-                                <GoogleLogin
-                                    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                                    buttonText="Login"
-                                    size="large"
-                                    onSuccess={responseGoogle}
-                                    onFailure={responseGoogle}
-                                />
+                                {!this.state.isLoggedIn &&
+                                    <GoogleLogin
+                                        clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
+                                        buttonText="Login"
+                                        size="large"
+                                        onSuccess={responseGoogle}
+                                        onFailure={responseGoogle}
+                                    />
+                                 ||
+                                    <Col>
+                                        <p>Bienvenido</p>
+                                        <div>
+                                            {this.state.email.value}
+                                        </div>
+                                        <div>
+                                            <button onClick={this.logOut} className="button">
+                                                Log out
+                                            </button>
+                                        </div>
+                                    </Col>
+                                }
+
                             </Row>
                         </Col>
                     </Row>
