@@ -63,7 +63,8 @@ class User extends Component{
     fileSelectedHandler = event => {
         this.setState({
             selectedFile: event.target.files[0]
-        })
+        });
+        console.log(this.state.selectedFile);
     };
 
     fileUploadHandler = () => {

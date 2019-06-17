@@ -98,7 +98,7 @@ export default class Reg extends Component {
             submit: {
                 error: ''
             }
-        })
+        });
     }
     setPassword(e) {
         let newVal = e.target.value || ''
@@ -191,6 +191,7 @@ export default class Reg extends Component {
                 error: ''
             }
         })
+
     }
     setTipoId(e) {
         let newVal = e.target.value || ''
@@ -204,27 +205,31 @@ export default class Reg extends Component {
                 error: ''
             }
         })
+
+
+
     }
     change(e){
         e.preventDefault();
         this.setState(
             {
-                no_id: e.target.no_id,
-                tipo_documento: e.target.tipo_documento,
-                nombre: e.target.nombre,
-                apellidos: e.target.apellidos,
-                direccion: e.target.direccion,
-                telefono: e.target.telefono,
-                password: e.target.password,
-                password_confirmation: e.target.password_confirmation,
-                email: e.target.email
-            });
+                    no_id: e.target.no_id,
+                    tipo_documento: e.target.tipo_documento,
+                    nombre: e.target.nombre,
+                    apellidos: e.target.apellidos,
+                    direccion: e.target.direccion,
+                    telefono: e.target.telefono,
+                    password: e.target.password,
+                    password_confirmation: e.target.password_confirmation,
+                    email: e.target.email
+            }
+            );
     }
     doSomething(){
         let jwt = getJWT();
         console.log(jwt);
         if (jwt) {
-            console.log("So far so good")
+            console.log("So far so good");
             this.setState({
                 submit:{
                     error: "Bienvenido a nuestro servicio."
@@ -241,23 +246,21 @@ export default class Reg extends Component {
         }
     }
     submit(e){
+        e.preventDefault();
         this.setState({isLoading: true});
         let data = {
-                user:{
-                    no_id: this.state.no_id.value,
-                    tipo_documento: this.state.tipo_documento.value,
-                    nombre: this.state.nombre.value,
-                    apellidos: this.state.apellidos.value,
-                    direccion: this.state.direccion.value,
-                    telefono: this.state.telefono.value,
-                    password_confirmation: this.state.password_confirmation.value,
-                    email: this.state.email.value,
-                    password: this.state.password.value
-                }
-            };
-
+                no_id: this.state.no_id.value,
+                tipo_documento: this.state.tipo_documento.value,
+                nombre: this.state.nombre.value,
+                apellidos: this.state.apellidos.value,
+                direccion: this.state.direccion.value,
+                telefono: this.state.telefono.value,
+                password: this.state.password.value,
+                password_confirmation: this.state.password_confirmation.value,
+                email: this.state.email.value,
+                google_id: JSON.stringify(Math.random())
+        };
         console.log(data);
-        e.preventDefault();
         this.setState({
             formSubmitted: true,
             submit: {
@@ -267,7 +270,7 @@ export default class Reg extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('https://ordersolverdevelop.herokuapp.com/users', data).
+        axios.post('https://ordersolverdevelop.herokuapp.com/users/create', data).
         then(function(){
             this.props.history.push('/catalog')
         })

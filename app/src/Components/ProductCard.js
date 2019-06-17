@@ -13,7 +13,7 @@ export default class ProductCard extends Component {
         return(
             <div>
             <Card style={{ width: '15rem' }}>
-                <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
+                <Card.Img variant="top" src={this.props.product.image} />
                 <Card.Body>
                     <Card.Title>{this.props.product.nombre}</Card.Title>
                     <Card.Text>{this.props.product.description}</Card.Text>

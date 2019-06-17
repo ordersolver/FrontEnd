@@ -9,6 +9,9 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/es/Button";
 import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import Image from "react-bootstrap/Image";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Alert from "react-bootstrap/Alert";
 
 export default class AddProduct extends Component{
 
@@ -67,6 +70,7 @@ export default class AddProduct extends Component{
                     rolName: ""
                 }]
             },
+            image: null,
             loading: true,
             formSubmitted: false,
             isLoading: false
@@ -86,6 +90,7 @@ export default class AddProduct extends Component{
         this.setLamina = this.setLamina.bind(this);
         this.setCassata = this.setCassata.bind(this);
         this.setValor = this.setValor.bind(this);
+        this.setImage = this.setImage.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
@@ -260,6 +265,13 @@ export default class AddProduct extends Component{
         })
     }
 
+    setImage = event => {
+        this.setState({
+            image: event.target.files[0]
+        });
+        console.log(this.state.image);
+    };
+
     change(e){
         e.preventDefault();
         this.setState(
@@ -273,7 +285,8 @@ export default class AddProduct extends Component{
                 tipo_tela: e.target.tipo_tela,
                 lamina: e.target.lamina,
                 cassata: e.target.cassata,
-                valor: e.target.valor
+                valor: e.target.valor,
+                image: e.target.image.files[0]
             }
         );
     }
@@ -281,8 +294,10 @@ export default class AddProduct extends Component{
     submit(e){
         e.preventDefault();
         this.setState({isLoading: true});
+        const fd = new FormData();
+        fd.append('image', this.state.image, this.state.image.name);
         let data = {
-            nombreP: this.state.nombreP.value,
+            nombre: this.state.nombreP.value,
             categoria: this.state.categoria.value,
             descripcion: this.state.descripcion.value,
             medidas: this.state.medidas.value,
@@ -291,27 +306,28 @@ export default class AddProduct extends Component{
             tipo_tela: this.state.tipo_tela.value,
             lamina: this.state.lamina.value,
             cassata: this.state.cassata.value,
-            valor: this.state.valor.value
+            valor: this.state.valor.value,
+            image: fd
         };
+        axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
+            .then(function () {
+                console.log("Oki");
+                this.props.history.push('/catalog')
+            })
+            .catch(function () {
+                console.log("Ups")
+            });
         console.log(data);
-
         this.setState({
             formSubmitted: true,
             submit: {
                 error: ''
             }
         });
-        console.log(data);
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
-            .then(function () {
-                console.log("Oki")
-            })
-            .catch(function () {
-                console.log("Ups")
-            })
+
     }
 
     render(){
@@ -333,101 +349,118 @@ export default class AddProduct extends Component{
 
                                 <Container>
                                     <Row>
-                                        <Jumbotron fluid>
-                                            <FormLabel>{this.state.user.nombre}, introduce el producto a agregar</FormLabel>
-                                            <form onSubmit={e => this.submit(e)}>
-                                                <FormGroup controlId="nombreP" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Nombre"
-                                                        onChange={this.setNombreP}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="categoria" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Categoría"
-                                                        onChange={this.setCategoria}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="descripcion" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        as={"textarea"}
-                                                        type="text"
-                                                        placeholder="Descripción"
-                                                        onChange={this.setDescripcion}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="medidas" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Medidas"
-                                                        onChange={this.setMedidas}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="grosor" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Grosor"
-                                                        onChange={this.setGrosor}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="densidad" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Densidad"
-                                                        onChange={this.setDensidad}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="tipo_tela" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Tipo de la tela"
-                                                        onChange={this.setTipo_tela}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="lamina" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Lámina"
-                                                        onChange={this.setLamina}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="cassata" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Cassata"
-                                                        onChange={this.setCassata}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup controlId="valor" bsSize="large">
-                                                    <FormControl
-                                                        autoFocus
-                                                        type="text"
-                                                        placeholder="Valor"
-                                                        onChange={this.setValor}
-                                                    />
-                                                </FormGroup>
-                                                <Button
-                                                    block
-                                                    bsSize="large"
-                                                    type="submit"
-                                                >
-                                                    Crear
-                                                </Button>
-                                            </form>
-
-                                        </Jumbotron>
                                         <Col>
+                                            <Jumbotron fluid>
+                                                <FormLabel>{this.state.user.nombre}, introduce el producto a agregar</FormLabel>
+                                                <form onSubmit={e => this.submit(e)}>
+                                                    <Col>
+                                                        <FormGroup controlId="nombreP" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Nombre"
+                                                                onChange={this.setNombreP}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="categoria" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Categoría"
+                                                                onChange={this.setCategoria}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="descripcion" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                as={"textarea"}
+                                                                type="text"
+                                                                placeholder="Descripción"
+                                                                onChange={this.setDescripcion}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="medidas" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Medidas"
+                                                                onChange={this.setMedidas}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="grosor" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Grosor"
+                                                                onChange={this.setGrosor}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="densidad" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Densidad"
+                                                                onChange={this.setDensidad}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="tipo_tela" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Tipo de la tela"
+                                                                onChange={this.setTipo_tela}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="lamina" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Lámina"
+                                                                onChange={this.setLamina}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="cassata" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Cassata"
+                                                                onChange={this.setCassata}
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup controlId="valor" bsSize="large">
+                                                            <FormControl
+                                                                autoFocus
+                                                                type="text"
+                                                                placeholder="Valor"
+                                                                onChange={this.setValor}
+                                                            />
+                                                        </FormGroup>
+                                                    </Col>
+                                                    <Col>
+
+                                                    </Col>
+                                                    <Button
+                                                        block
+                                                        bsSize="large"
+                                                        type="submit"
+                                                        onClick={this.fileUploadHandler}
+                                                    >
+                                                        Crear
+                                                    </Button>
+                                                </form>
+                                            </Jumbotron>
+                                        </Col>
+                                        <Col>
+                                            <Container>
+                                                <Row className={"justify-content-md-center"}>
+                                                    <Col xs="" className={"justify-content-center"}><Image src="https://image.flaticon.com/icons/svg/1246/1246234.svg" rounded /></Col>
+                                                </Row>
+                                                <Row>
+                                                    <ButtonToolbar>
+                                                        <input type={"file"} onChange={this.setImage}/>
+                                                    </ButtonToolbar>
+                                                </Row>
+                                            </Container>
                                             {this.getFormErrors().length > 0 && this.state.formSubmitted &&
                                             <FormLabel>
                                                 <ul>

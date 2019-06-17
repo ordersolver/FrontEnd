@@ -7,6 +7,7 @@ import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin,GoogleLogout} from 'react-google-login';
 import Store from "../Redux/store"
+import Alert from "react-bootstrap/Alert";
 
 
 export default class Log extends Component {
@@ -117,6 +118,7 @@ export default class Log extends Component {
                 error: ''
             }
         })
+        console.log(this.state.email.value)
     }
     setPassword(e) {
         let newVal = e.target.value || '';

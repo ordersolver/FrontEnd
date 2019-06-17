@@ -109,6 +109,11 @@ class ProductDetails extends Component {
                                             <Card.Body>
                                                 <Card.Title>{this.state.product[0].nombre}</Card.Title>
                                                 <Card.Text>
+                                                    <hr></hr>
+                                                    <p>{this.state.product[0].descripcion}</p>
+                                                    <hr></hr>
+                                                </Card.Text>
+                                                <Card.Text>
                                                     <p>Categoría: {this.state.product[0].categoria}</p>
                                                 </Card.Text>
                                                 <Card.Text>

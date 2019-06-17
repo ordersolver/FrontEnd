@@ -26,6 +26,7 @@ export default class Catalog extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
+                image: null
             }],
             user: {
                 no_id: "",
@@ -41,16 +42,16 @@ export default class Catalog extends Component {
                 }]
             },
             loading: true,
-            page: 6
-        }
+            page: 3
+        };
         this.pageselect = React.createRef();
     }
 
     componentDidMount() {
         let items = {
             page: this.state.page,
-            per_page: 6,
-        }
+            per_page: 15,
+        };
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index', {params:items})
             .then(
                 res=>{
@@ -84,7 +85,7 @@ export default class Catalog extends Component {
             {
                 page: this.state.page - 1
             }
-        )
+        );
         console.log(this.state.page)
     }
 
@@ -93,7 +94,7 @@ export default class Catalog extends Component {
             {
                 page: this.state.page + 1
             }
-        )
+        );
         console.log(this.state.page)
     }
 
