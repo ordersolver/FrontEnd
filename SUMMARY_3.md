@@ -11,8 +11,8 @@
    
 ### Features josdsalazarmor
     Realizadas
-    -Login con Google(Por errores con el BackEnd no fue posible la prueba).
-    -Login con Facebook(falta implementacion en el BackEnd).
+    -Login con Google(No fue posible la prueba).
+    -Login con Facebook(falta implementacion).
     -Validacion de formularios.
     
     Fallos
