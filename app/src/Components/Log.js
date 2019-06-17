@@ -8,22 +8,25 @@ import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin,GoogleLogout} from 'react-google-login';
 
 
-const responseGoogle = (response) => {
-    console.log(response);
-};
 export default class Log extends Component {
     componentClicked = () => console.log("clicked");
     logOut = () => {
         this.setState({isLoggedIn: false, token: '', user: null})
     };
+
+
     responseFacebook(response) {
         console.log(response);
         this.setState({
             isLoggedIn: true,
             userID: response.userID,
             name: response.name,
-            email: response.email,
-            picture: response.picture.data.url
+            token: response.accessToken,
+            email: {
+                value: response.email,
+                error: ''
+            },
+            provider_pic: response.picture.data.url
         });
     };
     responseGoogle(response){
@@ -51,7 +54,6 @@ export default class Log extends Component {
             userID: '',
             name:'',
             provider:'',
-            picture:'',
             provider_id:'',
             token:'',
             provider_pic:'',
@@ -180,8 +182,6 @@ export default class Log extends Component {
             });
         this.doSomething()
     }
-
-
     render(){
         return (
             <div>
@@ -248,7 +248,6 @@ export default class Log extends Component {
                                 {!this.state.isLoggedIn &&
                                     <FacebookLogin
                                         appId="343238832957751"
-                                        autoLoad={true}
                                         fields="name,email,picture"
                                         onClick={this.componentClicked}
                                         callback={this.responseFacebook}
@@ -263,7 +262,7 @@ export default class Log extends Component {
                                                 padding: "20px"
                                             }}
                                         >
-                                            <img src={this.state.picture} alt={this.state.name} />
+                                            <img src={this.state.provider_pic} alt={this.state.name} />
                                             <h2>Welcome {this.state.name}</h2>
                                             Email: {this.state.email.value}
                                         </div>
@@ -278,13 +277,15 @@ export default class Log extends Component {
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
                                         buttonText="Login"
-                                        onSuccess={responseGoogle}
+                                        onSuccess={this.responseGoogle}
                                         onFailure={this.logOut}
                                         cookiePolicy={'single_host_origin'}
+                                        type="submit"
                                     />
+
                                 ||
                                     <Col>
-                                        <p>Bienvenido</p>
+                                        <p>Bienvenido Google</p>
                                         <div
                                             style={{
                                                 width: "400px",
