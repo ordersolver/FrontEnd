@@ -56,7 +56,7 @@ export default class Header extends Component {
                         <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>
-                        <Nav.Link href="#cart">
+                        <Nav.Link href="/cart">
                             <Figure.Image
                                 width={35}
                                 height={35}

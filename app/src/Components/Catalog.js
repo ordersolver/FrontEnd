@@ -47,18 +47,6 @@ export default class Catalog extends Component {
     }
 
     componentDidMount() {
-        const jwt = getJWT();
-        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
-            .then(res=>{
-                this.user = res.data;
-                this.setState({
-                    user: res.data
-                })
-            })
-            .catch(function(){
-                    console.log("Try again xd")
-                }
-            );
         let items = {
             page: this.state.page,
             per_page: 6,
@@ -77,6 +65,18 @@ export default class Catalog extends Component {
             .catch(
 
             )
+        const jwt = getJWT();
+        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                this.user = res.data;
+                this.setState({
+                    user: res.data
+                })
+            })
+            .catch(function(){
+                    console.log("Try again xd")
+                }
+            );
     }
 
     pagemenosmenos(){

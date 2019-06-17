@@ -9,12 +9,14 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/es/Button";
 import Form from "react-bootstrap/Form"
 import {ButtonToolbar} from "react-bootstrap";
-import Store from "../Redux/Store";
+import store from "../Redux/store"
+import {addToCart} from "../Redux/ActionCreators";
 
-export default class ProductCard extends Component {
+class ProductDetails extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+        this.addToCart = this.addToCart.bind(this);
         this.state = {
             product: [{
                 id: "",
@@ -50,6 +52,19 @@ export default class ProductCard extends Component {
             )
     }
 
+    addToCart(product) {
+        store.dispatch(addToCart(product));
+        console.log(product);
+        let cart2;
+        cart2 = store.getState().cart;
+        console.log(cart2);
+        localStorage.setItem('cart_products', JSON.stringify(cart2));
+    }
+
+    test(){
+
+
+    }
 
     render(){
         return(
@@ -133,8 +148,8 @@ export default class ProductCard extends Component {
                                                         <Form.Control type="text" placeholder="" />
                                                     </Form.Group>
                                                     <ButtonToolbar>
-                                                        <Button variant="warning" type={"submit"}>Añadir al carrito</Button>
-                                                        <Button variant="warning" type={"submit"}>Comprar ahora</Button>
+                                                        <Button variant="warning" onClick={()=> this.addToCart(this.state.product)}>Añadir al carrito</Button>
+                                                        <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
                                             </Card.Body>
@@ -149,3 +164,6 @@ export default class ProductCard extends Component {
     }
 
 }
+
+
+export default ProductDetails;

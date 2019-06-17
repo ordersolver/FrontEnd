@@ -9,6 +9,7 @@ import Landing from "../Landing";
 import {Provider} from 'react-redux';
 import AddProduct from "../Components/AddProduct";
 import ProductDetails from "../Components/ProductDetails";
+import ShoppingCart from "../Components/ShoppingCart";
 
 export default class RouterIndex extends Component {
 
@@ -22,6 +23,7 @@ export default class RouterIndex extends Component {
                 <Route path="/user" exact component={User}/>
                 <Route path="/newproduct" exact component={AddProduct}/>
                 <Route path="/product/:id" component={ProductDetails}/>
+                <Route path="/cart" exact component={ShoppingCart}/>
                 {!getJWT() &&
                     <Route exact path="/log"  render={() => (
                         !getJWT() ? (

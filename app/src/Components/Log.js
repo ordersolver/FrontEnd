@@ -3,7 +3,7 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bo
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import Store from "../Redux/Store"
+import Store from "../Redux/store"
 
 export default class Log extends Component {
 
