@@ -6,6 +6,7 @@ import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin,GoogleLogout} from 'react-google-login';
+import Store from "../Redux/store"
 
 
 export default class Log extends Component {
@@ -86,7 +87,8 @@ export default class Log extends Component {
                 error: ''
             },
             formSubmitted: false,
-            isLoading: false
+            isLoading: false,
+            jwt: ""
         }
     }
 
@@ -102,6 +104,7 @@ export default class Log extends Component {
         this.logOut=this.logOut.bind(this);
     }
 
+
     setEmail(e) {
         let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
@@ -116,7 +119,7 @@ export default class Log extends Component {
         })
     }
     setPassword(e) {
-        let newVal = e.target.value || ''
+        let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Contraseña es requerida.' : '';
         this.setState({
             password: {
@@ -192,7 +195,6 @@ export default class Log extends Component {
                 password: this.state.password.value
             }
         };
-        console.log(data);
         e.preventDefault();
         this.setState({
             formSubmitted: true,
@@ -206,15 +208,34 @@ export default class Log extends Component {
 
         axios.post('https://ordersolverdevelop.herokuapp.com/user_token', data)
             .then(res => {
-                    localStorage.setItem('the-JWT', res.data.jwt)
+                    this.jwt = res.data.jwt;
+                    this.setState({
+                        jwt: res.data.jwt
+                    });
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    console.log(this.state.jwt);
+                    if (this.state.jwt) {
+                        console.log("So far so good");
+                        this.setState({
+                            submit:{
+                                error: "Iniciaste sesión correctamente."
+                            }
+                        });
+                    }
                     this.props.history.push('/catalog')
                 }
             )
-            .catch(function () {
-                clearLocal()
+            .catch(res=>{
+                    this.setState({
+                        submit:{
+                            error: "No has podido iniciar sesión correctamente, intenta de nuevo."
+                        }
+                    })
             });
-        this.doSomething()
+
     }
+
+
     render(){
         return (
             <div>
@@ -248,7 +269,7 @@ export default class Log extends Component {
                                     <ul>
                                         {
                                             this.getFormErrors().map((message) =>
-                                                <li key={'error_message_'+1}>{message}</li>
+                                                <h1 key={'error_message_'+1}>{message}</h1>
                                             )
                                         }
                                     </ul>
