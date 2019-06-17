@@ -1,26 +1,67 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Figure} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
-import GoogleLogin from 'react-google-login';
+import {GoogleLogin,GoogleLogout} from 'react-google-login';
 
 
-const responseGoogle = (response) => {
-    console.log(response);
-};
 export default class Log extends Component {
-    responseFacebook(response) {
-        // console.log(response);
+    componentClicked = () => console.log("clicked");
+    logOut (){
+        this.setState({
+            isLoggedIn: false,
+            token: '',
+            user: null
+        });
+        console.log(this.state.token)
+    };
 
+
+    responseFacebook(response) {
+        console.log(response);
         this.setState({
             isLoggedIn: true,
             userID: response.userID,
             name: response.name,
-            email: response.email.value,
-            picture: response.picture.data.url
+            token: response.accessToken,
+            email: {
+                value: response.email,
+                error: ''
+            },
+            provider_pic: response.picture.data.url
+        });
+        let tokenSend = this.state.token;
+        console.log(tokenSend);
+        axios.post('https://ordersolverdevelop.herokuapp.com/user_token', tokenSend)
+            .then(res => {
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
+        this.doSomething()
+    };
+    responseGoogle(response){
+        //console.log(response);
+        this.setState({
+            isLoggedIn: true,
+            name: response.w3.ig,
+            provider: 'google',
+            provider_id: response.El,
+            token: response.Zi.access_token,
+            provider_pic: response.w3.Paa,
+            email: {
+                value: response.w3.U3,
+                error: ''
+            },
+            submit: {
+                error: ''
+            }
         });
     };
 
@@ -29,7 +70,10 @@ export default class Log extends Component {
             isLoggedIn: false,
             userID: '',
             name:'',
-            picture:'',
+            provider:'',
+            provider_id:'',
+            token:'',
+            provider_pic:'',
             email: {
                 value: '',
                 error: 'Correo es requerido.'
@@ -45,6 +89,7 @@ export default class Log extends Component {
             isLoading: false
         }
     }
+
     constructor(props){
         super(props);
         this.state=this.defaultState();
@@ -52,6 +97,9 @@ export default class Log extends Component {
         this.setPassword = this.setPassword.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
+        this.responseGoogle=this.responseGoogle.bind(this);
+        this.responseFacebook=this.responseFacebook.bind(this);
+        this.logOut=this.logOut.bind(this);
     }
 
     setEmail(e) {
@@ -88,7 +136,7 @@ export default class Log extends Component {
             if (fieldError.length > 0) {
                 errors.push(fieldError)
             }
-        })
+        });
         return errors
     }
     change(e){
@@ -119,7 +167,23 @@ export default class Log extends Component {
             })
         }
     }
-
+    submitG(e) {
+        this.setState({isLoading: true});
+        let token= this.state.token;
+        console.log(token);
+        e.preventDefault();
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', token)
+            .then(res => {
+                    console.log(res.data.jwt);
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
+        this.doSomething()
+    }
     submit(e) {
         this.setState({isLoading: true});
         let data = {
@@ -151,8 +215,6 @@ export default class Log extends Component {
             });
         this.doSomething()
     }
-
-
     render(){
         return (
             <div>
@@ -212,26 +274,56 @@ export default class Log extends Component {
                             </form>
                         </Col>
                         <Col>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <Row>
-                                <FacebookLogin
-                                    appId="1088597931155576"
-                                    autoLoad
-                                    callback={this.responseFacebook}
-                                    size="small"
-                                     />
-                            </Row>
-                            <Row>
-                                <GoogleLogin
-                                    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                                    buttonText="Login"
-                                    size="large"
-                                    onSuccess={responseGoogle}
-                                    onFailure={responseGoogle}
-                                />
-                            </Row>
+                            <form onSubmit={e => this.submitG(e)}>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <Row>
+                                    {!this.state.isLoggedIn &&
+                                        <FacebookLogin
+                                            appId="343238832957751"
+                                            fields="name,email,picture"
+                                            onClick={this.componentClicked}
+                                            callback={this.responseFacebook}
+                                        />
+                                    }
+
+
+                                </Row>
+                                <Row>
+                                    {!this.state.isLoggedIn &&
+                                        <GoogleLogin
+                                            clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
+                                            buttonText="Login"
+                                            onSuccess={this.responseGoogle}
+                                            onFailure={this.logOut}
+                                            cookiePolicy={'single_host_origin'}
+                                        />
+
+                                    ||
+                                        <Col>
+                                            <p>Bienvenido Google</p>
+                                            <div
+                                                style={{
+                                                    width: "400px",
+                                                    margin: "auto",
+                                                    background: "#f4f4f4",
+                                                    padding: "20px"
+                                                }}
+                                            >
+                                                <img src={this.state.provider_pic} alt={this.state.name}/>
+                                                <h2>Welcome {this.state.name}</h2>
+                                                Email: {this.state.email.value}
+                                            </div>
+                                            <div>
+                                                <button onClick={this.logOut} className="button">
+                                                    Log out
+                                                </button>
+                                            </div>
+                                        </Col>
+                                    }
+                                </Row>
+                            </form>
                         </Col>
                     </Row>
 
