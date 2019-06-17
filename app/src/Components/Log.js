@@ -63,18 +63,6 @@ export default class Log extends Component {
                 error: ''
             }
         });
-        let tokenSend = this.state.token;
-        console.log(tokenSend);
-        axios.post('https://ordersolverdevelop.herokuapp.com/user_token', tokenSend)
-            .then(res => {
-                    localStorage.setItem('the-JWT', res.data.jwt);
-                    this.props.history.push('/catalog')
-                }
-            )
-            .catch(function () {
-                clearLocal()
-            });
-        this.doSomething()
     };
 
     defaultState() {
@@ -148,7 +136,7 @@ export default class Log extends Component {
             if (fieldError.length > 0) {
                 errors.push(fieldError)
             }
-        })
+        });
         return errors
     }
     change(e){
@@ -179,7 +167,23 @@ export default class Log extends Component {
             })
         }
     }
-
+    submitG(e) {
+        this.setState({isLoading: true});
+        let token= this.state.token;
+        console.log(token);
+        e.preventDefault();
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', token)
+            .then(res => {
+                    console.log(res.data.jwt);
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
+        this.doSomething()
+    }
     submit(e) {
         this.setState({isLoading: true});
         let data = {
@@ -270,71 +274,56 @@ export default class Log extends Component {
                             </form>
                         </Col>
                         <Col>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <Row>
-                                {!this.state.isLoggedIn &&
-                                    <FacebookLogin
-                                        appId="343238832957751"
-                                        fields="name,email,picture"
-                                        onClick={this.componentClicked}
-                                        callback={this.responseFacebook}
-                                    />
+                            <form onSubmit={e => this.submitG(e)}>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <Row>
+                                    {!this.state.isLoggedIn &&
+                                        <FacebookLogin
+                                            appId="343238832957751"
+                                            fields="name,email,picture"
+                                            onClick={this.componentClicked}
+                                            callback={this.responseFacebook}
+                                        />
+                                    }
+
+
+                                </Row>
+                                <Row>
+                                    {!this.state.isLoggedIn &&
+                                        <GoogleLogin
+                                            clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
+                                            buttonText="Login"
+                                            onSuccess={this.responseGoogle}
+                                            onFailure={this.logOut}
+                                            cookiePolicy={'single_host_origin'}
+                                        />
+
                                     ||
-                                    <Col>
-                                        <div
-                                            style={{
-                                                width: "400px",
-                                                margin: "auto",
-                                                background: "#f4f4f4",
-                                                padding: "20px"
-                                            }}
-                                        >
-                                            <img src={this.state.provider_pic} alt={this.state.name} />
-                                            <h2>Welcome {this.state.name}</h2>
-                                            Email: {this.state.email.value}
-                                        </div>
-
-                                    </Col>
-                                }
-
-
-                            </Row>
-                            <Row>
-                                {!this.state.isLoggedIn &&
-                                    <GoogleLogin
-                                        clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
-                                        buttonText="Login"
-                                        onSuccess={this.responseGoogle}
-                                        onFailure={this.logOut}
-                                        cookiePolicy={'single_host_origin'}
-                                        type="submit"
-                                    />
-
-                                ||
-                                    <Col>
-                                        <p>Bienvenido Google</p>
-                                        <div
-                                            style={{
-                                                width: "400px",
-                                                margin: "auto",
-                                                background: "#f4f4f4",
-                                                padding: "20px"
-                                            }}
-                                        >
-                                            <img src={this.state.provider_pic} alt={this.state.name}/>
-                                            <h2>Welcome {this.state.name}</h2>
-                                            Email: {this.state.email.value}
-                                        </div>
-                                        <div>
-                                            <button onClick={this.logOut} className="button">
-                                                Log out
-                                            </button>
-                                        </div>
-                                    </Col>
-                                }
-                            </Row>
+                                        <Col>
+                                            <p>Bienvenido Google</p>
+                                            <div
+                                                style={{
+                                                    width: "400px",
+                                                    margin: "auto",
+                                                    background: "#f4f4f4",
+                                                    padding: "20px"
+                                                }}
+                                            >
+                                                <img src={this.state.provider_pic} alt={this.state.name}/>
+                                                <h2>Welcome {this.state.name}</h2>
+                                                Email: {this.state.email.value}
+                                            </div>
+                                            <div>
+                                                <button onClick={this.logOut} className="button">
+                                                    Log out
+                                                </button>
+                                            </div>
+                                        </Col>
+                                    }
+                                </Row>
+                            </form>
                         </Col>
                     </Row>
 

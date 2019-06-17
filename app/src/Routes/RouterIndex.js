@@ -12,7 +12,6 @@ import AddProduct from "../Components/AddProduct";
 export default class RouterIndex extends Component {
 
 
-
     render(){
         return (
             <div>
