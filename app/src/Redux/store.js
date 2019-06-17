@@ -1,5 +1,13 @@
 import { createStore, compose } from 'redux';
-import { autoRehydrate } from 'redux-persist;'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import {combineReducers} from "redux/es/redux";
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
 const initialState = {
     cart: []
 };
@@ -19,4 +27,11 @@ const reducer = (state=initialState, action) => {
     return state;
 };
 
-export default createStore(compose(autoRehydrate()),reducer, {cart:[], jwt:""});
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+
+export default () => {
+    let store = createStore(persistedReducer, {cart:[], jwt:""},);
+    let persistor = persistStore(store);
+    return { store, persistor }
+}

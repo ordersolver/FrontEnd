@@ -18,7 +18,7 @@ class ProductDetails extends Component {
         super();
         this.addToCart = this.addToCart.bind(this);
         this.state = {
-            product: [{
+            product: {
                 id: "",
                 nombre : "",
                 categoria: "",
@@ -30,7 +30,7 @@ class ProductDetails extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
-            }],
+            },
             loading: true
         }
     }

@@ -9,15 +9,31 @@ class ShoppingCart extends Component {
         super();
         this.removeFromCart = this.removeFromCart.bind(this);
         this.state={
-            cart:[]
+            cart: []
         };
-        store.subscribe(
-            () => {
-                this.setState({
-                    cart: store.getState().cart
-                })
-            }
-        )
+    }
+
+
+    cartState(){
+        let xd = JSON.parse(localStorage.getItem('cart_products')).map(product=>{
+            this.setState({
+                cart: this.state.cart.concat(product)
+            });
+            console.log(this.state.cart);
+        });
+    }
+
+    componentDidMount() {
+        let anotheraux=JSON.parse(localStorage.getItem('cart_products')).map(product=>{
+            console.log(product);
+        });
+        let cartaux= JSON.parse(localStorage.getItem('cart_products'));
+        console.log(cartaux);
+        this.cart = cartaux;
+        console.log(this.cart);
+        this.cartState();
+
+
     }
 
     removeFromCart(product){
@@ -25,7 +41,7 @@ class ShoppingCart extends Component {
     }
 
     test(){
-        let cart2 = store.getState().cart;
+        let cart2 = store.getState().cart.product;
         console.log(cart2)
     }
 
@@ -33,24 +49,7 @@ class ShoppingCart extends Component {
         return(
             <div>
                 <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
-                <Table>
-                    <tbody>
-                    {this.state.cart.map(product =>
-                        <tr key={product.id}>
-                            <td>{product.nombre}</td>
-                            <td className="text-right">${product.valor}</td>
-                            <td className="text-right"><Button size={"lg"} variant={"outline-danger"} onClick={() => this.removeFromCart(product)}/></td>
-                        </tr>
-                    )}
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colSpan="4">
-                            Total: ${this.state.cart.reduce((sum, product) => sum + product.valor, 0)}
-                        </td>
-                    </tr>
-                    </tfoot>
-                </Table>
+                <p></p>
             </div>
         )
 
