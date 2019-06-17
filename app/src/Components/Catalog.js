@@ -65,7 +65,7 @@ export default class Catalog extends Component {
             )
             .catch(
 
-            )
+            );
         const jwt = getJWT();
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{

@@ -238,11 +238,7 @@ export default class Reg extends Component {
         }
         if(!jwt){
             console.log(JSON.parse(jwt));
-            this.setState({
-                submit: {
-                    error: 'Registro fallido, intente nuevamente.'
-                }
-            })
+
         }
     }
     submit(e){
@@ -274,8 +270,14 @@ export default class Reg extends Component {
         then(function(){
             this.props.history.push('/catalog')
         })
-        .catch(function () {
-            console.log("Ups")
+        .catch(error =>{
+            console.log(error.response);
+            this.submit.error = error.response.status + " " + error.response.statusText + " "+"E-mail: " + error.response.data.email;
+            this.setState({
+                submit:{
+                    error : error.response.status + " " + error.response.statusText + " " + "E-mail: " + error.response.data.email
+                }
+            })
         });
         this.doSomething()
 
