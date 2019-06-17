@@ -3,12 +3,25 @@ import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
 import {Col, Container, Row} from "react-bootstrap";
 import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
+import { GoogleLogout } from 'react-google-login';
 
 import './All.css';
 export default class Header extends Component {
+
+    constructor(props){
+        super(props);
+        this.state="un-logged"
+    }
+
+    componentDidMount() {
+        const jwt = getJWT();
+        if(jwt){
+        }
+    }
+
     render(){
         return (
-            <Navbar collapseOnSelect bs expand="lg" bg={"primary"} variant={"light"}>
+            <Navbar collapseOnSelect bs expand="lg" bg={"warning"} variant={"light"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
@@ -34,17 +47,16 @@ export default class Header extends Component {
                         {getJWT() &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
-                                <NavDropdown.Item href="#profile">Perfil</NavDropdown.Item>
+                                <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
-
                                 <NavDropdown.Item  onClick={deleteJWT} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
                         <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>
-                        <Nav.Link href="#cart">
+                        <Nav.Link href="/cart">
                             <Figure.Image
                                 width={35}
                                 height={35}

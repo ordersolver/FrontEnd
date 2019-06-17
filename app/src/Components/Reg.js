@@ -1,44 +1,215 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Form, Figure,ToggleButtonGroup,ToggleButton} from "react-bootstrap";
-
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import axios from "axios";
-import {clearLocal} from "../Helpers/JWT";
+import {getJWT} from "../Helpers/JWT";
 
 export default class Reg extends Component {
-    state = { isAuth: false };
-    constructor(props){
-        super(props);
-        this.state={
-            no_id: "",
-            tipo_documento: "",
-            nombre: "",
-            apellidos: "",
-            direccion: "",
-            telefono: "",
-            password: "",
-            password_confirmation: "",
-            email: ""
-        };
-        this.input = React.createRef();
-        this.input2 =React.createRef();
-        this.input3 =React.createRef();
-        this.input4 =React.createRef();
-        this.input5 =React.createRef();
-        this.input6 =React.createRef();
-        this.input7 =React.createRef();
-        this.input8 =React.createRef();
-        this.input9 =React.createRef();
+
+
+    componentDidMount() {
+        const jwt = getJWT();
+        {jwt &&
+            console.log(jwt)
+        }
     }
 
+    defaultState(){
+        return{
+            isAuth: false,
+            no_id: {
+                value: '',
+                error: 'ID es requerido.'
+            },
+            tipo_documento: {
+                value: '',
+                error: 'Tipo de documento es requerido.'
+            },
+            nombre: {
+                value: '',
+                error: 'Nombre es requerido.'
+            },
+            apellidos: {
+                value: '',
+                error: 'Apellidos son  requerido.'
+            },
+            direccion: {
+                value: '',
+                error: 'Dirección es requerida.'
+            },
+            telefono: {
+                value: '',
+                error: 'Teléfono es requerido.'
+            },
+            password: {
+                value: '',
+                error: 'Contraseña es requerida.'
+            },
+            password_confirmation: {
+                value: '',
+                error: 'Contraseñas no coinciden'
+            },
+            email: {
+                value: '',
+                error: 'E-mail es requerido.'
+            },
+            submit: {
+                error: '',
+            },
+            formSubmitted: false,
+            isLoading: false
+        }
+    }
+    constructor(props){
+        super(props);
+        this.state=this.defaultState();
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
+        this.setPasswordV=this.setPasswordV.bind(this);
+        this.setTelefono=this.setTelefono.bind(this);
+        this.setDireccion=this.setDireccion.bind(this);
+        this.setNombre=this.setNombre.bind(this);
+        this.setApellido=this.setApellido.bind(this);
+        this.setId=this.setId.bind(this);
+        this.setTipoId=this.setTipoId.bind(this);
+        this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
+    }
+    getFormErrors() {
+        let fields = ['email', 'password','password_confirmation','no_id','tipo_documento','nombre','apellidos','direccion','telefono', 'submit'];
+        let errors = [];
+        fields.map(field => {
+            let fieldError = this.state[field].error || '';
+            if (fieldError.length > 0) {
+                errors.push(fieldError)
+            }
+        });
+        return errors
+    }
+    setEmail(e) {
+        let newVal = e.target.value || '';
+        let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
+        this.setState({
+            email: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setPassword(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Contraseña es requerida.' : '';
+        this.setState({
+            password: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+
+    setPasswordV(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Verificacion de contraseña es requerida.' : '';
+        this.setState({
+            password_confirmation: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setTelefono(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Telefono es requerido.' : '';
+        this.setState({
+            telefono: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setDireccion(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Direccion es requerido.' : '';
+        this.setState({
+            direccion: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setNombre(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Nombre es requerido.' : '';
+        this.setState({
+            nombre: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setApellido(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Apellidos es requerido.' : '';
+        this.setState({
+            apellidos: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setId(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'ID  es requerido.' : '';
+        this.setState({
+            no_id: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
+    setTipoId(e) {
+        let newVal = e.target.value || ''
+        let errorMessage = newVal.length === 0 ? 'Tipo ID  es requerido.' : '';
+        this.setState({
+            tipo_documento: {
+                value: newVal,
+                error: errorMessage
+            },
+            submit: {
+                error: ''
+            }
+        })
+    }
     change(e){
         e.preventDefault();
         this.setState(
             {
-                no_id: e.target.email,
+                no_id: e.target.no_id,
                 tipo_documento: e.target.tipo_documento,
                 nombre: e.target.nombre,
                 apellidos: e.target.apellidos,
@@ -48,57 +219,64 @@ export default class Reg extends Component {
                 password_confirmation: e.target.password_confirmation,
                 email: e.target.email
             });
-        let data2 = {
-            user: {
-                no_id: this.input.current.value,
-                tipo_documento: this.input2.current.value,
-                nombre: this.input3.current.value,
-                apellidos: this.input4.current.value,
-                direccion: this.input5.current.value,
-                telefono: this.input6.current.value,
-                password: this.input7.current.value,
-                password_confirmation: this.input8.current.value,
-                email: this.input9.current.value
-            }
-        };
-        console.log(data2);
     }
-
+    doSomething(){
+        let jwt = getJWT();
+        console.log(jwt);
+        if (jwt) {
+            console.log("So far so good")
+            this.setState({
+                submit:{
+                    error: "Bienvenido a nuestro servicio."
+                }
+            })
+        }
+        if(!jwt){
+            console.log(JSON.parse(jwt));
+            this.setState({
+                submit: {
+                    error: 'Registro fallido, intente nuevamente.'
+                }
+            })
+        }
+    }
     submit(e){
-      let data = {
-          user:{
-              no_id: this.input.current.value,
-              tipo_documento: this.input2.current.value,
-              nombre: this.input3.current.value,
-              apellidos: this.input4.current.value,
-              direccion: this.input5.current.value,
-              telefono: this.input6.current.value,
-              password: this.input7.current.value,
-              password_confirmation: this.input8.current.value,
-              email: this.input9.current.value
-          }
-      };
-        alert(
-            ' Correo: ' + data.user.email+
-            ' Contraseña: ' + data.user.password+
-            ' Nombre: '+data.user.nombre+
-            ' Apellido: '+ data.user.apellidos+
-            ' Direccion: '+ data.user.direccion+
-            ' Tipo de documento '+ data.user.tipo_documento+
-            ' Numero de doucmento'+ data.user.no_id+
-            ' Telefono '+ data.user.telefono
-        );
-        console.log(data)
+        this.setState({isLoading: true});
+        let data = {
+                user:{
+                    no_id: this.state.no_id.value,
+                    tipo_documento: this.state.tipo_documento.value,
+                    nombre: this.state.nombre.value,
+                    apellidos: this.state.apellidos.value,
+                    direccion: this.state.direccion.value,
+                    telefono: this.state.telefono.value,
+                    password_confirmation: this.state.password_confirmation.value,
+                    email: this.state.email.value,
+                    password: this.state.password.value
+                }
+            };
+
+        console.log(data);
         e.preventDefault();
-        axios.post('http://localhost:5000/users', data).
+        this.setState({
+            formSubmitted: true,
+            submit: {
+                error: ''
+            }
+        });
+        if (this.getFormErrors().length > 0) {
+            return false
+        }
+        axios.post('https://ordersolverdevelop.herokuapp.com/users', data).
         then(function(){
-            console.log("Lit")
+            this.props.history.push('/catalog')
         })
         .catch(function () {
-            console.log("Erdaa")
-        })
-    }
+            console.log("Ups")
+        });
+        this.doSomething()
 
+    }
 
     render(){
         return (
@@ -129,14 +307,7 @@ export default class Reg extends Component {
                                         autoFocus
                                         type="email"
                                         placeholder="Correo"
-                                        ref={this.input9}
-                                    />
-                                </FormGroup>
-                                <FormGroup controlId="email_confirmation" bsSize="large">
-                                    <FormControl
-                                        autoFocus
-                                        type="email"
-                                        placeholder="Verificar Correo"
+                                        onChange={this.setEmail}
                                     />
                                 </FormGroup>
                                 </Col>
@@ -146,7 +317,7 @@ export default class Reg extends Component {
                                         autoFocus
                                         type="password"
                                         placeholder="Contraseña"
-                                        ref={this.input7}
+                                        onChange={this.setPassword}
                                     />
                                 </FormGroup>
                                 <FormGroup controlId="password_confirmation" bsSize="large">
@@ -154,7 +325,7 @@ export default class Reg extends Component {
                                         autoFocus
                                         type="password"
                                         placeholder="Verificar Contraseña"
-                                        ref={this.input8}
+                                        onChange={this.setPasswordV}
                                     />
                                 </FormGroup>
                                 </Col>
@@ -167,7 +338,7 @@ export default class Reg extends Component {
                                                     autoFocus
                                                     type="text"
                                                     placeholder="Nombres"
-                                                    ref={this.input3}
+                                                    onChange={this.setNombre}
                                                 />
                                             </FormGroup>
                                             <FormGroup controlId="apellido" bsSize="large">
@@ -175,7 +346,7 @@ export default class Reg extends Component {
                                                     autoFocus
                                                     type="text"
                                                     placeholder="Apellidos"
-                                                    ref={this.input4}
+                                                    onChange={this.setApellido}
                                                 />
                                             </FormGroup>
                                             <FormGroup controlId="direccion" bsSize="large">
@@ -183,13 +354,13 @@ export default class Reg extends Component {
                                                     autoFocus
                                                     type="text"
                                                     placeholder="Dirección"
-                                                    ref={this.input5}
+                                                    onChange={this.setDireccion}
                                                 />
                                             </FormGroup>
                                         </Col>
                                         <Col>
                                             <FormGroup controlId="formGridState">
-                                                <FormControl as="select" ref={this.input2}>
+                                                <FormControl as="select" onChange={this.setTipoId}>
                                                     <option>Tipo de Documento...</option>
                                                     <option>CC</option>
                                                     <option>TI</option>
@@ -201,7 +372,7 @@ export default class Reg extends Component {
                                                     autoFocus
                                                     type="text"
                                                     placeholder="Numero de Documento"
-                                                    ref={this.input}
+                                                    onChange={this.setId}
                                                 />
                                             </FormGroup>
                                             <FormGroup controlId="telefono" bsSize="large">
@@ -209,7 +380,7 @@ export default class Reg extends Component {
                                                     autoFocus
                                                     type="text"
                                                     placeholder="Teléfono"
-                                                    ref={this.input6}
+                                                    onChange={this.setTelefono}
                                                 />
                                             </FormGroup>
                                             <Button
@@ -219,8 +390,21 @@ export default class Reg extends Component {
                                             >
                                                 Registrarme
                                             </Button>
+
                                         </Col>
+
                                     </Row>
+                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                <FormLabel>
+                                    <ul>
+                                        {
+                                            this.getFormErrors().map((message) =>
+                                                <li key={'error_message_' + 1}>{message}</li>
+                                            )
+                                        }
+                                    </ul>
+                                </FormLabel>
+                                }
                             </form>
                         </Col>
                     </Row>
