@@ -10,8 +10,13 @@ import {GoogleLogin,GoogleLogout} from 'react-google-login';
 
 export default class Log extends Component {
     componentClicked = () => console.log("clicked");
-    logOut = () => {
-        this.setState({isLoggedIn: false, token: '', user: null})
+    logOut (){
+        this.setState({
+            isLoggedIn: false,
+            token: '',
+            user: null
+        });
+        console.log(this.state.token)
     };
 
 
@@ -28,9 +33,21 @@ export default class Log extends Component {
             },
             provider_pic: response.picture.data.url
         });
+        let tokenSend = this.state.token;
+        console.log(tokenSend);
+        axios.post('https://ordersolverdevelop.herokuapp.com/user_token', tokenSend)
+            .then(res => {
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
+        this.doSomething()
     };
     responseGoogle(response){
-        console.log(response);
+        //console.log(response);
         this.setState({
             isLoggedIn: true,
             name: response.w3.ig,
@@ -45,7 +62,19 @@ export default class Log extends Component {
             submit: {
                 error: ''
             }
-        })
+        });
+        let tokenSend = this.state.token;
+        console.log(tokenSend);
+        axios.post('https://ordersolverdevelop.herokuapp.com/user_token', tokenSend)
+            .then(res => {
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
+        this.doSomething()
     };
 
     defaultState() {
