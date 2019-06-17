@@ -11,12 +11,12 @@ import Form from "react-bootstrap/Form"
 import {ButtonToolbar} from "react-bootstrap";
 import store from "../Redux/store"
 import {addToCart} from "../Redux/ActionCreators";
+import connect from "react-redux/es/connect/connect";
 
 class ProductDetails extends Component {
 
     constructor() {
         super();
-        this.addToCart = this.addToCart.bind(this);
         this.state = {
             product: {
                 id: "",
@@ -52,18 +52,10 @@ class ProductDetails extends Component {
             )
     }
 
-    addToCart(product) {
-        store.dispatch(addToCart(product));
-        console.log(product);
-        let cart2;
-        cart2 = store.getState().cart;
-        console.log(cart2);
-        localStorage.setItem('cart_products', JSON.stringify(cart2));
-    }
 
     test(){
-
-
+        let cart2 = store.getState().cart;
+        console.log(cart2)
     }
 
     render(){
@@ -148,7 +140,7 @@ class ProductDetails extends Component {
                                                         <Form.Control type="text" placeholder="" />
                                                     </Form.Group>
                                                     <ButtonToolbar>
-                                                        <Button variant="warning" onClick={()=> this.addToCart(this.state.product)}>Añadir al carrito</Button>
+                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.props.product)}>Añadir al carrito</Button>
                                                         <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
@@ -165,5 +157,18 @@ class ProductDetails extends Component {
 
 }
 
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    };
+};
 
-export default ProductDetails;
+const mapDispatchToProps = dispatch => {
+    return {
+        addToCart(product) {
+            dispatch(addToCart(product));
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

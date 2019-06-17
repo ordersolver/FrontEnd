@@ -1,61 +1,52 @@
 import React, {Component} from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import store from "../Redux/store"
+import {removeFromCart} from "../Redux/ActionCreators";
+import {connect} from "react-redux";
 
 class ShoppingCart extends Component {
 
-    constructor(){
-        super();
-        this.removeFromCart = this.removeFromCart.bind(this);
-        this.state={
-            cart: []
-        };
-    }
 
-
-    cartState(){
-        let xd = JSON.parse(localStorage.getItem('cart_products')).map(product=>{
-            this.setState({
-                cart: this.state.cart.concat(product)
-            });
-            console.log(this.state.cart);
-        });
-    }
-
-    componentDidMount() {
-        let anotheraux=JSON.parse(localStorage.getItem('cart_products')).map(product=>{
-            console.log(product);
-        });
-        let cartaux= JSON.parse(localStorage.getItem('cart_products'));
-        console.log(cartaux);
-        this.cart = cartaux;
-        console.log(this.cart);
-        this.cartState();
-
-
-    }
-
-    removeFromCart(product){
-
-    }
-
-    test(){
-        let cart2 = store.getState().cart.product;
-        console.log(cart2)
-    }
 
     render(){
         return(
-            <div>
-                <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
-                <p></p>
-            </div>
+            <Table fill>
+                <tbody>
+                {this.props.cart.map(product =>
+                    <tr key={product.id}>
+                        <td>{product.nombre}</td>
+                        <td className="text-right">${product.price}</td>
+                        <td className="text-right"><Button variant="danger" onClick={() => this.props.removeFromCart(product)}>Borrar</Button></td>
+                        <td className="text-right"><Button variant="danger" onClick={() => this.test()}>Test</Button></td>
+                    </tr>
+                )}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        Total: ${this.props.cart.reduce((sum, product) => sum + product.valor, 0)}
+                    </td>
+                </tr>
+                </tfoot>
+            </Table>
         )
 
     }
 }
 
+const mapStateToProps = state =>{
+    return{
+        cart: state.cart
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        removeFromCart(product){
+            dispatch(removeFromCart(product));
+        }
+    };
+};
 
 
-export default ShoppingCart;
+export default connect(mapStateToProps,mapDispatchToProps) (ShoppingCart);

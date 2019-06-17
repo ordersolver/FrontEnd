@@ -1,13 +1,4 @@
-import { createStore, compose } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-import {combineReducers} from "redux/es/redux";
-
-const persistConfig = {
-    key: 'root',
-    storage,
-};
-
+import { createStore } from 'redux';
 const initialState = {
     cart: []
 };
@@ -27,11 +18,4 @@ const reducer = (state=initialState, action) => {
     return state;
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
-
-
-export default () => {
-    let store = createStore(persistedReducer, {cart:[], jwt:""},);
-    let persistor = persistStore(store);
-    return { store, persistor }
-}
+export default createStore(reducer, {cart:[], jwt:""});
