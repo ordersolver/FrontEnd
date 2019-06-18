@@ -113,7 +113,7 @@ export default class InstantOrder extends Component {
             data:{
                 productos:[this.state.product[0].id],
                 fecha:date+"/"+month+"/"+year,
-                estado:"recién pedidito papá",
+                estado:"Activa",
                 direccion_entrega: this.state.user.direccion,
                 valor: JSON.stringify(this.state.product[0].valor),
                 user_id: this.state.user.id

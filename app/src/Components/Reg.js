@@ -60,7 +60,8 @@ export default class Reg extends Component {
             },
             formSubmitted: false,
             isLoading: false,
-            show: false
+            show: false,
+            registered: false
         }
     }
     constructor(props){
@@ -272,7 +273,10 @@ export default class Reg extends Component {
             return false
         }
         axios.post('http://ordersolverdevelop.herokuapp.com/users/create', data).
-        then(function(){
+        then(res=>{
+            this.setState({
+                registered: true
+            })
             this.props.history.push('/catalog')
         })
         .catch(error =>{
@@ -403,6 +407,15 @@ export default class Reg extends Component {
                                             >
                                                 Registrarme
                                             </Button>
+                                            {this.state.registered ?
+                                                <div>
+                                                    <Alert variant={"success"}>Registro satisfactorio.</Alert>
+                                                </div>
+                                                :
+                                                <div>
+
+                                                </div>
+                                            }
                                             <Overlay target={target} show={show} placement="right">
                                                 {({
                                                       placement,

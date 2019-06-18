@@ -299,8 +299,7 @@ export default class AddProduct extends Component{
                 tipo_tela: e.target.tipo_tela,
                 lamina: e.target.lamina,
                 cassata: e.target.cassata,
-                valor: e.target.valor,
-                image: e.target.image.files[0]
+                valor: e.target.valor
             }
         );
     }
