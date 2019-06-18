@@ -89,7 +89,8 @@ class User extends Component{
             this.setState({
                 orders: res.data
             })
-        })
+        });
+
 
     }
 
@@ -225,7 +226,6 @@ class User extends Component{
                                                 <Card.Title>Correo electrónico</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.email}
-                                                    {JSON.stringify(this.state.user.rols[0].rolName)}
                                                     <p>
 
                                                     </p>
@@ -257,6 +257,7 @@ class User extends Component{
                                                             <td>{orders.client.client_name}</td>
                                                             <td>{orders.products[0].productName}</td>
                                                             <td>${orders.valor}</td>
+                                                            <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
                                                             <td><Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
                                                         </tr>
                                                     )}
@@ -283,6 +284,23 @@ class User extends Component{
             </div>
         )
         
+    }
+
+    confirmarPedido(e){
+        e.preventDefault();
+        console.log(JSON.stringify(e.target.id) +" " + JSON.stringify(e.target.value));
+        axios.request({
+            method: 'POST',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/confirmation_email',
+            headers: {
+
+            },
+            data:{
+                id_user: e.target.value,
+                id_order: e.target.id
+            },
+        })
+        e.target.disabled=true;
     }
 
     borrarPedido(e) {
