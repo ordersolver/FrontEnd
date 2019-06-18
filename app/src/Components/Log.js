@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Figure} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Figure, Overlay} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
@@ -89,12 +89,14 @@ export default class Log extends Component {
             },
             formSubmitted: false,
             isLoading: false,
-            jwt: ""
+            jwt: "",
+            show: false
         }
     }
 
     constructor(props){
         super(props);
+        this.attachRef = target => this.setState({ target });
         this.state=this.defaultState();
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
@@ -228,17 +230,18 @@ export default class Log extends Component {
                 }
             )
             .catch(res=>{
-                    this.setState({
-                        submit:{
-                            error: "No has podido iniciar sesión correctamente, intenta de nuevo."
-                        }
-                    })
+                this.setState({
+                    submit:{
+                        error: "No has podido iniciar sesión correctamente, intenta de nuevo."
+                    }
+                })
             });
 
     }
 
 
     render(){
+        const { show, target } = this.state;
         return (
             <div>
                 <div style={{'text-align':'center'}}>
@@ -266,24 +269,49 @@ export default class Log extends Component {
                                         onChange={this.setPassword}
                                     />
                                 </FormGroup>
-                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
-                                <FormLabel >
-                                    <ul>
-                                        {
-                                            this.getFormErrors().map((message) =>
-                                                <h1 key={'error_message_'+1}>{message}</h1>
-                                            )
-                                        }
-                                    </ul>
-                                </FormLabel>
-                                }
+
                                 <Button
                                     block
                                     bsSize="large"
                                     type="submit"
+                                    ref={this.attachRef}
+                                    onClick={() => this.setState({ show: !show })}
                                 >
                                     Iniciar Sesion
                                 </Button>
+                                <Overlay target={target} show={show} placement="right">
+                                    {({
+                                          placement,
+                                          scheduleUpdate,
+                                          arrowProps,
+                                          outOfBoundaries,
+                                          show: _show,
+                                          ...props
+                                      }) => (
+                                        <div
+                                            {...props}
+                                            style={{
+                                                backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                                                padding: '2px 10px',
+                                                color: 'white',
+                                                borderRadius: 3,
+                                                ...props.style,
+                                            }}
+                                        >
+                                            {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                            <FormLabel >
+                                                <ul>
+                                                    {
+                                                        this.getFormErrors().map((message) =>
+                                                            <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                        )
+                                                    }
+                                                </ul>
+                                            </FormLabel>
+                                            }
+                                        </div>
+                                    )}
+                                </Overlay>
                                 <Button
                                     block
                                     bsSize="large"
@@ -303,47 +331,45 @@ export default class Log extends Component {
                                 <br/>
                                 <Row>
                                     {!this.state.isLoggedIn &&
-                                        <FacebookLogin
-                                            appId="343238832957751"
-                                            fields="name,email,picture"
-                                            onClick={this.componentClicked}
-                                            callback={this.responseFacebook}
-                                        />
+                                    <FacebookLogin
+                                        appId="343238832957751"
+                                        fields="name,email,picture"
+                                        onClick={this.componentClicked}
+                                        callback={this.responseFacebook}
+                                    />
                                     }
-
-
                                 </Row>
                                 <Row>
                                     {!this.state.isLoggedIn &&
-                                        <GoogleLogin
-                                            clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
-                                            buttonText="Login"
-                                            onSuccess={this.responseGoogle}
-                                            onFailure={this.logOut}
-                                            cookiePolicy={'single_host_origin'}
-                                        />
+                                    <GoogleLogin
+                                        clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
+                                        buttonText="Login"
+                                        onSuccess={this.responseGoogle}
+                                        onFailure={this.logOut}
+                                        cookiePolicy={'single_host_origin'}
+                                    />
 
                                     ||
-                                        <Col>
-                                            <p>Bienvenido Google</p>
-                                            <div
-                                                style={{
-                                                    width: "400px",
-                                                    margin: "auto",
-                                                    background: "#f4f4f4",
-                                                    padding: "20px"
-                                                }}
-                                            >
-                                                <img src={this.state.provider_pic} alt={this.state.name}/>
-                                                <h2>Welcome {this.state.name}</h2>
-                                                Email: {this.state.email.value}
-                                            </div>
-                                            <div>
-                                                <button onClick={this.logOut} className="button">
-                                                    Log out
-                                                </button>
-                                            </div>
-                                        </Col>
+                                    <Col>
+                                        <p>Bienvenido Google</p>
+                                        <div
+                                            style={{
+                                                width: "400px",
+                                                margin: "auto",
+                                                background: "#f4f4f4",
+                                                padding: "20px"
+                                            }}
+                                        >
+                                            <img src={this.state.provider_pic} alt={this.state.name}/>
+                                            <h2>Welcome {this.state.name}</h2>
+                                            Email: {this.state.email.value}
+                                        </div>
+                                        <div>
+                                            <button onClick={this.logOut} className="button">
+                                                Log out
+                                            </button>
+                                        </div>
+                                    </Col>
                                     }
                                 </Row>
                             </form>

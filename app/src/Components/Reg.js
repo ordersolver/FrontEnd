@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure, Overlay} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 import {getJWT} from "../Helpers/JWT";
+import Alert from "react-bootstrap/Alert";
 
 export default class Reg extends Component {
 
@@ -58,11 +59,13 @@ export default class Reg extends Component {
                 error: '',
             },
             formSubmitted: false,
-            isLoading: false
+            isLoading: false,
+            show: false
         }
     }
     constructor(props){
         super(props);
+        this.attachRef = target => this.setState({ target });
         this.state=this.defaultState();
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
@@ -284,6 +287,7 @@ export default class Reg extends Component {
     }
 
     render(){
+        const { show, target } = this.state;
         return (
             <div>
                 <Container>
@@ -392,24 +396,47 @@ export default class Reg extends Component {
                                                 block
                                                 bsSize="large"
                                                 type="submit"
+                                                ref={this.attachRef}
+                                                onClick={() => this.setState({ show: !show })}
                                             >
                                                 Registrarme
                                             </Button>
-
+                                            <Overlay target={target} show={show} placement="right">
+                                                {({
+                                                      placement,
+                                                      scheduleUpdate,
+                                                      arrowProps,
+                                                      outOfBoundaries,
+                                                      show: _show,
+                                                      ...props
+                                                  }) => (
+                                                    <div
+                                                        {...props}
+                                                        style={{
+                                                            backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                                                            padding: '2px 10px',
+                                                            color: 'white',
+                                                            borderRadius: 3,
+                                                            ...props.style,
+                                                        }}
+                                                    >
+                                                        {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                                        <FormLabel >
+                                                            <ul>
+                                                                {
+                                                                    this.getFormErrors().map((message) =>
+                                                                        <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                    )
+                                                                }
+                                                            </ul>
+                                                        </FormLabel>
+                                                        }
+                                                    </div>
+                                                )}
+                                            </Overlay>
                                         </Col>
 
                                     </Row>
-                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
-                                <FormLabel>
-                                    <ul>
-                                        {
-                                            this.getFormErrors().map((message) =>
-                                                <li key={'error_message_' + 1}>{message}</li>
-                                            )
-                                        }
-                                    </ul>
-                                </FormLabel>
-                                }
                             </form>
                         </Col>
                     </Row>
