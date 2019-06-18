@@ -146,7 +146,7 @@ class ProductDetails extends Component {
                                                     </Form.Group>
                                                     <ButtonToolbar>
                                                         <Button variant="warning" onClick={()=> this.props.addToCart(this.props.product)}>Añadir al carrito</Button>
-                                                        <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
+                                                        <Button variant="warning" href={"/i_order"+"/"+this.state.product[0].id} onClick={()=> this.test()}>Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
                                             </Card.Body>

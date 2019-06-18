@@ -310,10 +310,11 @@ export default class AddProduct extends Component{
             image: fd
         };
         axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
-            .then(function () {
-                console.log("Oki");
-                this.props.history.push('/catalog')
-            })
+            .then(res=>{
+                    this.props.history.push('/');
+                    console.log("Oki");
+            }
+            )
             .catch(function () {
                 console.log("Ups")
             });

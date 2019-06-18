@@ -13,12 +13,29 @@ import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import 'bulma/css/bulma.css';
 import SplitButton from "react-bootstrap/SplitButton";
 import Alert from "react-bootstrap/Alert";
+import Table from "react-bootstrap/Table";
 class User extends Component{
 
     constructor(props){
         super(props);
         this.state= {
+            orders: [{
+                id: 0,
+                fecha: "",
+                estado: "",
+                direccion_entrega: "",
+                valor: "",
+                client: {
+                    client_id: 0,
+                    client_name: ""
+                },
+                products:[{
+                    productId: 0,
+                    productName: ""
+                }]
+            }],
             user: {
+                id: 0,
                 no_id: "",
                 tipo_documento: "",
                 nombre: "",
@@ -56,9 +73,28 @@ class User extends Component{
             .catch(function(){
                     console.log("Try again xd")
                 }
-            )
+            );
+
+        axios.request({
+            method: 'GET',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/index',
+            headers: {
+                Authorization: 'Bearer ' + jwt
+            },
+            data:{
+            },
+        }).then(res=>{
+            this.orders = res.data;
+            console.log(this.orders);
+            this.setState({
+                orders: res.data
+            })
+        });
+
+
     }
 
+  
 
     fileSelectedHandler = event => {
         this.setState({
@@ -190,7 +226,6 @@ class User extends Component{
                                                 <Card.Title>Correo electrónico</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.email}
-                                                    {JSON.stringify(this.state.user.rols[0].rolName)}
                                                     <p>
 
                                                     </p>
@@ -211,10 +246,23 @@ class User extends Component{
                                         </Row>
                                         <Row className={"justify-content-md-center"}>
                                             <Col xs="" className={"justify-content-center"}>
-                                                <ButtonToolbar>
-                                                    <Button variant={"danger"}>Ver usuarios registrados</Button>
-                                                    <Button variant={"danger"}>Ver órdenes</Button>
-                                                </ButtonToolbar>
+                                                <Alert variant={"danger"} >Pedidos</Alert>
+                                                <Table fill>
+                                                    <tbody>
+                                                    {this.state.orders.map(orders =>
+                                                        <tr key={orders.id}>
+                                                            <td>{orders.fecha}</td>
+                                                            <td>{orders.estado}</td>
+                                                            <td>{orders.direccion_entrega}</td>
+                                                            <td>{orders.client.client_name}</td>
+                                                            <td>{orders.products[0].productName}</td>
+                                                            <td>${orders.valor}</td>
+                                                            <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
+                                                            <td><Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
+                                                        </tr>
+                                                    )}
+                                                    </tbody>
+                                                </Table>
                                             </Col>
                                         </Row>
                                     </Container>
@@ -235,8 +283,43 @@ class User extends Component{
                         </div>}
             </div>
         )
+        
     }
 
+    confirmarPedido(e){
+        e.preventDefault();
+        console.log(JSON.stringify(e.target.id) +" " + JSON.stringify(e.target.value));
+        axios.request({
+            method: 'POST',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/confirmation_email',
+            headers: {
+
+            },
+            data:{
+                id_user: e.target.value,
+                id_order: e.target.id
+            },
+        })
+        e.target.disabled=true;
+    }
+
+    borrarPedido(e) {
+        const jwt = getJWT();
+        console.log(e.target.id);
+        let orderid = e.target.id;
+        axios.request({
+            method: 'DELETE',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/destroy',
+            headers: {
+                Authorization: 'Bearer ' + jwt
+            },
+            data:{
+                id: orderid
+            },
+        }).then(res=>{
+            window.location.reload();
+        })
+    }
 }
 
 export default User;

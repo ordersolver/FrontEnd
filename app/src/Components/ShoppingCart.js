@@ -15,7 +15,7 @@ class ShoppingCart extends Component {
                 {this.props.cart.map(product =>
                     <tr key={product.id}>
                         <td>{product.nombre}</td>
-                        <td className="text-right">${product.price}</td>
+                        <td className="text-right">${product.valor}</td>
                         <td className="text-right"><Button variant="danger" onClick={() => this.props.removeFromCart(product)}>Borrar</Button></td>
                         <td className="text-right"><Button variant="danger" onClick={() => this.test()}>Test</Button></td>
                     </tr>
