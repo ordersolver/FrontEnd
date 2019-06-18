@@ -247,7 +247,7 @@ export default class Reg extends Component {
     submit(e){
         e.preventDefault();
         this.setState({isLoading: true});
-        let data = {
+        let data = { user:{
                 no_id: this.state.no_id.value,
                 tipo_documento: this.state.tipo_documento.value,
                 nombre: this.state.nombre.value,
@@ -257,7 +257,9 @@ export default class Reg extends Component {
                 password: this.state.password.value,
                 password_confirmation: this.state.password_confirmation.value,
                 email: this.state.email.value,
-                google_id: JSON.stringify(Math.random())
+                google_id: Math.random()
+            }
+
         };
         console.log(data);
         this.setState({
@@ -269,7 +271,7 @@ export default class Reg extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('https://ordersolverdevelop.herokuapp.com/users/create', data).
+        axios.post('http://ordersolverdevelop.herokuapp.com/users/create', data).
         then(function(){
             this.props.history.push('/catalog')
         })
