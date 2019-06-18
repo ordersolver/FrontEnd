@@ -8,7 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/es/Button";
-import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import {FormControl, FormGroup, FormLabel, Overlay, Popover} from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Alert from "react-bootstrap/Alert";
@@ -39,23 +39,23 @@ export default class AddProduct extends Component{
             },
             densidad:{
                 value: '',
-                error: 'Densidad es requerida.'
+                error2: 'Densidad es requerida.'
             },
             tipo_tela:{
                 value: '',
-                error: 'Tipo de tela es requerido.'
+                error2: 'Tipo de tela es requerido.'
             },
             lamina:{
                 value: '',
-                error: 'Lámina es requerida.'
+                error2: 'Lámina es requerida.'
             },
             cassata:{
                 value: '',
-                error: 'Cassata es requerida.'
+                error2: 'Cassata es requerida.'
             },
             valor:{
                 value: '',
-                error: 'Precio es requerido.'
+                error2: 'Precio es requerido.'
             },
             user: {
                 no_id: "",
@@ -73,12 +73,16 @@ export default class AddProduct extends Component{
             image: null,
             loading: true,
             formSubmitted: false,
-            isLoading: false
+            isLoading: false,
+            show: false
         }
     }
 
     constructor(props){
         super(props);
+        this.handleClick = ({ target }) => {
+            this.setState(s => ({ target, show: !s.show }));
+        };
         this.state=this.defaultState();
         this.setNombreP = this.setNombreP.bind(this);
         this.setCategoria = this.setCategoria.bind(this);
@@ -114,7 +118,7 @@ export default class AddProduct extends Component{
     }
 
     getFormErrors() {
-        let fields = ['nombreP', 'categoria','descripcion','medidas','grosor','densidad','tipo_tela','lamina','cassata', 'valor'];
+        let fields = ['nombreP', 'categoria','descripcion','medidas','grosor'];
         let errors = [];
         fields.map(field => {
             let fieldError = this.state[field].error || '';
@@ -124,7 +128,17 @@ export default class AddProduct extends Component{
         });
         return errors
     }
-
+    getFormErrors2() {
+        let fields2 = ['densidad','tipo_tela','lamina','cassata', 'valor'];
+        let errors2 = [];
+        fields2.map(field => {
+            let fieldError2 = this.state[field].error2 || '';
+            if (fieldError2.length > 0) {
+                errors2.push(fieldError2)
+            }
+        });
+        return errors2
+    }
     setNombreP(e) {
         let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Nombre del producto es requerido.' : '';
@@ -201,7 +215,7 @@ export default class AddProduct extends Component{
         this.setState({
             densidad: {
                 value: newVal,
-                error: errorMessage
+                error2: errorMessage
             },
             submit: {
                 error: ''
@@ -215,7 +229,7 @@ export default class AddProduct extends Component{
         this.setState({
             tipo_tela: {
                 value: newVal,
-                error: errorMessage
+                error2: errorMessage
             },
             submit: {
                 error: ''
@@ -229,7 +243,7 @@ export default class AddProduct extends Component{
         this.setState({
             lamina: {
                 value: newVal,
-                error: errorMessage
+                error2: errorMessage
             },
             submit: {
                 error: ''
@@ -243,7 +257,7 @@ export default class AddProduct extends Component{
         this.setState({
             cassata: {
                 value: newVal,
-                error: errorMessage
+                error2: errorMessage
             },
             submit: {
                 error: ''
@@ -257,7 +271,7 @@ export default class AddProduct extends Component{
         this.setState({
             valor: {
                 value: newVal,
-                error: errorMessage
+                error2: errorMessage
             },
             submit: {
                 error: ''
@@ -294,8 +308,6 @@ export default class AddProduct extends Component{
     submit(e){
         e.preventDefault();
         this.setState({isLoading: true});
-        const fd = new FormData();
-        fd.append('image', this.state.image, this.state.image.name);
         let data = {
             nombre: this.state.nombreP.value,
             categoria: this.state.categoria.value,
@@ -307,7 +319,6 @@ export default class AddProduct extends Component{
             lamina: this.state.lamina.value,
             cassata: this.state.cassata.value,
             valor: this.state.valor.value,
-            image: fd
         };
         axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
             .then(res=>{
@@ -328,6 +339,9 @@ export default class AddProduct extends Component{
         if (this.getFormErrors().length > 0) {
             return false
         }
+        if (this.getFormErrors2().length > 0) {
+            return false
+        }
 
     }
 
@@ -341,6 +355,8 @@ export default class AddProduct extends Component{
                 </Container>
             </div>
         }
+        const { show, target } = this.state;
+
         return(
             <div>
                 <div>
@@ -444,10 +460,80 @@ export default class AddProduct extends Component{
                                                         block
                                                         bsSize="large"
                                                         type="submit"
-                                                        onClick={this.fileUploadHandler}
+                                                        onClick={this.fileUploadHandler || this.handleClick}
                                                     >
                                                         Crear
                                                     </Button>
+                                                    <Overlay
+                                                        show={this.state.show}
+                                                        target={this.state.target}
+                                                        placement="right"
+                                                        container={this}
+                                                        containerPadding={20}
+                                                    >
+                                                            {({
+                                                                  placement,
+                                                                  scheduleUpdate,
+                                                                  arrowProps,
+                                                                  outOfBoundaries,
+                                                                  show: _show,
+                                                                  ...props
+                                                              }) => (
+                                                                <div
+                                                                    {...props}
+                                                                    style={{
+                                                                        backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                                                                        padding: '1px 5px',
+                                                                        color: 'white',
+                                                                        borderRadius: 3,
+                                                                        ...props.style,
+                                                                    }}
+                                                                >
+                                                                    {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                                                    <FormLabel >
+                                                                        <Row>
+                                                                            <Col>
+                                                                                {
+                                                                                    this.getFormErrors().map((message) =>
+                                                                                        <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                    )
+                                                                                }
+                                                                            </Col>
+                                                                            <Col>
+                                                                            {
+                                                                                this.getFormErrors2().map((message) =>
+                                                                                    <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                )
+                                                                            }
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </FormLabel>
+                                                                        ||
+                                                                    this.getFormErrors2().length > 0 && this.state.formSubmitted &&
+                                                                    <FormLabel >
+                                                                        <Row>
+                                                                            <Col>
+                                                                            {
+                                                                                this.getFormErrors().map((message) =>
+                                                                                    <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                )
+                                                                            }
+                                                                            </Col>
+                                                                            <Col>
+                                                                            {
+                                                                                this.getFormErrors2().map((message) =>
+                                                                                    <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                )
+                                                                            }
+                                                                            </Col>
+
+
+                                                                        </Row>
+                                                                    </FormLabel>
+                                                                    }
+                                                                </div>
+                                                            )}
+                                                    </Overlay>
                                                 </form>
                                             </Jumbotron>
                                         </Col>
@@ -462,17 +548,6 @@ export default class AddProduct extends Component{
                                                     </ButtonToolbar>
                                                 </Row>
                                             </Container>
-                                            {this.getFormErrors().length > 0 && this.state.formSubmitted &&
-                                            <FormLabel>
-                                                <ul>
-                                                    {
-                                                        this.getFormErrors().map((message) =>
-                                                            <li key={'error_message_' + 1}>{message}</li>
-                                                        )
-                                                    }
-                                                </ul>
-                                            </FormLabel>
-                                            }
                                         </Col>
                                     </Row>
                                 </Container>
