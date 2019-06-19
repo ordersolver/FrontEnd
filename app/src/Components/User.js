@@ -296,10 +296,14 @@ class User extends Component{
 
             },
             data:{
-                id_user: e.target.value,
-                id_order: e.target.id
+                id_order: e.target.id,
+                id_user: e.target.value
             },
-        })
+        }).then(
+           res=>{
+               console.log("Breu")
+           }
+        )
         e.target.disabled=true;
     }
 

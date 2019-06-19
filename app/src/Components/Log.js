@@ -49,7 +49,7 @@ export default class Log extends Component {
         this.doSomething()
     };
     responseGoogle(response){
-        //console.log(response);
+        console.log(response);
         this.setState({
             isLoggedIn: true,
             name: response.w3.ig,

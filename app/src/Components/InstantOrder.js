@@ -76,7 +76,7 @@ export default class InstantOrder extends Component {
     obtenerCotizacion(e){
         e.preventDefault();
         axios.request({
-            method: 'POST',
+            method: 'GET',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/genpdf.pdf',
             data: [{
                 id: JSON.stringify(this.state.user.id),
