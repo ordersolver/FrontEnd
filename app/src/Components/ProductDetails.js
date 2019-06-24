@@ -109,36 +109,33 @@ class ProductDetails extends Component {
                                             <Card.Body>
                                                 <Card.Title>{this.state.product[0].nombre}</Card.Title>
                                                 <Card.Text>
-                                                    <hr></hr>
-                                                    <p>{this.state.product[0].descripcion}</p>
-                                                    <hr></hr>
+                                                    {this.state.product[0].descripcion}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Categoría: {this.state.product[0].categoria}</p>
+                                                    Categoría: {this.state.product[0].categoria}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Cassata: {this.state.product[0].cassata}</p>
+                                                    Cassata: {this.state.product[0].cassata}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Densidad: {this.state.product[0].densidad}</p>
+                                                    Densidad: {this.state.product[0].densidad}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Grosor: {this.state.product[0].grosor}</p>
+                                                    Grosor: {this.state.product[0].grosor}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Lámina: {this.state.product[0].lamina}</p>
+                                                    Lámina: {this.state.product[0].lamina}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Medidas: {this.state.product[0].medidas}</p>
+                                                    Medidas: {this.state.product[0].medidas}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Tipo de tela: {this.state.product[0].tipo_tela}</p>
+                                                    Tipo de tela: {this.state.product[0].tipo_tela}
                                                 </Card.Text>
-                                                <Card.Text>
-                                                    <hr></hr>
-                                                    <p>Precio: ${this.state.product[0].valor}</p>
-                                                    <hr></hr>
-                                                </Card.Text>
+                                                <Card.Footer>
+                                                    Precio: ${this.state.product[0].valor}
+                                                </Card.Footer>
+                                                <Card.Footer>
                                                 <form>
                                                     <Form.Group>
                                                         <Form.Label>Cantidad</Form.Label>
@@ -146,9 +143,10 @@ class ProductDetails extends Component {
                                                     </Form.Group>
                                                     <ButtonToolbar>
                                                         <Button variant="warning" onClick={()=> this.props.addToCart(this.props.product)}>Añadir al carrito</Button>
-                                                        <Button variant="warning" href={"/i_order"+"/"+this.state.product[0].id} onClick={()=> this.test()}>Comprar ahora</Button>
+                                                        <Button variant="warning" href={"/i_order/"+this.state.product[0].id} onClick={()=> this.test()}>Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
+                                                </Card.Footer>
                                             </Card.Body>
                                         </Card>
                                     </Row>

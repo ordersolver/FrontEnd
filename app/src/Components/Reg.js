@@ -11,8 +11,8 @@ export default class Reg extends Component {
 
     componentDidMount() {
         const jwt = getJWT();
-        {jwt &&
-            console.log(jwt)
+        if(jwt){
+            this.props.history.push('/')
         }
     }
 
@@ -317,7 +317,7 @@ export default class Reg extends Component {
                             <form onSubmit={e => this.submit(e)}>
                                 <Row>
                                 <Col>
-                                <FormGroup controlId="email" bsSize="large">
+                                <FormGroup controlId="email">
                                     <FormControl
                                         autoFocus
                                         type="email"
@@ -327,7 +327,7 @@ export default class Reg extends Component {
                                 </FormGroup>
                                 </Col>
                                 <Col>
-                                <FormGroup controlId="password" bsSize="large">
+                                <FormGroup controlId="password">
                                     <FormControl
                                         autoFocus
                                         type="password"
@@ -335,7 +335,7 @@ export default class Reg extends Component {
                                         onChange={this.setPassword}
                                     />
                                 </FormGroup>
-                                <FormGroup controlId="password_confirmation" bsSize="large">
+                                <FormGroup controlId="password_confirmation">
                                     <FormControl
                                         autoFocus
                                         type="password"
@@ -348,7 +348,7 @@ export default class Reg extends Component {
                                     <FormLabel>Datos Personales</FormLabel>
                                     <Row>
                                         <Col>
-                                            <FormGroup controlId="nombre" bsSize="large">
+                                            <FormGroup controlId="nombre">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -356,7 +356,7 @@ export default class Reg extends Component {
                                                     onChange={this.setNombre}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="apellido" bsSize="large">
+                                            <FormGroup controlId="apellido">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -364,7 +364,7 @@ export default class Reg extends Component {
                                                     onChange={this.setApellido}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="direccion" bsSize="large">
+                                            <FormGroup controlId="direccion">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -382,7 +382,7 @@ export default class Reg extends Component {
                                                     <option>Pasaporte</option>
                                                 </FormControl>
                                             </FormGroup>
-                                            <FormGroup controlId="no_id" bsSize="large">
+                                            <FormGroup controlId="no_id">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -390,7 +390,7 @@ export default class Reg extends Component {
                                                     onChange={this.setId}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="telefono" bsSize="large">
+                                            <FormGroup controlId="telefono">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -400,7 +400,6 @@ export default class Reg extends Component {
                                             </FormGroup>
                                             <Button
                                                 block
-                                                bsSize="large"
                                                 type="submit"
                                                 ref={this.attachRef}
                                                 onClick={() => this.setState({ show: !show })}

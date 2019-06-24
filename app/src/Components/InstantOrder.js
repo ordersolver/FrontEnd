@@ -7,7 +7,6 @@ import Spinner from "react-bootstrap/Spinner";
 import {getJWT} from "../Helpers/JWT";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import Jumbotron from "react-bootstrap/Jumbotron";
 import Card from "react-bootstrap/Card";
 import {ButtonToolbar} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
@@ -91,8 +90,8 @@ export default class InstantOrder extends Component {
     realizarPedido(e){
         e.preventDefault();
         var year = new Date().getFullYear();
-        var date = new Date(). getDate();
-        var month = new Date(). getMonth() + 1;
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
         let order={
             productos:[this.state.product[0].id],
             fecha:date+"/"+month+"/"+year,
@@ -147,7 +146,7 @@ export default class InstantOrder extends Component {
                         <Container>
                                 <Row>
                                     <Container>
-                                        <Alert variant={"dark"}>¡Hola, {this.state.user.nombre}!</Alert>
+                                        <Alert variant={"dark"}>¡Hola {this.state.user.nombre}!</Alert>
                                         <br></br>
                                         <p>
                                             Al presionar el botón "Realizar pedido" se generará tu orden, por favor verifica que los datos sean correctos.
@@ -169,9 +168,6 @@ export default class InstantOrder extends Component {
                                                         <Card.Title>Dirección</Card.Title>
                                                         <Card.Text>
                                                             {this.state.user.direccion}
-                                                            <p>
-
-                                                            </p>
                                                         </Card.Text>
                                                     </Card.Body>
                                                 </Card>
@@ -182,9 +178,6 @@ export default class InstantOrder extends Component {
                                                         <Card.Title>Documento de ID</Card.Title>
                                                         <Card.Text>
                                                             {this.state.user.no_id}
-                                                            <p>
-
-                                                            </p>
                                                         </Card.Text>
                                                     </Card.Body>
                                                 </Card>
@@ -194,7 +187,7 @@ export default class InstantOrder extends Component {
                                     </Col>
                                     <Col>
                                         <Card>
-                                        <Table fill>
+                                        <Table fill={"true"}>
                                             <tbody>
                                             {this.state.product.map(product =>
                                                 <tr key={product.id}>

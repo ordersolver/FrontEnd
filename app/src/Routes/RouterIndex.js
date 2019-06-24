@@ -3,15 +3,13 @@ import Log from '../Components/Log.js';
 import Catalog from '../Components/Catalog.js';
 import Reg from '../Components/Reg.js';
 import User from '../Components/User';
-import { Route , Redirect } from "react-router-dom";
-import {clearLocal, getJWT} from "../Helpers/JWT";
-import Landing from "../Landing";
-import {Provider} from 'react-redux';
+import { Route } from "react-router-dom";
+import { getJWT } from "../Helpers/JWT";
 import AddProduct from "../Components/AddProduct";
 import ProductDetails from "../Components/ProductDetails";
 import ShoppingCart from "../Components/ShoppingCart";
 import InstantOrder from "../Components/InstantOrder";
-
+/* eslint react/prop-types: 0 */
 export default class RouterIndex extends Component {
 
 
@@ -56,3 +54,4 @@ export default class RouterIndex extends Component {
         );
     }
 }
+/* eslint react/prop-types: 0 */

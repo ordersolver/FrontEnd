@@ -2,12 +2,8 @@ import React, {Component} from 'react';
 import {Button} from "react-bootstrap";
 import './All.css';
 import Card from "react-bootstrap/Card";
-
+/* eslint react/prop-types: 0 */
 export default class ProductCard extends Component {
-
-    constructor(props){
-        super(props)
-    }
 
     render() {
         return(
@@ -19,7 +15,7 @@ export default class ProductCard extends Component {
                     <Card.Text>{this.props.product.description}</Card.Text>
                     <Card.Img variant="top" src="https://cdn1.imggmi.com/uploads/2019/5/15/12b43e1dc1fc572d49c0db206e67e906-full.png" />
                     <Card.Text>${this.props.product.valor}</Card.Text>
-                    <Button variant="primary" href={"/product"+"/"+this.props.product.id}>Detalles</Button>
+                    <Button variant="primary" href={"/product/"+this.props.product.id}>Detalles</Button>
                 </Card.Body>
             </Card>
                 <br></br>
@@ -28,3 +24,4 @@ export default class ProductCard extends Component {
     }
 
 }
+/* eslint react/prop-types: 0 */

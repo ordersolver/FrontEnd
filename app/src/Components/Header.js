@@ -1,27 +1,30 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
-import {Col, Container, Row} from "react-bootstrap";
-import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
-import { GoogleLogout } from 'react-google-login';
+import {Col, Row} from "react-bootstrap";
+import { getJWT,deleteJWT} from "../Helpers/JWT";
 
 import './All.css';
 export default class Header extends Component {
 
     constructor(props){
         super(props);
-        this.state="un-logged"
+        this.state={
+            logged: false
+        }
     }
 
     componentDidMount() {
         const jwt = getJWT();
         if(jwt){
+            this.setState({
+                logged:true
+            })
         }
     }
 
     render(){
         return (
-            <Navbar collapseOnSelect bs expand="lg" bg={"warning"} variant={"light"}>
+            <Navbar collapseOnSelect expand="lg" bg={"warning"} variant={"light"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
@@ -34,7 +37,7 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                {!getJWT() &&
+                                {!this.state.logged &&
                                 <Nav.Item>
                                     <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
                                     <Nav.Link href="/reg">Registrarse</Nav.Link>
@@ -44,7 +47,7 @@ export default class Header extends Component {
                         </Row>
                     </Nav>
                     <Nav>
-                        {getJWT() &&
+                        {this.state.logged &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>

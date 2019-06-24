@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, {Component} from 'react';
 import { Row, Col, Button, Container, Figure, Dropdown} from "react-bootstrap";
 import './All.css';
@@ -8,7 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
-
+/* eslint react/prop-types: 0 */
 export default class Catalog extends Component {
 
     constructor(props){
@@ -229,3 +230,4 @@ export default class Catalog extends Component {
         );
     }
 }
+/* eslint react/prop-types: 0 */
