@@ -8,6 +8,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
+import GoogleMaps from './GoogleMaps';
 
 export default class Catalog extends Component {
 
@@ -141,6 +142,7 @@ export default class Catalog extends Component {
                     </Row>
                 </Container>
                 <hr></hr>
+
                 <Container className={"Menu"}>
                     <Row>
                         <Col>
@@ -222,7 +224,7 @@ export default class Catalog extends Component {
                         </Col>
                     </Row>
                     <Row>
-
+                        <GoogleMaps/>
                     </Row>
                 </Container>
             </div>
