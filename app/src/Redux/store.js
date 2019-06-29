@@ -1,4 +1,5 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 const initialState = {
     cart: []
 };
@@ -18,4 +19,5 @@ const reducer = (state=initialState, action) => {
     return state;
 };
 
-export default createStore(reducer, {cart:[], jwt:""});
+
+export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware()));

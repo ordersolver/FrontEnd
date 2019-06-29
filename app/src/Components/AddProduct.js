@@ -6,9 +6,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/es/Button";
-import {FormControl, FormGroup, FormLabel, Overlay, Popover} from "react-bootstrap";
+import {FormControl, FormGroup, FormLabel, Overlay} from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Alert from "react-bootstrap/Alert";
@@ -341,7 +340,6 @@ export default class AddProduct extends Component{
         if (this.getFormErrors2().length > 0) {
             return false
         }
-
     }
 
     render(){
@@ -354,7 +352,6 @@ export default class AddProduct extends Component{
                 </Container>
             </div>
         }
-        const { show, target } = this.state;
 
         return(
             <div>
@@ -370,7 +367,7 @@ export default class AddProduct extends Component{
                                                 <FormLabel>{this.state.user.nombre}, introduce el producto a agregar</FormLabel>
                                                 <form onSubmit={e => this.submit(e)}>
                                                     <Col>
-                                                        <FormGroup controlId="nombreP" bsSize="large">
+                                                        <FormGroup controlId="nombreP">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -378,7 +375,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setNombreP}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="categoria" bsSize="large">
+                                                        <FormGroup controlId="categoria">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -386,7 +383,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setCategoria}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="descripcion" bsSize="large">
+                                                        <FormGroup controlId="descripcion">
                                                             <FormControl
                                                                 autoFocus
                                                                 as={"textarea"}
@@ -395,7 +392,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setDescripcion}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="medidas" bsSize="large">
+                                                        <FormGroup controlId="medidas">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -403,7 +400,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setMedidas}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="grosor" bsSize="large">
+                                                        <FormGroup controlId="grosor">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -411,7 +408,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setGrosor}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="densidad" bsSize="large">
+                                                        <FormGroup controlId="densidad">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -419,7 +416,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setDensidad}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="tipo_tela" bsSize="large">
+                                                        <FormGroup controlId="tipo_tela">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -427,7 +424,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setTipo_tela}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="lamina" bsSize="large">
+                                                        <FormGroup controlId="lamina">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -435,7 +432,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setLamina}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="cassata" bsSize="large">
+                                                        <FormGroup controlId="cassata">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -443,7 +440,7 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setCassata}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup controlId="valor" bsSize="large">
+                                                        <FormGroup controlId="valor">
                                                             <FormControl
                                                                 autoFocus
                                                                 type="text"
@@ -457,7 +454,6 @@ export default class AddProduct extends Component{
                                                     </Col>
                                                     <Button
                                                         block
-                                                        bsSize="large"
                                                         type="submit"
                                                         onClick={this.fileUploadHandler || this.handleClick}
                                                     >
@@ -488,7 +484,7 @@ export default class AddProduct extends Component{
                                                                         ...props.style,
                                                                     }}
                                                                 >
-                                                                    {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                                                    {(this.getFormErrors().length > 0 && this.state.formSubmitted) &&
                                                                     <FormLabel >
                                                                         <Row>
                                                                             <Col>
@@ -508,7 +504,7 @@ export default class AddProduct extends Component{
                                                                         </Row>
                                                                     </FormLabel>
                                                                         ||
-                                                                    this.getFormErrors2().length > 0 && this.state.formSubmitted &&
+                                                                    (this.getFormErrors2().length > 0 && this.state.formSubmitted) &&
                                                                     <FormLabel >
                                                                         <Row>
                                                                             <Col>

@@ -1,17 +1,62 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Figure, Overlay} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Overlay} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
-import {GoogleLogin,GoogleLogout} from 'react-google-login';
-import Store from "../Redux/store"
+import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 
 
 export default class Log extends Component {
+
     componentClicked = () => console.log("clicked");
+
+    static defaultState() {
+        return {
+            isLoggedIn: false,
+            userID: '',
+            name:'',
+            provider:'',
+            provider_id:'',
+            token:'',
+            provider_pic:'',
+            email: {
+                value: '',
+                error: 'Correo es requerido.'
+            },
+            password: {
+                value: '',
+                error: 'Contraseña es requerida.'
+            },
+            submit: {
+                error: ''
+            },
+            formSubmitted: false,
+            isLoading: false,
+            jwt: "",
+            show: false
+        }
+    }
+
+    constructor(props){
+        super(props);
+        this.attachRef = target => this.setState({ target });
+        this.state=Log.defaultState();
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
+        this.change = this.change.bind(this);
+        this.submit = this.submit.bind(this);
+        this.responseGoogle=this.responseGoogle.bind(this);
+        this.responseFacebook=this.responseFacebook.bind(this);
+        this.logOut=this.logOut.bind(this);
+    }
+
+    componentDidMount() {
+        console.log("xd")
+    }
+
     logOut (){
         this.setState({
             isLoggedIn: false,
@@ -67,47 +112,6 @@ export default class Log extends Component {
         });
     };
 
-    defaultState() {
-        return {
-            isLoggedIn: false,
-            userID: '',
-            name:'',
-            provider:'',
-            provider_id:'',
-            token:'',
-            provider_pic:'',
-            email: {
-                value: '',
-                error: 'Correo es requerido.'
-            },
-            password: {
-                value: '',
-                error: 'Contraseña es requerida.'
-            },
-            submit: {
-                error: ''
-            },
-            formSubmitted: false,
-            isLoading: false,
-            jwt: "",
-            show: false
-        }
-    }
-
-    constructor(props){
-        super(props);
-        this.attachRef = target => this.setState({ target });
-        this.state=this.defaultState();
-        this.setEmail = this.setEmail.bind(this);
-        this.setPassword = this.setPassword.bind(this);
-        this.change = this.change.bind(this);
-        this.submit = this.submit.bind(this);
-        this.responseGoogle=this.responseGoogle.bind(this);
-        this.responseFacebook=this.responseFacebook.bind(this);
-        this.logOut=this.logOut.bind(this);
-    }
-
-
     setEmail(e) {
         let newVal = e.target.value || '';
         let errorMessage = newVal.length === 0 ? 'Correo es requerido.' : '';
@@ -119,7 +123,7 @@ export default class Log extends Component {
             submit: {
                 error: ''
             }
-        })
+        });
         console.log(this.state.email.value)
     }
     setPassword(e) {
@@ -226,7 +230,7 @@ export default class Log extends Component {
                             }
                         });
                     }
-                    this.props.history.push('/catalog')
+                    this.props.history.push('/')
                 }
             )
             .catch(res=>{
@@ -244,27 +248,26 @@ export default class Log extends Component {
         const { show, target } = this.state;
         return (
             <div>
-                <div style={{'text-align':'center'}}>
+                <div style={{'textAlign':'center'}}>
                     <h1> Bienvenido de nuevo</h1>
                 </div>
                 <Container>
                     <Row >
                         <Col>
                             <form onSubmit={e => this.submit(e)}>
-                                <FormGroup controlId="email" bsSize="large" >
+                                <FormGroup controlId="email" >
                                     <FormLabel>Correo Electronico</FormLabel>
                                     <FormControl
-                                        autofocus
+                                        autoFocus
                                         type="email"
                                         onChange={this.setEmail}
-
                                     />
 
                                 </FormGroup>
-                                <FormGroup controlId="password" bsSize="large" >
+                                <FormGroup controlId="password" >
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl
-                                        autofocus
+                                        autoFocus
                                         type="password"
                                         onChange={this.setPassword}
                                     />
@@ -272,7 +275,6 @@ export default class Log extends Component {
 
                                 <Button
                                     block
-                                    bsSize="large"
                                     type="submit"
                                     ref={this.attachRef}
                                     onClick={() => this.setState({ show: !show })}
@@ -314,12 +316,11 @@ export default class Log extends Component {
                                 </Overlay>
                                 <Button
                                     block
-                                    bsSize="large"
                                     href="/reg"
                                 >
                                     Registrarme
                                 </Button>
-                                <div style={{'text-align':'center'}}>
+                                <div style={{'textAlign':'center'}}>
                                     <h6><Nav.Link href="#restablecer">Restablecer Contraseña</Nav.Link></h6>
                                 </div>
                             </form>
@@ -340,7 +341,7 @@ export default class Log extends Component {
                                     }
                                 </Row>
                                 <Row>
-                                    {!this.state.isLoggedIn &&
+                                    {(!this.state.isLoggedIn) &&
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
                                         buttonText="Login"
@@ -350,6 +351,7 @@ export default class Log extends Component {
                                     />
 
                                     ||
+
                                     <Col>
                                         <p>Bienvenido Google</p>
                                         <div

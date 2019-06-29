@@ -11,7 +11,6 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Image from "react-bootstrap/Image";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import 'bulma/css/bulma.css';
-import SplitButton from "react-bootstrap/SplitButton";
 import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 class User extends Component{
@@ -157,9 +156,6 @@ class User extends Component{
                                                 <Card.Title>Nombre</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.nombre}
-                                                    <p>
-
-                                                    </p>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -170,9 +166,6 @@ class User extends Component{
                                                 <Card.Title>Apellidos</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.apellidos}
-                                                    <p>
-
-                                                    </p>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -180,13 +173,11 @@ class User extends Component{
                                     <Col md={"auto"}>
                                         <Card style={{ width: '20rem' }}>
                                             <Card.Body>
-                                                <Card.Title>Tipo de documento, y documento</Card.Title>
+                                                <Card.Title>Documento de identidad</Card.Title>
                                                 <Card.Text>
-                                                    {this.state.user.no_id}
-                                                    <p>
-
-                                                    </p>
-                                                    {this.state.user.tipo_documento}
+                                                    Número: {this.state.user.no_id}
+                                                    <br/>
+                                                    Tipo: {this.state.user.tipo_documento}
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -200,9 +191,6 @@ class User extends Component{
                                                 <Card.Title>Direccion</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.direccion}
-                                                    <p>
-
-                                                    </p>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -213,9 +201,6 @@ class User extends Component{
                                                 <Card.Title>Telefono</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.telefono}
-                                                    <p>
-
-                                                    </p>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -226,9 +211,6 @@ class User extends Component{
                                                 <Card.Title>Correo electrónico</Card.Title>
                                                 <Card.Text>
                                                     {this.state.user.email}
-                                                    <p>
-
-                                                    </p>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -247,7 +229,7 @@ class User extends Component{
                                         <Row className={"justify-content-md-center"}>
                                             <Col xs="" className={"justify-content-center"}>
                                                 <Alert variant={"danger"} >Pedidos</Alert>
-                                                <Table fill>
+                                                <Table fill={"true"}>
                                                     <tbody>
                                                     {this.state.orders.map(orders =>
                                                         <tr key={orders.id}>

@@ -1,43 +1,34 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import './App.css'
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import RouterIndex from './Routes/RouterIndex';
-import {getJWT} from "./Helpers/JWT";
-import { CookiesProvider } from 'react-cookie';
-
+import Container from "react-bootstrap/Container";
+/* eslint react/prop-types: 0 */
 export default class Landing extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            jwt: ""
-        };
-        const jwt = getJWT();
-    }
 
     render(){
         return (
-            <CookiesProvider>
               <div className={"Background"}>
-                  <container className={"NavBarr"}>
+                  <Container bsPrefix={"NavBarr"}>
                       <Header>
                       </Header>
-                  </container>
+                  </Container>
                   <br></br>
                   <Router>
-                      <container className={"Homee"}>
+                      <Container bsPrefix={"Homee"}>
                           <RouterIndex/>
-                      </container>
+                      </Container>
                   </Router>
-                  <container className={"Footerr"}>
+                  <Container bsPrefix={"Footerr"}>
                       <Footer>
                       </Footer>
-                  </container>
+                  </Container>
               </div>
-            </CookiesProvider>
         );
     }
 
 }
 Landing.defaultProps = {};
+/* eslint react/prop-types: 0 */
