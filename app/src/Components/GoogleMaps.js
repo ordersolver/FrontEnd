@@ -44,8 +44,10 @@ export class GoogleMaps extends Component {
                             google={this.props.google}
                             style={{
                                 minWidth: "100px",
-                                minHeight: "600px",
-                                width: '100%', height: '100%', position: 'relative'
+                                minHeight: "800px",
+                                width: '100%',
+                                height: '100%',
+                                position: 'relative'
                             }}
                             initialCenter={{
                                 lat: 4.758376,
@@ -57,6 +59,11 @@ export class GoogleMaps extends Component {
                             <Marker
                                 onClick={this.onMarkerClick}
                                 name={"Casa"}
+                            />
+                            <Marker
+                                name="Parque"
+                                onClick={this.onMarkerClick}
+                                position={{ lat: 4.758870, lng: -74.036469 }}
                             />
                             <InfoWindow
                                 marker={this.state.activeMarker}
