@@ -49,6 +49,10 @@ export default class InstantOrder extends Component {
     }
 
     componentDidMount() {
+        const jwt = getJWT();
+        if(!jwt){
+            this.props.history.push('/log')
+        }
         axios.get('http://ordersolverdevelop.herokuapp.com/products/show?id='+this.props.match.params.id)
             .then(
                 res=>{
@@ -60,7 +64,6 @@ export default class InstantOrder extends Component {
                     console.log(this.state.product)
                 }
             );
-        const jwt = getJWT();
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
                 this.user = res.data;
@@ -123,7 +126,7 @@ export default class InstantOrder extends Component {
                 pedidorealizado: true
                 }
             )
-        })
+        });
     }
 
 

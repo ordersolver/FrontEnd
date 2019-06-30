@@ -29,7 +29,7 @@ export default class Header extends Component {
                         <Figure.Image
                             width={180}
                             height={80}
-                            src="https://cdn1.imggmi.com/uploads/2019/5/15/04950a0565f06f61552da1b58a3f7f47-full.png"
+                            src="https://i.ibb.co/Hd2xTnn/LogoMyM.png"
                         />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -63,7 +63,7 @@ export default class Header extends Component {
                             <Figure.Image
                                 width={35}
                                 height={35}
-                                src="https://cdn1.imggmi.com/uploads/2019/5/15/fb7b9294e120d553458409c89aa3442d-full.png"
+                                src="https://i.ibb.co/Yp19KLQ/Cart.png"
                             />
                         </Nav.Link>
                     </Nav>

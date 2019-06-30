@@ -9,7 +9,6 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
-/* eslint react/prop-types: 0 */
 export default class Catalog extends Component {
 
     constructor(props){
@@ -99,15 +98,50 @@ export default class Catalog extends Component {
         console.log(this.state.page)
     }
 
+    borrarProducto(e) {
+        e.preventDefault();
+        console.log(e.target.id);
+        axios.request({
+            method: 'DELETE',
+            url: 'http://ordersolverdevelop.herokuapp.com/products/destroy',
+            headers: {
+
+            },
+            data:{
+                id: e.target.id
+            },
+        }).then(res=>{
+            window.location.reload();
+        })
+    }
+
     render(){
         let ProductCards = this.state.product.map(product => {
-            return(
-                <Col md={"auto"}>
-                    <ProductCard product={product}>
+            const jwt = getJWT();
+            if (jwt){
+                return(
+                    <Col md={"auto"}>
+                        <ProductCard product={product}>
 
-                    </ProductCard>
-                </Col>
-            )
+                        </ProductCard>
+                        <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                        <br/>
+                        <br/>
+                    </Col>
+
+                )
+            }else{
+                return(
+                    <Col md={"auto"}>
+                        <ProductCard product={product}>
+
+                        </ProductCard>
+                        <br/>
+                        <br/>
+                    </Col>
+                )
+            }
+
 
         });
         return (
@@ -129,8 +163,7 @@ export default class Catalog extends Component {
                                         <Figure.Image
                                             width={13.5}
                                             height={13.5}
-                                            //src="https://cdn1.imggmi.com/uploads/2019/5/15/98520d42389bf0ed6fa38c0ef9c27e2d-full.png"
-                                            src="https://cdn1.imggmi.com/uploads/2019/5/15/70c9353b90e170b254ac76059fd8d22d-full.png"
+                                            src="https://i.ibb.co/4tmxR26/Glass.png"
                                         />
                                     </Button>
                                 </InputGroup.Append>
@@ -206,7 +239,6 @@ export default class Catalog extends Component {
                                         </div>
                                     }
                                 </ListGroup>
-
                             </Container>
                         </Col>
                         <Col xs={9}>
@@ -229,5 +261,7 @@ export default class Catalog extends Component {
             </div>
         );
     }
+
+
 }
 /* eslint react/prop-types: 0 */
