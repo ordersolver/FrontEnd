@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
+import {Navbar, Nav, NavDropdown, Figure, Button} from "react-bootstrap";
 import {Col, Container, Row} from "react-bootstrap";
 import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
 import { GoogleLogout } from 'react-google-login';
@@ -56,6 +56,10 @@ export default class Header extends Component {
                         <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>
+                        <Nav.Link eventKey={2} href="/maps">
+                            Donde Estamos
+                        </Nav.Link>
+
                         <Nav.Link href="/cart">
                             <Figure.Image
                                 width={35}
