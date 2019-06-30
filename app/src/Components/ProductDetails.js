@@ -9,7 +9,6 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/es/Button";
 import Form from "react-bootstrap/Form"
 import {ButtonToolbar} from "react-bootstrap";
-import store from "../Redux/store"
 import {addToCart} from "../Redux/ActionCreators";
 import connect from "react-redux/es/connect/connect";
 
@@ -44,7 +43,7 @@ class ProductDetails extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.product);
+                    console.log(this.state.product);
                 }
             )
             .catch(
@@ -52,11 +51,6 @@ class ProductDetails extends Component {
             )
     }
 
-
-    test(){
-        let cart2 = store.getState().cart;
-        console.log(cart2)
-    }
 
     render(){
         return(
@@ -142,8 +136,8 @@ class ProductDetails extends Component {
                                                         <Form.Control type="text" placeholder="" />
                                                     </Form.Group>
                                                     <ButtonToolbar>
-                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.props.product)}>Añadir al carrito</Button>
-                                                        <Button variant="warning" href={"/i_order/"+this.state.product[0].id} onClick={()=> this.test()}>Comprar ahora</Button>
+                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.state.product[0])}>Añadir al carrito</Button>
+                                                        <Button variant="warning" href={"/i_order/"+this.state.product[0].id} >Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
                                                 </Card.Footer>
@@ -172,6 +166,6 @@ const mapDispatchToProps = dispatch => {
             dispatch(addToCart(product));
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

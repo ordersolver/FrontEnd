@@ -28,6 +28,7 @@
     "react-social-login": "^3.4.4",
     "reducers": "^3.0.0-alpha",
     "redux": "^4.0.1",
+    "redux-localstorage": "^0.4.1",
     "redux-persist": "^5.10.0"
   },
   "scripts": {

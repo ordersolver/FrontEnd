@@ -7,9 +7,11 @@ import {clearLocal, getJWT} from "../Helpers/JWT";
 import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
+import connect from "react-redux/es/connect/connect";
+import {saveJWT, eraseJWT} from "../Redux/ActionCreators";
 
 
-export default class Log extends Component {
+class Log extends Component {
 
     componentClicked = () => console.log("clicked");
 
@@ -230,6 +232,7 @@ export default class Log extends Component {
                             }
                         });
                     }
+                    this.props.saveJWT(this.state.jwt);
                     this.props.history.push('/')
                 }
             )
@@ -387,4 +390,21 @@ export default class Log extends Component {
     }
 
 }
+
+
+const mapStateToProps = state => {
+    return {
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        saveJWT(jwt) {
+            dispatch(saveJWT(jwt));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Log);
 

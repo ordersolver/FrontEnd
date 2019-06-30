@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+import persistState from 'redux-localstorage';
 import { composeWithDevTools } from 'redux-devtools-extension';
 const initialState = {
     cart: []
@@ -15,9 +16,19 @@ const reducer = (state=initialState, action) => {
             ...state,
             cart: state.cart.filter(product => product.id !== action.product.id)
         }
+    } else if (action.type === "SAVE_JWT"){
+        return {
+            ...state,
+            jwt: state.jwt.concat(action.jwt)
+        }
+    } else if (action.type === "DELETE_JWT"){
+        return {
+            ...state,
+            jwt: ""
+        }
     }
     return state;
 };
 
 
-export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware()));
+export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware(), persistState()));
