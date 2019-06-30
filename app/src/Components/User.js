@@ -240,6 +240,8 @@ class User extends Component{
                                                             <td>{orders.products[0].productName}</td>
                                                             <td>${orders.valor}</td>
                                                             <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
+                                                            <td><Button variant={"outline-warning"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.problemaPedido(e)}>Notificar problema</Button></td>
+                                                            <td><Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar orden</Button></td>
                                                             <td><Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
                                                         </tr>
                                                     )}
@@ -278,15 +280,69 @@ class User extends Component{
 
             },
             data:{
-                id_order: e.target.id,
-                id_user: e.target.value
+                id_user: e.target.value,
+                id_order: e.target.id
             },
         }).then(
            res=>{
                console.log("Breu")
            }
-        )
+        );
         e.target.disabled=true;
+    }
+
+    problemaPedido(e){
+        e.preventDefault();
+        console.log(JSON.stringify(e.target.id) +" " + JSON.stringify(e.target.value));
+        axios.request({
+            method: 'POST',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/problem_email',
+            headers: {
+
+            },
+            data:{
+                id_user: e.target.value,
+                id_order: e.target.id
+            },
+        }).then(
+            res=>{
+                console.log("Breu")
+            }
+        );
+        e.target.disabled=true;
+    }
+
+    terminarPedido(e){
+        e.preventDefault();
+        console.log(JSON.stringify(e.target.id) +" " + JSON.stringify(e.target.value));
+        axios.request({
+            method: 'POST',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/entregado_email',
+            headers: {
+
+            },
+            data:{
+                id_user: e.target.value,
+                id_order: e.target.id
+            },
+        }).then(
+            res=>{
+                console.log("Breu")
+            }
+        );
+        const jwt = getJWT();
+        axios.request({
+            method: 'DELETE',
+            url: 'http://ordersolverdevelop.herokuapp.com/orders/destroy',
+            headers: {
+                Authorization: 'Bearer ' + jwt
+            },
+            data:{
+                id: e.target.id
+            },
+        }).then(res=>{
+            window.location.reload();
+        })
     }
 
     borrarPedido(e) {
@@ -306,6 +362,7 @@ class User extends Component{
             window.location.reload();
         })
     }
+
 }
 
 export default User;
