@@ -1,25 +1,18 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
 import {Col, Row} from "react-bootstrap";
-import { getJWT,deleteJWT} from "../Helpers/JWT";
-
+import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
-export default class Header extends Component {
+import {connect} from "react-redux";
+import {eraseJWT} from "../Redux/ActionCreators";
+class Header extends Component {
 
-    constructor(props){
-        super(props);
-        this.state={
-            logged: false
-        }
-    }
 
-    componentDidMount() {
-        const jwt = getJWT();
-        if(jwt){
-            this.setState({
-                logged:true
-            })
-        }
+    logout(e){
+        e.preventDefault();
+        this.props.eraseJWT();
+        deleteJWT();
+        window.location.reload();
     }
 
     render(){
@@ -37,7 +30,7 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                {!this.state.logged &&
+                                {!this.props.jwt &&
                                 <Nav.Item>
                                     <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
                                     <Nav.Link href="/reg">Registrarse</Nav.Link>
@@ -47,13 +40,13 @@ export default class Header extends Component {
                         </Row>
                     </Nav>
                     <Nav>
-                        {this.state.logged &&
+                        {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item  onClick={deleteJWT} href="/" >Cerrar Sesion </NavDropdown.Item>
+                                <NavDropdown.Item  onClick={e => this.logout(e)} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
                         <Nav.Link eventKey={2} href="/catalog">
@@ -72,3 +65,19 @@ export default class Header extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        eraseJWT(jwt) {
+            dispatch(eraseJWT(jwt));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (Header);

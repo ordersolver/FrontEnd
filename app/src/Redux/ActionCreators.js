@@ -6,4 +6,12 @@ const removeFromCart = (product) => {
     return { type: "REMOVE_FROM_CART", product };
 };
 
-export {addToCart, removeFromCart};
+const saveJWT = (jwt) => {
+    return { type: "SAVE_JWT", jwt};
+};
+
+const eraseJWT = () => {
+    return {type: "DELETE_JWT"}
+}
+
+export {addToCart, removeFromCart, saveJWT, eraseJWT};
