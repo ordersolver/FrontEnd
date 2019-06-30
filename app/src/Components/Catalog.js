@@ -117,8 +117,7 @@ export default class Catalog extends Component {
 
     render(){
         let ProductCards = this.state.product.map(product => {
-            const jwt = getJWT();
-            if (jwt){
+            if (this.state.user.rols[0].rolName === "administrador"){
                 return(
                     <Col md={"auto"}>
                         <ProductCard product={product}>
@@ -128,7 +127,6 @@ export default class Catalog extends Component {
                         <br/>
                         <br/>
                     </Col>
-
                 )
             }else{
                 return(
