@@ -252,9 +252,6 @@ export default class Catalog extends Component {
                             </Container>
                         </Col>
                     </Row>
-                    <Row>
-
-                    </Row>
                 </Container>
             </div>
         );
