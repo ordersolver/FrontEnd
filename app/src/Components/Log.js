@@ -142,7 +142,7 @@ export default class Log extends Component {
     getFormErrors() {
         let fields = ['email', 'password', 'submit'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)

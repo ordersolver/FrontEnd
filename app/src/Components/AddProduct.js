@@ -119,7 +119,7 @@ export default class AddProduct extends Component{
     getFormErrors() {
         let fields = ['nombreP', 'categoria','descripcion','medidas','grosor'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)
@@ -130,7 +130,7 @@ export default class AddProduct extends Component{
     getFormErrors2() {
         let fields2 = ['densidad','tipo_tela','lamina','cassata', 'valor'];
         let errors2 = [];
-        fields2.map(field => {
+        fields2.forEach(field => {
             let fieldError2 = this.state[field].error2 || '';
             if (fieldError2.length > 0) {
                 errors2.push(fieldError2)

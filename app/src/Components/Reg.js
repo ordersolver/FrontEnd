@@ -83,7 +83,7 @@ export default class Reg extends Component {
     getFormErrors() {
         let fields = ['email', 'password','password_confirmation','no_id','tipo_documento','nombre','apellidos','direccion','telefono', 'submit'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)
@@ -272,24 +272,22 @@ export default class Reg extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('http://ordersolverdevelop.herokuapp.com/users/create', data).
-        then(res=>{
-            this.setState({
-                registered: true
+        axios.post('http://ordersolverdevelop.herokuapp.com/users/create', data)
+            .then(res=>{
+                this.setState({
+                    registered: true
+                })
+                this.props.history.push('/catalog')
             })
-            this.props.history.push('/catalog')
-        })
-        .catch(error =>{
-            console.log(error.response);
-            this.submit.error = error.response.status + " " + error.response.statusText + " "+"E-mail: " + error.response.data.email;
-            this.setState({
-                submit:{
-                    error : error.response.status + " " + error.response.statusText + " " + "E-mail: " + error.response.data.email
-                }
-            })
-        });
+            .catch(error =>{
+                this.submit.error = Object.keys(error.response.data)[0] + ": " + error.response.data[Object.keys(error.response.data)[0]][0];
+                this.setState({
+                    submit:{
+                        error : Object.keys(error.response.data)[0] + ": " + error.response.data[Object.keys(error.response.data)[0]][0]
+                    }
+                })
+            });
         this.doSomething()
-
     }
 
     render(){
