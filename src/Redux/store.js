@@ -31,4 +31,4 @@ const reducer = (state=initialState, action) => {
 };
 
 
-export default createStore(reducer, {cart:[], jwt:""}, devToolsEnhancer(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:""}, composeEnhancers(applyMiddleware(), persistState()));
