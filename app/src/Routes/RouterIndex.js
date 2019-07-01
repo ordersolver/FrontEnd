@@ -3,6 +3,7 @@ import Log from '../Components/Log.js';
 import Catalog from '../Components/Catalog.js';
 import Reg from '../Components/Reg.js';
 import User from '../Components/User';
+import Summary from '../Components/Summary';
 import { Route } from "react-router-dom";
 import { getJWT } from "../Helpers/JWT";
 import AddProduct from "../Components/AddProduct";
@@ -19,6 +20,7 @@ export default class RouterIndex extends Component {
                 <Route path="/" exact component={Catalog}/>
                 <Route path="/catalog" exact component={Catalog}/>
                 <Route path="/user" exact component={User}/>
+                <Route path="/sum" exact component={Summary}/>
                 <Route path="/newproduct" exact component={AddProduct}/>
                 <Route path="/product/:id" component={ProductDetails}/>
                 <Route path="/i_order/:id" component={InstantOrder}/>

@@ -42,7 +42,7 @@ class Header extends Component {
                     <Nav>
                         {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
+                                <NavDropdown.Item href="/sum">Resumen</NavDropdown.Item>
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
