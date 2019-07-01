@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Map, InfoWindow, Marker, GoogleApiWrapper, Polygon, Circle } from "google-maps-react";
-import {Container, FormControl, FormGroup, Row} from "react-bootstrap";
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import {Container, Row} from "react-bootstrap";
 
 export class GoogleMaps extends Component {
     state = {
@@ -29,12 +29,12 @@ export class GoogleMaps extends Component {
         if (!this.props.google) {
             return <div>Mmm...</div>;
         }
-        const triangleCoords = [
+        /*const triangleCoords = [
             {lat: 25.774, lng: -80.190},
             {lat: 18.466, lng: -66.118},
             {lat: 32.321, lng: -64.757},
             {lat: 25.774, lng: -80.190}
-        ];
+        ];*/
         const coords = { lat: 4.758376, lng: -74.036279 };
         return (
             <div>
@@ -49,10 +49,7 @@ export class GoogleMaps extends Component {
                                 height: '100%',
                                 position: 'relative'
                             }}
-                            initialCenter={{
-                                lat: 4.758376,
-                                lng: -74.036279
-                            }}
+                            initialCenter={coords}
                             zoom={17}
                             onClick={this.onMapClicked}
                         >

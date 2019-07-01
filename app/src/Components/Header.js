@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Navbar, Nav, NavDropdown, Figure, Button} from "react-bootstrap";
-import {Col, Container, Row} from "react-bootstrap";
-import { GoogleLogout } from 'react-google-login';
+import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
 import {connect} from "react-redux";

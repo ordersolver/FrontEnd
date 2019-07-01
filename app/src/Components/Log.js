@@ -8,7 +8,7 @@ import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
-import {saveJWT, eraseJWT} from "../Redux/ActionCreators";
+import {saveJWT} from "../Redux/ActionCreators";
 
 
 class Log extends Component {
@@ -344,6 +344,7 @@ class Log extends Component {
                                     }
                                 </Row>
                                 <Row>
+
                                     {(!this.state.isLoggedIn) &&
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
@@ -352,29 +353,29 @@ class Log extends Component {
                                         onFailure={this.logOut}
                                         cookiePolicy={'single_host_origin'}
                                     />
+                                    }
+                                    {(this.state.isLoggedIn) &&
+                                        <Col>
+                                            <p>Bienvenido Google</p>
+                                            <div
+                                                style={{
+                                                    width: "400px",
+                                                    margin: "auto",
+                                                    background: "#f4f4f4",
+                                                    padding: "20px"
+                                                }}
+                                            >
+                                                <img src={this.state.provider_pic} alt={this.state.name}/>
+                                                <h2>Welcome {this.state.name}</h2>
+                                                Email: {this.state.email.value}
+                                            </div>
+                                            <div>
+                                                <button onClick={this.logOut} className="button">
+                                                    Log out
+                                                </button>
+                                            </div>
+                                        </Col>
 
-                                    ||
-
-                                    <Col>
-                                        <p>Bienvenido Google</p>
-                                        <div
-                                            style={{
-                                                width: "400px",
-                                                margin: "auto",
-                                                background: "#f4f4f4",
-                                                padding: "20px"
-                                            }}
-                                        >
-                                            <img src={this.state.provider_pic} alt={this.state.name}/>
-                                            <h2>Welcome {this.state.name}</h2>
-                                            Email: {this.state.email.value}
-                                        </div>
-                                        <div>
-                                            <button onClick={this.logOut} className="button">
-                                                Log out
-                                            </button>
-                                        </div>
-                                    </Col>
                                     }
                                 </Row>
                             </form>

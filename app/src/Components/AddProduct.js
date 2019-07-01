@@ -485,26 +485,30 @@ export default class AddProduct extends Component{
                                                                     }}
                                                                 >
                                                                     {(this.getFormErrors().length > 0 && this.state.formSubmitted) &&
-                                                                    <FormLabel >
+                                                                    <FormLabel>
                                                                         <Row>
                                                                             <Col>
                                                                                 {
                                                                                     this.getFormErrors().map((message) =>
-                                                                                        <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                        <Alert
+                                                                                            key={'error_message_' + 1}
+                                                                                            variant="danger">{message}</Alert>
                                                                                     )
                                                                                 }
                                                                             </Col>
                                                                             <Col>
-                                                                            {
-                                                                                this.getFormErrors2().map((message) =>
-                                                                                    <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
-                                                                                )
-                                                                            }
+                                                                                {
+                                                                                    this.getFormErrors2().map((message) =>
+                                                                                        <Alert
+                                                                                            key={'error_message_' + 1}
+                                                                                            variant="danger">{message}</Alert>
+                                                                                    )
+                                                                                }
                                                                             </Col>
                                                                         </Row>
                                                                     </FormLabel>
-                                                                        ||
-                                                                    (this.getFormErrors2().length > 0 && this.state.formSubmitted) &&
+                                                                    }
+                                                                    {(this.getFormErrors2().length > 0 && this.state.formSubmitted) &&
                                                                     <FormLabel >
                                                                         <Row>
                                                                             <Col>
