@@ -103,11 +103,12 @@ export default class Catalog extends Component {
     borrarProducto(e) {
         e.preventDefault();
         console.log(e.target.id);
+        const jwt = getJWT();
         axios.request({
             method: 'DELETE',
             url: 'http://ordersolverdevelop.herokuapp.com/products/destroy',
             headers: {
-
+                Authorization: 'Bearer ' + jwt
             },
             data:{
                 id: e.target.id
