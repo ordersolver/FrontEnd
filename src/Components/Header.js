@@ -1,32 +1,28 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown, Figure} from "react-bootstrap";
-import {Col, Container, Row} from "react-bootstrap";
-import {clearLocal, getJWT,deleteJWT} from "../Helpers/JWT";
-import { GoogleLogout } from 'react-google-login';
-
+import {Col, Row} from "react-bootstrap";
+import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
-export default class Header extends Component {
+import {connect} from "react-redux";
+import {eraseJWT} from "../Redux/ActionCreators";
+class Header extends Component {
 
-    constructor(props){
-        super(props);
-        this.state="un-logged"
-    }
 
-    componentDidMount() {
-        const jwt = getJWT();
-        if(jwt){
-        }
+    logout(e){
+        e.preventDefault();
+        this.props.eraseJWT();
+        deleteJWT();
+        window.location.reload();
     }
 
     render(){
         return (
-            <Navbar collapseOnSelect bs expand="lg" bg={"warning"} variant={"light"}>
+            <Navbar collapseOnSelect expand="lg" bg={"warning"} variant={"light"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
                             height={80}
-                            src="https://cdn1.imggmi.com/uploads/2019/5/15/04950a0565f06f61552da1b58a3f7f47-full.png"
+                            src="https://i.ibb.co/Hd2xTnn/LogoMyM.png"
                         />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -34,7 +30,7 @@ export default class Header extends Component {
                     <Nav className="mr-auto">
                         <Row>
                             <Col>
-                                {!getJWT() &&
+                                {!this.props.jwt &&
                                 <Nav.Item>
                                     <Nav.Link href="/log" >Iniciar Sesión</Nav.Link>
                                     <Nav.Link href="/reg">Registrarse</Nav.Link>
@@ -44,23 +40,27 @@ export default class Header extends Component {
                         </Row>
                     </Nav>
                     <Nav>
-                        {getJWT() &&
+                        {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item  onClick={deleteJWT} href="/" >Cerrar Sesion </NavDropdown.Item>
+                                <NavDropdown.Item  onClick={e => this.logout(e)} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
                         <Nav.Link eventKey={2} href="/catalog">
                             Nuestros productos
                         </Nav.Link>
+                        <Nav.Link eventKey={2} href="/maps">
+                            Donde Estamos
+                        </Nav.Link>
+
                         <Nav.Link href="/cart">
                             <Figure.Image
                                 width={35}
                                 height={35}
-                                src="https://cdn1.imggmi.com/uploads/2019/5/15/fb7b9294e120d553458409c89aa3442d-full.png"
+                                src="https://i.ibb.co/Yp19KLQ/Cart.png"
                             />
                         </Nav.Link>
                     </Nav>
@@ -69,3 +69,19 @@ export default class Header extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        eraseJWT(jwt) {
+            dispatch(eraseJWT(jwt));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (Header);

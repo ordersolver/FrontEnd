@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, {Component} from 'react';
 import { Row, Col, Button, Container, Figure, Dropdown} from "react-bootstrap";
 import './All.css';
@@ -8,12 +9,12 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
-
 export default class Catalog extends Component {
 
     constructor(props){
         super(props);
         this.state = {
+            searchword:'',
             product: [{
                 id: "",
                 nombre : "",
@@ -26,6 +27,7 @@ export default class Catalog extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
+                image: null
             }],
             user: {
                 no_id: "",
@@ -41,16 +43,17 @@ export default class Catalog extends Component {
                 }]
             },
             loading: true,
-            page: 6
-        }
+            page: 3
+        };
         this.pageselect = React.createRef();
+        this.setSearchword = this.setSearchword.bind(this);
     }
 
     componentDidMount() {
         let items = {
             page: this.state.page,
-            per_page: 6,
-        }
+            per_page: 15,
+        };
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index', {params:items})
             .then(
                 res=>{
@@ -64,7 +67,7 @@ export default class Catalog extends Component {
             )
             .catch(
 
-            )
+            );
         const jwt = getJWT();
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
@@ -84,7 +87,7 @@ export default class Catalog extends Component {
             {
                 page: this.state.page - 1
             }
-        )
+        );
         console.log(this.state.page)
     }
 
@@ -93,19 +96,76 @@ export default class Catalog extends Component {
             {
                 page: this.state.page + 1
             }
-        )
+        );
         console.log(this.state.page)
+    }
+
+    borrarProducto(e) {
+        e.preventDefault();
+        console.log(e.target.id);
+        const jwt = getJWT();
+        axios.request({
+            method: 'DELETE',
+            url: 'http://ordersolverdevelop.herokuapp.com/products/destroy',
+            headers: {
+                Authorization: 'Bearer ' + jwt
+            },
+            data:{
+                id: e.target.id
+            },
+        }).then(res=>{
+            window.location.reload();
+        })
+    }
+
+    setSearchword(e) {
+        this.setState({searchword: e.target.value || ''});
+    }
+
+    searchfilter(searchedword){
+        if (searchedword !== ''){
+            axios.get('http://ordersolverdevelop.herokuapp.com/products/show?nombre='+searchedword)
+                .then(
+                    res=>{
+                        this.product=res.data;
+                        this.setState({
+                            product: res.data,
+                            loading: false
+                        });
+                        //console.log(this.product);
+                    }
+                )
+                .catch(
+
+                )
+        }
     }
 
     render(){
         let ProductCards = this.state.product.map(product => {
-            return(
-                <Col md={"auto"}>
-                    <ProductCard product={product}>
+            if (this.state.user.rols[0].rolName === "administrador"){
+                return(
+                    <Col md={"auto"}>
+                        <ProductCard product={product}>
 
-                    </ProductCard>
-                </Col>
-            )
+                        </ProductCard>
+                        <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                        <br/>
+                        <br/>
+                    </Col>
+                )
+            }else{
+                return(
+                    <Col md={"auto"}>
+                        <ProductCard product={product}>
+
+                        </ProductCard>
+                        <br/>
+                        <br/>
+                    </Col>
+                )
+            }
+
 
         });
         return (
@@ -121,14 +181,18 @@ export default class Catalog extends Component {
                                     placeholder="Buscar producto"
                                     aria-label="Buscar producto"
                                     aria-describedby="basic-addon2"
+                                    onChange={this.setSearchword}
                                 />
                                 <InputGroup.Append>
-                                    <Button variant="outline-info">
+                                    <Button
+                                        variant="outline-info"
+                                        type="submit"
+                                        onClick={() => this.searchfilter(this.state.searchword)}
+                                    >
                                         <Figure.Image
                                             width={13.5}
                                             height={13.5}
-                                            //src="https://cdn1.imggmi.com/uploads/2019/5/15/98520d42389bf0ed6fa38c0ef9c27e2d-full.png"
-                                            src="https://cdn1.imggmi.com/uploads/2019/5/15/70c9353b90e170b254ac76059fd8d22d-full.png"
+                                            src="https://i.ibb.co/4tmxR26/Glass.png"
                                         />
                                     </Button>
                                 </InputGroup.Append>
@@ -204,7 +268,6 @@ export default class Catalog extends Component {
                                         </div>
                                     }
                                 </ListGroup>
-
                             </Container>
                         </Col>
                         <Col xs={9}>
@@ -220,11 +283,11 @@ export default class Catalog extends Component {
                             </Container>
                         </Col>
                     </Row>
-                    <Row>
-
-                    </Row>
                 </Container>
             </div>
         );
     }
+
+
 }
+/* eslint react/prop-types: 0 */

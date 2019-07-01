@@ -9,7 +9,6 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/es/Button";
 import Form from "react-bootstrap/Form"
 import {ButtonToolbar} from "react-bootstrap";
-import store from "../Redux/store"
 import {addToCart} from "../Redux/ActionCreators";
 import connect from "react-redux/es/connect/connect";
 
@@ -44,7 +43,7 @@ class ProductDetails extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.product);
+                    console.log(this.state.product);
                 }
             )
             .catch(
@@ -52,11 +51,6 @@ class ProductDetails extends Component {
             )
     }
 
-
-    test(){
-        let cart2 = store.getState().cart;
-        console.log(cart2)
-    }
 
     render(){
         return(
@@ -109,41 +103,44 @@ class ProductDetails extends Component {
                                             <Card.Body>
                                                 <Card.Title>{this.state.product[0].nombre}</Card.Title>
                                                 <Card.Text>
-                                                    <p>Categoría: {this.state.product[0].categoria}</p>
+                                                    {this.state.product[0].descripcion}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Cassata: {this.state.product[0].cassata}</p>
+                                                    Categoría: {this.state.product[0].categoria}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Densidad: {this.state.product[0].densidad}</p>
+                                                    Cassata: {this.state.product[0].cassata}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Grosor: {this.state.product[0].grosor}</p>
+                                                    Densidad: {this.state.product[0].densidad}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Lámina: {this.state.product[0].lamina}</p>
+                                                    Grosor: {this.state.product[0].grosor}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Medidas: {this.state.product[0].medidas}</p>
+                                                    Lámina: {this.state.product[0].lamina}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <p>Tipo de tela: {this.state.product[0].tipo_tela}</p>
+                                                    Medidas: {this.state.product[0].medidas}
                                                 </Card.Text>
                                                 <Card.Text>
-                                                    <hr></hr>
-                                                    <p>Precio: ${this.state.product[0].valor}</p>
-                                                    <hr></hr>
+                                                    Tipo de tela: {this.state.product[0].tipo_tela}
                                                 </Card.Text>
+                                                <Card.Footer>
+                                                    Precio: ${this.state.product[0].valor}
+                                                </Card.Footer>
+                                                <Card.Footer>
                                                 <form>
                                                     <Form.Group>
                                                         <Form.Label>Cantidad</Form.Label>
                                                         <Form.Control type="text" placeholder="" />
                                                     </Form.Group>
                                                     <ButtonToolbar>
-                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.props.product)}>Añadir al carrito</Button>
-                                                        <Button variant="warning" onClick={()=> this.test()}>Comprar ahora</Button>
+                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.state.product[0])}>Añadir al carrito</Button>
+                                                        <Button variant="warning" href={"/i_order/"+this.state.product[0].id} >Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
+                                                </Card.Footer>
                                             </Card.Body>
                                         </Card>
                                     </Row>
@@ -169,6 +166,6 @@ const mapDispatchToProps = dispatch => {
             dispatch(addToCart(product));
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure, Overlay} from "react-bootstrap";
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 import {getJWT} from "../Helpers/JWT";
+import Alert from "react-bootstrap/Alert";
 
 export default class Reg extends Component {
 
 
     componentDidMount() {
         const jwt = getJWT();
-        {jwt &&
-            console.log(jwt)
+        if(jwt){
+            this.props.history.push('/')
         }
     }
 
@@ -58,11 +59,14 @@ export default class Reg extends Component {
                 error: '',
             },
             formSubmitted: false,
-            isLoading: false
+            isLoading: false,
+            show: false,
+            registered: false
         }
     }
     constructor(props){
         super(props);
+        this.attachRef = target => this.setState({ target });
         this.state=this.defaultState();
         this.setEmail = this.setEmail.bind(this);
         this.setPassword = this.setPassword.bind(this);
@@ -79,7 +83,7 @@ export default class Reg extends Component {
     getFormErrors() {
         let fields = ['email', 'password','password_confirmation','no_id','tipo_documento','nombre','apellidos','direccion','telefono', 'submit'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)
@@ -98,7 +102,7 @@ export default class Reg extends Component {
             submit: {
                 error: ''
             }
-        })
+        });
     }
     setPassword(e) {
         let newVal = e.target.value || ''
@@ -191,6 +195,7 @@ export default class Reg extends Component {
                 error: ''
             }
         })
+
     }
     setTipoId(e) {
         let newVal = e.target.value || ''
@@ -204,27 +209,31 @@ export default class Reg extends Component {
                 error: ''
             }
         })
+
+
+
     }
     change(e){
         e.preventDefault();
         this.setState(
             {
-                no_id: e.target.no_id,
-                tipo_documento: e.target.tipo_documento,
-                nombre: e.target.nombre,
-                apellidos: e.target.apellidos,
-                direccion: e.target.direccion,
-                telefono: e.target.telefono,
-                password: e.target.password,
-                password_confirmation: e.target.password_confirmation,
-                email: e.target.email
-            });
+                    no_id: e.target.no_id,
+                    tipo_documento: e.target.tipo_documento,
+                    nombre: e.target.nombre,
+                    apellidos: e.target.apellidos,
+                    direccion: e.target.direccion,
+                    telefono: e.target.telefono,
+                    password: e.target.password,
+                    password_confirmation: e.target.password_confirmation,
+                    email: e.target.email
+            }
+            );
     }
     doSomething(){
         let jwt = getJWT();
         console.log(jwt);
         if (jwt) {
-            console.log("So far so good")
+            console.log("So far so good");
             this.setState({
                 submit:{
                     error: "Bienvenido a nuestro servicio."
@@ -233,31 +242,27 @@ export default class Reg extends Component {
         }
         if(!jwt){
             console.log(JSON.parse(jwt));
-            this.setState({
-                submit: {
-                    error: 'Registro fallido, intente nuevamente.'
-                }
-            })
+
         }
     }
     submit(e){
-        this.setState({isLoading: true});
-        let data = {
-                user:{
-                    no_id: this.state.no_id.value,
-                    tipo_documento: this.state.tipo_documento.value,
-                    nombre: this.state.nombre.value,
-                    apellidos: this.state.apellidos.value,
-                    direccion: this.state.direccion.value,
-                    telefono: this.state.telefono.value,
-                    password_confirmation: this.state.password_confirmation.value,
-                    email: this.state.email.value,
-                    password: this.state.password.value
-                }
-            };
-
-        console.log(data);
         e.preventDefault();
+        this.setState({isLoading: true});
+        let data = { user:{
+                no_id: this.state.no_id.value,
+                tipo_documento: this.state.tipo_documento.value,
+                nombre: this.state.nombre.value,
+                apellidos: this.state.apellidos.value,
+                direccion: this.state.direccion.value,
+                telefono: this.state.telefono.value,
+                password: this.state.password.value,
+                password_confirmation: this.state.password_confirmation.value,
+                email: this.state.email.value,
+                google_id: Math.random()
+            }
+
+        };
+        console.log(data);
         this.setState({
             formSubmitted: true,
             submit: {
@@ -267,18 +272,26 @@ export default class Reg extends Component {
         if (this.getFormErrors().length > 0) {
             return false
         }
-        axios.post('https://ordersolverdevelop.herokuapp.com/users', data).
-        then(function(){
-            this.props.history.push('/catalog')
-        })
-        .catch(function () {
-            console.log("Ups")
-        });
+        axios.post('http://ordersolverdevelop.herokuapp.com/users/create', data)
+            .then(res=>{
+                this.setState({
+                    registered: true
+                })
+                this.props.history.push('/catalog')
+            })
+            .catch(error =>{
+                this.submit.error = Object.keys(error.response.data)[0] + ": " + error.response.data[Object.keys(error.response.data)[0]][0];
+                this.setState({
+                    submit:{
+                        error : Object.keys(error.response.data)[0] + ": " + error.response.data[Object.keys(error.response.data)[0]][0]
+                    }
+                })
+            });
         this.doSomething()
-
     }
 
     render(){
+        const { show, target } = this.state;
         return (
             <div>
                 <Container>
@@ -302,7 +315,7 @@ export default class Reg extends Component {
                             <form onSubmit={e => this.submit(e)}>
                                 <Row>
                                 <Col>
-                                <FormGroup controlId="email" bsSize="large">
+                                <FormGroup controlId="email">
                                     <FormControl
                                         autoFocus
                                         type="email"
@@ -312,7 +325,7 @@ export default class Reg extends Component {
                                 </FormGroup>
                                 </Col>
                                 <Col>
-                                <FormGroup controlId="password" bsSize="large">
+                                <FormGroup controlId="password">
                                     <FormControl
                                         autoFocus
                                         type="password"
@@ -320,7 +333,7 @@ export default class Reg extends Component {
                                         onChange={this.setPassword}
                                     />
                                 </FormGroup>
-                                <FormGroup controlId="password_confirmation" bsSize="large">
+                                <FormGroup controlId="password_confirmation">
                                     <FormControl
                                         autoFocus
                                         type="password"
@@ -333,7 +346,7 @@ export default class Reg extends Component {
                                     <FormLabel>Datos Personales</FormLabel>
                                     <Row>
                                         <Col>
-                                            <FormGroup controlId="nombre" bsSize="large">
+                                            <FormGroup controlId="nombre">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -341,7 +354,7 @@ export default class Reg extends Component {
                                                     onChange={this.setNombre}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="apellido" bsSize="large">
+                                            <FormGroup controlId="apellido">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -349,7 +362,7 @@ export default class Reg extends Component {
                                                     onChange={this.setApellido}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="direccion" bsSize="large">
+                                            <FormGroup controlId="direccion">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -367,7 +380,7 @@ export default class Reg extends Component {
                                                     <option>Pasaporte</option>
                                                 </FormControl>
                                             </FormGroup>
-                                            <FormGroup controlId="no_id" bsSize="large">
+                                            <FormGroup controlId="no_id">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -375,7 +388,7 @@ export default class Reg extends Component {
                                                     onChange={this.setId}
                                                 />
                                             </FormGroup>
-                                            <FormGroup controlId="telefono" bsSize="large">
+                                            <FormGroup controlId="telefono">
                                                 <FormControl
                                                     autoFocus
                                                     type="text"
@@ -385,26 +398,57 @@ export default class Reg extends Component {
                                             </FormGroup>
                                             <Button
                                                 block
-                                                bsSize="large"
                                                 type="submit"
+                                                ref={this.attachRef}
+                                                onClick={() => this.setState({ show: !show })}
                                             >
                                                 Registrarme
                                             </Button>
+                                            {this.state.registered ?
+                                                <div>
+                                                    <Alert variant={"success"}>Registro satisfactorio.</Alert>
+                                                </div>
+                                                :
+                                                <div>
 
+                                                </div>
+                                            }
+                                            <Overlay target={target} show={show} placement="right">
+                                                {({
+                                                      placement,
+                                                      scheduleUpdate,
+                                                      arrowProps,
+                                                      outOfBoundaries,
+                                                      show: _show,
+                                                      ...props
+                                                  }) => (
+                                                    <div
+                                                        {...props}
+                                                        style={{
+                                                            backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                                                            padding: '2px 10px',
+                                                            color: 'white',
+                                                            borderRadius: 3,
+                                                            ...props.style,
+                                                        }}
+                                                    >
+                                                        {this.getFormErrors().length > 0 && this.state.formSubmitted &&
+                                                        <FormLabel >
+                                                            <ul>
+                                                                {
+                                                                    this.getFormErrors().map((message) =>
+                                                                        <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                    )
+                                                                }
+                                                            </ul>
+                                                        </FormLabel>
+                                                        }
+                                                    </div>
+                                                )}
+                                            </Overlay>
                                         </Col>
 
                                     </Row>
-                                {this.getFormErrors().length > 0 && this.state.formSubmitted &&
-                                <FormLabel>
-                                    <ul>
-                                        {
-                                            this.getFormErrors().map((message) =>
-                                                <li key={'error_message_' + 1}>{message}</li>
-                                            )
-                                        }
-                                    </ul>
-                                </FormLabel>
-                                }
                             </form>
                         </Col>
                     </Row>
