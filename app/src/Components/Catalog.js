@@ -14,6 +14,7 @@ export default class Catalog extends Component {
     constructor(props){
         super(props);
         this.state = {
+            searchword:'',
             product: [{
                 id: "",
                 nombre : "",
@@ -45,6 +46,7 @@ export default class Catalog extends Component {
             page: 3
         };
         this.pageselect = React.createRef();
+        this.setSearchword = this.setSearchword.bind(this);
     }
 
     componentDidMount() {
@@ -115,6 +117,29 @@ export default class Catalog extends Component {
         })
     }
 
+    setSearchword(e) {
+        this.setState({searchword: e.target.value || ''});
+    }
+
+    searchfilter(searchedword){
+        if (searchedword !== ''){
+            axios.get('http://ordersolverdevelop.herokuapp.com/products/show?nombre='+searchedword)
+                .then(
+                    res=>{
+                        this.product=res.data;
+                        this.setState({
+                            product: res.data,
+                            loading: false
+                        });
+                        //console.log(this.product);
+                    }
+                )
+                .catch(
+
+                )
+        }
+    }
+
     render(){
         let ProductCards = this.state.product.map(product => {
             if (this.state.user.rols[0].rolName === "administrador"){
@@ -155,9 +180,14 @@ export default class Catalog extends Component {
                                     placeholder="Buscar producto"
                                     aria-label="Buscar producto"
                                     aria-describedby="basic-addon2"
+                                    onChange={this.setSearchword}
                                 />
                                 <InputGroup.Append>
-                                    <Button variant="outline-info">
+                                    <Button
+                                        variant="outline-info"
+                                        type="submit"
+                                        onClick={() => this.searchfilter(this.state.searchword)}
+                                    >
                                         <Figure.Image
                                             width={13.5}
                                             height={13.5}
