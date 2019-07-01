@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import persistState from 'redux-localstorage';
-import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
+import { devToolsEnhancer } from 'redux-devtools-extension';
 const initialState = {
     cart: []
 };
@@ -31,4 +31,4 @@ const reducer = (state=initialState, action) => {
 };
 
 
-export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:""}, devToolsEnhancer(applyMiddleware(), persistState()));
