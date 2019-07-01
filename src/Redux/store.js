@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import persistState from 'redux-localstorage';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import { devToolsEnhancer } from 'redux-devtools-extension/logOnlyInProduction';
 const initialState = {
     cart: []
 };
