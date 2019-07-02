@@ -237,12 +237,12 @@ class User extends Component{
                                                             <td>{orders.estado}</td>
                                                             <td>{orders.direccion_entrega}</td>
                                                             <td>{orders.client.client_name}</td>
-                                                            <td>{orders.products[0].productName}</td>
                                                             <td>${orders.valor}</td>
                                                             <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
                                                             <td><Button variant={"outline-warning"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.problemaPedido(e)}>Notificar problema</Button></td>
                                                             <td><Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar orden</Button></td>
-                                                            <td><Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
+                                                            <td><Button variant={"info"} size={"lg"} id={orders.id} onClick={e=>this.verPedido(e)}>Ver orden</Button></td>
+                                                            <td><Button variant={"outline-danger"} size={"lg"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
                                                         </tr>
                                                     )}
                                                     </tbody>
@@ -363,6 +363,9 @@ class User extends Component{
         })
     }
 
+    verPedido(e) {
+
+    }
 }
 
 export default User;
