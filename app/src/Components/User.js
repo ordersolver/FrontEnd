@@ -65,7 +65,8 @@ class User extends Component{
                 this.setState({
                     loading: false,
                     user: res.data
-                })
+                });
+                console.log(res.data);
             })
             .catch(function(){
                     console.log("Try again xd")
@@ -101,12 +102,12 @@ class User extends Component{
     };
 
     fileUploadHandler = () => {
+        const jwt = getJWT();
         const fd = new FormData();
-        fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
-        axios.post('', fd)
-            .then(res =>{
-                console.log(res);
-            })
+        const id = this.state.user.id;
+        fd.append('avatar', this.state.selectedFile, this.state.selectedFile.name);
+        axios.put('http://ordersolverdevelop.herokuapp.com/users/updated/',{id,fd}, {headers: {Authorization: 'Bearer ' + jwt}})
+            .then()
     };
 
     render() {

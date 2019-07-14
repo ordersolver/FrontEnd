@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Button from "react-bootstrap/Button";
 
 class Order extends Component{
 
@@ -23,7 +25,8 @@ class Order extends Component{
                 },
                 products:[{
                     productId: 0,
-                    productName: ""
+                    productName: "",
+                    productValue: 0,
                 }]
             }],
             loading: true,
@@ -52,11 +55,12 @@ class Order extends Component{
                 order: res.data,
                 loading: false
             });
-            console.log(this.state.order[0])
         });
     }
 
+
     render(){
+
         return(
             <div>
                 {this.state.loading ?
@@ -116,6 +120,7 @@ class Order extends Component{
                                             <tr>
                                                 <th>Nombre</th>
                                                 <th>ID</th>
+                                                <th>Precio unitario</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -123,10 +128,19 @@ class Order extends Component{
                                                 <tr key={product.id}>
                                                     <td>{product.productName}</td>
                                                     <td>{product.productId}</td>
+                                                    <td>${product.productValue}</td>
                                                 </tr>
                                             )}
                                             </tbody>
                                         </table>
+                                        <hr/>
+                                    </Row>
+                                    <Row>
+                                        <ButtonToolbar>
+                                            <Button variant={"info"} href={'/user'}>
+                                                Volver
+                                            </Button>
+                                        </ButtonToolbar>
                                     </Row>
                                 </Container>
                             </div>
