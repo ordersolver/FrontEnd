@@ -62,12 +62,11 @@ class User extends Component{
         }
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
-                this.user = res.data;
-                console.log(this.user);
                 this.setState({
                     loading: false,
                     user: res.data
-                })
+                });
+                console.log(res.data);
             })
             .catch(function(){
                     console.log("Try again xd")
@@ -103,12 +102,12 @@ class User extends Component{
     };
 
     fileUploadHandler = () => {
+        const jwt = getJWT();
         const fd = new FormData();
-        fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
-        axios.post('', fd)
-            .then(res =>{
-                console.log(res);
-            })
+        const id = this.state.user.id;
+        fd.append('avatar', this.state.selectedFile, this.state.selectedFile.name);
+        axios.put('http://ordersolverdevelop.herokuapp.com/users/updated/',{id,fd}, {headers: {Authorization: 'Bearer ' + jwt}})
+            .then()
     };
 
     render() {
@@ -237,12 +236,12 @@ class User extends Component{
                                                             <td>{orders.estado}</td>
                                                             <td>{orders.direccion_entrega}</td>
                                                             <td>{orders.client.client_name}</td>
-                                                            <td>{orders.products[0].productName}</td>
                                                             <td>${orders.valor}</td>
                                                             <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
                                                             <td><Button variant={"outline-warning"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.problemaPedido(e)}>Notificar problema</Button></td>
+                                                            <td><Button variant={"info"} size={"sm"} id={orders.id} href={"/order/"+orders.id}>Ver orden</Button></td>
                                                             <td><Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar orden</Button></td>
-                                                            <td><Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
+                                                            <td><Button variant={"outline-danger"} size={"lg"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
                                                         </tr>
                                                     )}
                                                     </tbody>
