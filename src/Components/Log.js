@@ -9,6 +9,7 @@ import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
 import {saveJWT} from "../Redux/ActionCreators";
+import firebase from 'firebase';
 
 
 class Log extends Component {
@@ -16,6 +17,17 @@ class Log extends Component {
     componentClicked = () => console.log("clicked");
 
     static defaultState() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyDttp9CwlzlluYPthO5NRSDoPAJyS4dnbU",
+            authDomain: "ordersolver-1560721244319.firebaseapp.com",
+            databaseURL: "https://ordersolver-1560721244319.firebaseio.com",
+            projectId: "ordersolver-1560721244319",
+            storageBucket: "",
+            messagingSenderId: "506919261604",
+            appId: "1:506919261604:web:f6037b5db7be9144"
+        };
+
+        firebase.initializeApp(firebaseConfig);
         return {
             isLoggedIn: false,
             userID: '',
@@ -112,6 +124,20 @@ class Log extends Component {
                 error: ''
             }
         });
+        this.setState({isLoading: true});
+        let token= this.state.token;
+        console.log(token);
+        response.preventDefault();
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', token)
+            .then(res => {
+                    console.log(res.data.jwt);
+                    localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.history.push('/catalog')
+                }
+            )
+            .catch(function () {
+                clearLocal()
+            });
     };
 
     setEmail(e) {
@@ -334,21 +360,11 @@ class Log extends Component {
                                 <br/>
                                 <br/>
                                 <Row>
-                                    {!this.state.isLoggedIn &&
-                                    <FacebookLogin
-                                        appId="343238832957751"
-                                        fields="name,email,picture"
-                                        onClick={this.componentClicked}
-                                        callback={this.responseFacebook}
-                                    />
-                                    }
-                                </Row>
-                                <Row>
 
                                     {(!this.state.isLoggedIn) &&
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
-                                        buttonText="Login"
+                                        buttonText="Inicio de Sesion por Google"
                                         onSuccess={this.responseGoogle}
                                         onFailure={this.logOut}
                                         cookiePolicy={'single_host_origin'}
@@ -384,7 +400,6 @@ class Log extends Component {
 
                 </Container>
                 <Container >
-
                 </Container>
             </div>
         );
