@@ -9,6 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
+import Spinner from "react-bootstrap/Spinner";
 export default class Catalog extends Component {
 
     constructor(props){
@@ -74,7 +75,7 @@ export default class Catalog extends Component {
                 this.user = res.data;
                 this.setState({
                     user: res.data
-                })
+                });
             })
             .catch(function(){
                     console.log("Try again xd")
@@ -124,6 +125,9 @@ export default class Catalog extends Component {
 
     searchfilter(searchedword){
         if (searchedword !== ''){
+            this.setState({
+                loading: true
+            });
             axios.get('http://ordersolverdevelop.herokuapp.com/products/show?nombre='+searchedword)
                 .then(
                     res=>{
@@ -142,26 +146,56 @@ export default class Catalog extends Component {
     }
 
     render(){
+
         let ProductCards = this.state.product.map(product => {
-            if (this.state.user.rols[0].rolName === "administrador"){
+            if ( this.state.user.rols[0].rolName === "administrador"){
                 return(
                     <Col md={"auto"}>
-                        <ProductCard product={product}>
+                        {!this.state.loading ?
 
-                        </ProductCard>
-                        <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
-                        <br/>
-                        <br/>
+                            <div>
+                                <ProductCard product={product}>
+                                </ProductCard>
+                                <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            :
+
+                            <div>
+                                <Container>
+                                    <Row className={"justify-content-md-center"}>
+                                        <Col xs="" className={"justify-content-center"}><Spinner animation="grow" variant="warning"/></Col>
+                                    </Row>
+                                </Container>
+                            </div>
+                        }
                     </Col>
                 )
             }else{
                 return(
                     <Col md={"auto"}>
-                        <ProductCard product={product}>
+                        {!this.state.loading ?
 
-                        </ProductCard>
-                        <br/>
-                        <br/>
+                            <div>
+                                <ProductCard product={product}>
+                                </ProductCard>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            :
+
+                            <div>
+                                <Container>
+                                    <Row className={"justify-content-md-center"}>
+                                        <Col xs="" className={"justify-content-center"}><Spinner animation="grow" variant="warning" /></Col>
+                                    </Row>
+                                </Container>
+                            </div>
+
+                        }
                     </Col>
                 )
             }

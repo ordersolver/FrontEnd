@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {removeFromCart} from "../Redux/ActionCreators";
 import {connect} from "react-redux";
@@ -107,94 +106,111 @@ class ShoppingCart extends Component {
         return(
             <div>
                 {this.state.user.nombre !== "" ?
-
                     <div>
                         <br/>
-                        <Table fill={"true"}>
-                            <tbody>
-                            {this.props.cart.map(product =>
-                                <tr key={product.id}>
-                                    <td>{product.nombre}</td>
-                                    <td className="text-right">${product.valor}</td>
-                                    <td className="text-right"><Button variant="danger" onClick={() => this.props.removeFromCart(product)}>Borrar</Button></td>
-
-                                </tr>
-                            )}
-                            <tr>
-
-                            </tr>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td>
-                                    Total: ${this.props.cart.reduce((sum, product) => sum + product.valor, 0)}
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </Table>
                         <Container>
-                            <Row>
-                                <Col>
-                                    <ButtonToolbar><Button block={"true"} onClick={e=>this.realizarPedido(e)}>Hacer pedido</Button></ButtonToolbar>
-                                    {this.state.pedidorealizado ?
-                                        <div>
-                                            <Alert variant={"success"}>Orden creada</Alert>
-                                        </div>
-                                        :
-                                        <div>
+                            <h1 className="title is-2">Carrito de compras</h1>
+                            <Container>
+                                <Row>
+                                    <Col xs={9}>
+                                        <table className="table is-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {this.props.cart.map(product =>
+                                                <tr key={product.id}>
+                                                    <td>{product.nombre}</td>
+                                                    <td className="text-center">${product.valor}</td>
+                                                    <td className="text-center"><Button variant="danger"
+                                                                                        onClick={() => this.props.removeFromCart(product)}>Borrar</Button>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                            </tbody>
+                                        </table>
+                                    </Col>
+                                    <Col>
+                                        <Container>
+                                            <div class="box">
+                                                <h3 className="subtitle is-4">Acciones</h3>
+                                                <ButtonToolbar>
+                                                    <Button block={"true"}>Obtener cotización</Button>
+                                                    <Button block={"true"} onClick={e=>this.realizarPedido(e)}>Hacer pedido</Button>
+                                                </ButtonToolbar>
+                                            </div>
+                                        </Container>
+                                        {this.state.pedidorealizado ?
+                                            <div>
+                                                <Alert variant={"success"}>Orden creada</Alert>
+                                            </div>
+                                            :
+                                            <div>
 
-                                        </div>
-                                    }
-                                </Col>
-                                <Col>
-                                    <ButtonToolbar><Button block={"true"}>Obtener cotización</Button></ButtonToolbar>
-                                </Col>
-                                <Col>
-
-                                </Col>
-
-                            </Row>
+                                            </div>
+                                        }
+                                    </Col>
+                                </Row>
+                                <br/>
+                                <Row>
+                                    <h3 className="title is-3 text-right">Precio total: ${this.props.cart.reduce((sum, product) => sum + product.valor, 0)}</h3>
+                                </Row>
+                            </Container>
                         </Container>
                     </div>
 
                     :
 
                     <div>
-                        <Table fill={"true"}>
-                            <tbody>
-                            {this.props.cart.map(product =>
-                                <tr key={product.id}>
-                                    <td>{product.nombre}</td>
-                                    <td className="text-right">${product.valor}</td>
-                                    <td className="text-right"><Button variant="danger" onClick={() => this.props.removeFromCart(product)}>Borrar</Button></td>
-
-                                </tr>
-                            )}
-                            <tr>
-
-                            </tr>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td>
-                                    Total: ${this.props.cart.reduce((sum, product) => sum + product.valor, 0)}
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </Table>
                         <Container>
-                            <Row>
-                                <Col>
-                                    <ButtonToolbar><Button block={"true"} onClick={e=>this.realizarPedido(e)}>Hacer pedido</Button></ButtonToolbar>
-                                </Col>
-                                <Col>
-                                    <ButtonToolbar><Button block={"true"}>Obtener cotización</Button></ButtonToolbar>
-                                </Col>
-                                <Col>
-
-                                </Col>
-
-                            </Row>
+                            <h1 className="title is-2">Carrito de compras</h1>
+                            <Container>
+                                <Row>
+                                    <Col xs={9}>
+                                        <table className="table is-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {this.props.cart.map(product =>
+                                                <tr key={product.id}>
+                                                    <td>{product.nombre}</td>
+                                                    <td className="text-center">${product.valor}</td>
+                                                    <td className="text-center">xd</td>
+                                                    <td className="text-center"><Button variant="danger"
+                                                                                        onClick={() => this.props.removeFromCart(product)}>Borrar</Button>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                            </tbody>
+                                        </table>
+                                    </Col>
+                                    <Col>
+                                        <Container>
+                                            <div class="box">
+                                                <h3 className="subtitle is-4">Acciones</h3>
+                                                <ButtonToolbar>
+                                                    <Button block={"true"}>Obtener cotización</Button>
+                                                    <Button block={"true"} onClick={e=>this.realizarPedido(e)}>Hacer pedido</Button>
+                                                </ButtonToolbar>
+                                            </div>
+                                        </Container>
+                                    </Col>
+                                </Row>
+                                <br/>
+                                <Row>
+                                    <h3 className="title is-3 text-right">Precio total: ${this.props.cart.reduce((sum, product) => sum + product.valor, 0)}</h3>
+                                </Row>
+                            </Container>
                         </Container>
                         <br/>
                         <Container>

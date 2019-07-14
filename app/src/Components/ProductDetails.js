@@ -43,7 +43,6 @@ class ProductDetails extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.state.product);
                 }
             )
             .catch(

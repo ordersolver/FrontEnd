@@ -10,6 +10,7 @@ import ProductDetails from "../Components/ProductDetails";
 import ShoppingCart from "../Components/ShoppingCart";
 import InstantOrder from "../Components/InstantOrder";
 import GoogleMaps from "../Components/GoogleMaps";
+import Order from "../Components/Order";
 
 /* eslint react/prop-types: 0 */
 export default class RouterIndex extends Component {
@@ -24,6 +25,7 @@ export default class RouterIndex extends Component {
                 <Route path="/newproduct" exact component={AddProduct}/>
                 <Route path="/product/:id" component={ProductDetails}/>
                 <Route path="/i_order/:id" component={InstantOrder}/>
+                <Route path="/order/:id" component={Order}/>
                 <Route path="/cart" exact component={ShoppingCart}/>
                 <Route path="/maps" exact component={GoogleMaps}/>
                 {!getJWT() &&

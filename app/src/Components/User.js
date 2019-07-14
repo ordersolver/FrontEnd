@@ -62,8 +62,6 @@ class User extends Component{
         }
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
             .then(res=>{
-                this.user = res.data;
-                console.log(this.user);
                 this.setState({
                     loading: false,
                     user: res.data
@@ -240,8 +238,8 @@ class User extends Component{
                                                             <td>${orders.valor}</td>
                                                             <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button></td>
                                                             <td><Button variant={"outline-warning"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.problemaPedido(e)}>Notificar problema</Button></td>
+                                                            <td><Button variant={"info"} size={"sm"} id={orders.id} href={"/order/"+orders.id}>Ver orden</Button></td>
                                                             <td><Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar orden</Button></td>
-                                                            <td><Button variant={"info"} size={"lg"} id={orders.id} onClick={e=>this.verPedido(e)}>Ver orden</Button></td>
                                                             <td><Button variant={"outline-danger"} size={"lg"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
                                                         </tr>
                                                     )}
@@ -363,9 +361,6 @@ class User extends Component{
         })
     }
 
-    verPedido(e) {
-
-    }
 }
 
 export default User;
