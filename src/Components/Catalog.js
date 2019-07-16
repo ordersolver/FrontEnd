@@ -186,7 +186,7 @@ class Catalog extends Component {
                                 <ProductCard product={product}>
                                 </ProductCard>
                                 <ButtonToolbar>
-                                    <Button block={true} variant={"info"} href={"/productphoto/"+product.id}>Actualizar foto</Button>
+                                    <Button block={true} variant={"info"} href={"/productphoto/"+product.id}>Actualizar</Button>
                                     <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
                                 </ButtonToolbar>
                                 <br/>
@@ -240,9 +240,9 @@ class Catalog extends Component {
             <div>
                 <Container fluid>
                     <Row>
-                        <Col></Col>
-                        <Col></Col>
-                        <Col></Col>
+                        <Col> </Col>
+                        <Col> </Col>
+                        <Col> </Col>
                         <Col xs={8}>
                             <InputGroup className="mb-3">
                                 <FormControl
