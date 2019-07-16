@@ -41,9 +41,11 @@ class Header extends Component {
                         </Row>
                     </Nav>
                     <Nav>
+                        {this.props.jwt &&
                         <figure className="image is-48x48">
                             <img className="is-rounded" alt={"Foto"} src={this.props.photourl}/>
                         </figure>
+                        }
                         {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
