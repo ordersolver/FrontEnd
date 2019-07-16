@@ -3,14 +3,14 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure, Overlay} fr
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from "axios";
-import {getJWT} from "../Helpers/JWT";
 import Alert from "react-bootstrap/Alert";
+import {connect} from "react-redux";
 
-export default class Reg extends Component {
+class Reg extends Component {
 
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(jwt){
             this.props.history.push('/')
         }
@@ -230,7 +230,7 @@ export default class Reg extends Component {
             );
     }
     doSomething(){
-        let jwt = getJWT();
+        let jwt = this.props.jwt;
         if (jwt) {
             this.setState({
                 submit:{
@@ -453,3 +453,18 @@ export default class Reg extends Component {
         );
     }
 }
+
+const mapStateToProps = state =>{
+    return{
+        cart: state.cart,
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Reg);

@@ -6,7 +6,6 @@ import Container from "react-bootstrap/Container";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {getJWT} from "../Helpers/JWT";
 import axios from "axios";
 import Alert from "react-bootstrap/Alert";
 
@@ -36,7 +35,7 @@ class ShoppingCart extends Component {
 
     componentDidMount() {
 
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(jwt){
             axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
                 .then(res=>{
@@ -51,7 +50,7 @@ class ShoppingCart extends Component {
 
     realizarPedido(e){
         e.preventDefault();
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -223,7 +222,8 @@ class ShoppingCart extends Component {
 
 const mapStateToProps = state =>{
     return{
-        cart: state.cart
+        cart: state.cart,
+        jwt: state.jwt
     };
 };
 

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {getJWT} from "../Helpers/JWT";
 import axios from 'axios';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -60,7 +59,7 @@ class User extends Component{
     }
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -122,7 +121,7 @@ class User extends Component{
                 () => {
                     // complete function ....
                     storage.ref('images').child(image.name).getDownloadURL().then(url => {
-                        const jwt = getJWT();
+                        const jwt = this.props.jwt;
                         this.props.savephotourl(url);
                         axios.put('http://ordersolverdevelop.herokuapp.com/users/updated/', {
                             id: JSON.stringify(this.state.user.id),
@@ -439,7 +438,7 @@ class User extends Component{
             res=>{
             }
         );
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         axios.request({
             method: 'DELETE',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/destroy',
@@ -455,7 +454,7 @@ class User extends Component{
     }
 
     borrarPedido(e) {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         let orderid = e.target.id;
         axios.request({
             method: 'DELETE',

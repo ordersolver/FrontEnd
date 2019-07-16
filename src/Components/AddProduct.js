@@ -1,4 +1,3 @@
-import {getJWT} from "../Helpers/JWT";
 import axios from "axios";
 import React, {Component} from 'react';
 import Container from "react-bootstrap/Container";
@@ -9,8 +8,9 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/es/Button";
 import {FormControl, FormGroup, FormLabel, Overlay} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import {connect} from "react-redux";
 
-export default class AddProduct extends Component{
+class AddProduct extends Component{
 
     defaultState(){
         return{
@@ -95,7 +95,7 @@ export default class AddProduct extends Component{
     }
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -544,3 +544,16 @@ export default class AddProduct extends Component{
 
     }
 }
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (AddProduct);

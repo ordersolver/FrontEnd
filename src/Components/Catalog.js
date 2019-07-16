@@ -7,11 +7,10 @@ import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProductCard from './ProductCard';
 import axios from 'axios';
-import {getJWT} from "../Helpers/JWT";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {connect} from "react-redux"
-import {savephotourl} from "../Redux/ActionCreators";
+import {pagemasmas, pagemenosmenos, savephotourl} from "../Redux/ActionCreators";
 
 class Catalog extends Component {
 
@@ -48,16 +47,15 @@ class Catalog extends Component {
                 photo: null
             },
             loading: true,
-            page: 3
+            page: 1
         };
-        this.pageselect = React.createRef();
         this.setSearchword = this.setSearchword.bind(this);
     }
 
     componentDidMount() {
         let items = {
-            page: this.state.page,
-            per_page: 15,
+            page: this.props.page,
+            per_page: 20,
         };
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index', {params:items})
             .then(
@@ -70,9 +68,8 @@ class Catalog extends Component {
                 }
             )
             .catch(
-
             );
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(jwt){
             axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
                 .then(res=>{
@@ -89,25 +86,39 @@ class Catalog extends Component {
 
     }
 
-    pagemenosmenos(){
-        this.setState(
-            {
-                page: this.state.page - 1
-            }
-        );
-    }
-
-    pagemmasmas(){
+    pagemasmas(e){
+        e.preventDefault();
         this.setState(
             {
                 page: this.state.page + 1
             }
         );
+        this.props.pagemasmas(this.state.page);
+        setTimeout(
+            function () {
+                window.location.reload();
+            }, 200
+        );
+    }
+
+    pagemenosmenos(e){
+        e.preventDefault();
+        this.setState(
+            {
+                page: this.state.page - 1
+            }
+        );
+        this.props.pagemenosmenos(this.state.page);
+        setTimeout(
+            function () {
+                window.location.reload();
+            }, 200
+        );
     }
 
     borrarProducto(e) {
         e.preventDefault();
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         axios.request({
             method: 'DELETE',
             url: 'http://ordersolverdevelop.herokuapp.com/products/destroy',
@@ -265,12 +276,14 @@ class Catalog extends Component {
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>
-                        <Col></Col>
-                        <Col></Col>
-                        <Col></Col>
+                        <Col> </Col>
+                        <Col> </Col>
+                        <Col> </Col>
                     </Row>
                 </Container>
-                <hr></hr>
+                <hr>
+
+                </hr>
                 <Container className={"Menu"}>
                     <Row>
                         <Col>
@@ -282,6 +295,15 @@ class Catalog extends Component {
                                     </ListGroup.Item>
                                     <ListGroup.Item as="li" >
                                         <Button onClick={e => this.filterIt(e)} value = {"Colchoneta"} variant={"light"}>Colchonetas</Button>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item as="li" >
+                                        <Button onClick={e => this.filterIt(e)} value = {"Lámina"} variant={"light"}>Láminas</Button>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item as="li" >
+                                        <ButtonToolbar>
+                                            <Button onClick={e=>this.pagemenosmenos(e)}>Anterior</Button>
+                                            <Button onClick={e=>this.pagemasmas(e)}>Siguiente</Button>
+                                        </ButtonToolbar>
                                     </ListGroup.Item>
                                     {this.state.user.rols[0].rolName === "administrador" ?
                                         <Button variant={"danger"} href="/newproduct">Añadir producto</Button>
@@ -317,7 +339,8 @@ class Catalog extends Component {
 
 const mapStateToProps = state =>{
     return{
-        jwt: state.jwt
+        jwt: state.jwt,
+        page: state.page
     };
 };
 
@@ -325,6 +348,12 @@ const mapDispatchToProps = dispatch =>{
     return{
         savephotourl(photurl){
             dispatch(savephotourl(photurl));
+        },
+        pagemasmas(page){
+            dispatch(pagemasmas(page));
+        },
+        pagemenosmenos(page){
+            dispatch(pagemenosmenos(page));
         }
     };
 };

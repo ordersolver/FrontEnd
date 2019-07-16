@@ -3,7 +3,6 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Overlay} from 
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import {clearLocal, getJWT} from "../Helpers/JWT";
 import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
@@ -85,7 +84,7 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
+
             });
         this.doSomething()
     };
@@ -117,7 +116,6 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
             });
     };
 
@@ -167,7 +165,7 @@ class Log extends Component {
             });
     }
     doSomething(){
-        let jwt = getJWT();
+        let jwt = this.props.jwt;
         if (jwt) {
             this.setState({
                 submit:{
@@ -196,7 +194,6 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
             });
         this.doSomething()
     }
@@ -225,7 +222,6 @@ class Log extends Component {
                     this.setState({
                         jwt: res.data.jwt
                     });
-                    localStorage.setItem('the-JWT', res.data.jwt);
                     if (this.state.jwt) {
                         this.setState({
                             submit:{

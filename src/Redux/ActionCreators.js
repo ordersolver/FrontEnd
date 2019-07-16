@@ -22,4 +22,12 @@ const deletephotourl = () => {
     return {type: "DELETE_PHOTOURL"}
 };
 
-export {addToCart, removeFromCart, saveJWT, eraseJWT, savephotourl, deletephotourl};
+const pagemasmas = () => {
+    return {type: "PAGEMASMAS"}
+};
+
+const pagemenosmenos = () =>{
+    return {type: "PAGEMENOSMENOS"}
+};
+
+export {addToCart, removeFromCart, saveJWT, eraseJWT, savephotourl, deletephotourl, pagemasmas, pagemenosmenos};

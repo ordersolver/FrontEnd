@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {FacebookIcon,TwitterIcon,WhatsappIcon} from 'react-share';
 import {Nav, Figure, Navbar, Row} from "react-bootstrap";
 import './All.css';
-export default class Footer extends Component {
+import {connect} from "react-redux";
+class Footer extends Component {
     render(){
         return (
                 <Navbar expand="lg" bg={"secondary"}>
@@ -34,3 +35,16 @@ export default class Footer extends Component {
         )
     }
 }
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Footer);

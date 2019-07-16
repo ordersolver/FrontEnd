@@ -4,14 +4,15 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
-import {getJWT} from "../Helpers/JWT";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import {ButtonToolbar} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import {removeFromCart} from "../Redux/ActionCreators";
+import {connect} from "react-redux";
 
-export default class InstantOrder extends Component {
+class InstantOrder extends Component {
 
     constructor() {
         super();
@@ -49,7 +50,7 @@ export default class InstantOrder extends Component {
     }
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -94,7 +95,7 @@ export default class InstantOrder extends Component {
         var year = new Date().getFullYear();
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/create',
@@ -230,3 +231,19 @@ export default class InstantOrder extends Component {
     }
 
 }
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        removeFromCart(product){
+            dispatch(removeFromCart(product));
+        }
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (InstantOrder)

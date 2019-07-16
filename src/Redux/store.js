@@ -36,9 +36,19 @@ const reducer = (state=initialState, action) => {
             ...state,
             photourl: ""
         }
+    } else if (action.type === "PAGEMASMAS"){
+        return {
+            ...state,
+            page: state.page+1
+        }
+    } else if (action.type === "PAGEMENOSMENOS"){
+        return {
+            ...state,
+            page: state.page-1
+        }
     }
     return state;
 };
 
 
-export default createStore(reducer, {cart:[], jwt:"",photourl:""}, composeWithDevTools(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:"",photourl:"", page:1}, composeWithDevTools(applyMiddleware(), persistState()));
