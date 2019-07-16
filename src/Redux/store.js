@@ -26,9 +26,19 @@ const reducer = (state=initialState, action) => {
             ...state,
             jwt: ""
         }
+    } else if (action.type === "SAVE_PHOTOURL"){
+        return{
+            ...state,
+            photourl: action.photourl
+        }
+    } else if (action.type === "DELETE_PHOTOURL"){
+        return{
+            ...state,
+            photourl: ""
+        }
     }
     return state;
 };
 
 
-export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:"",photourl:""}, composeWithDevTools(applyMiddleware(), persistState()));

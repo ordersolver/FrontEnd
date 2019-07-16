@@ -11,6 +11,8 @@ import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import 'bulma/css/bulma.css';
 import Alert from "react-bootstrap/Alert";
 import {storage} from "./Firebase";
+import {connect} from "react-redux";
+import {savephotourl} from "../Redux/ActionCreators";
 
 class User extends Component{
 
@@ -45,7 +47,6 @@ class User extends Component{
                     rolID: "",
                     rolName: ""
                 }],
-                avatar: null,
                 photo: ""
             },
             loading: true,
@@ -69,6 +70,7 @@ class User extends Component{
                     loading: false,
                     user: res.data
                 });
+                this.props.savephotourl(this.data.photo);
             })
             .catch(function(){
                 }
@@ -121,6 +123,7 @@ class User extends Component{
                     // complete function ....
                     storage.ref('images').child(image.name).getDownloadURL().then(url => {
                         const jwt = getJWT();
+                        this.props.savephotourl(url);
                         axios.put('http://ordersolverdevelop.herokuapp.com/users/updated/', {
                             id: JSON.stringify(this.state.user.id),
                             photo: url
@@ -470,4 +473,18 @@ class User extends Component{
 
 }
 
-export default User;
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        savephotourl(photurl){
+            dispatch(savephotourl(photurl));
+        }
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (User);

@@ -4,12 +4,14 @@ import {Col, Row} from "react-bootstrap";
 import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
 import {connect} from "react-redux";
-import {eraseJWT} from "../Redux/ActionCreators";
+import {eraseJWT, deletephotourl} from "../Redux/ActionCreators";
+import Badge from "react-bootstrap/Badge";
 class Header extends Component {
 
     logout(e){
         e.preventDefault();
         this.props.eraseJWT();
+        this.props.deletephotourl();
         deleteJWT();
         window.location.reload();
     }
@@ -39,6 +41,9 @@ class Header extends Component {
                         </Row>
                     </Nav>
                     <Nav>
+                        <figure className="image is-48x48">
+                            <img className="is-rounded" alt={"Foto"} src={this.props.photourl}/>
+                        </figure>
                         {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
@@ -58,6 +63,7 @@ class Header extends Component {
                                 height={35}
                                 src="https://i.ibb.co/Yp19KLQ/Cart.png"
                             />
+                            <Badge variant={"danger"}>{this.props.cart.length}</Badge>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -68,7 +74,9 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        jwt: state.jwt
+        cart: state.cart,
+        jwt: state.jwt,
+        photourl: state.photourl
     };
 };
 
@@ -76,6 +84,9 @@ const mapDispatchToProps = dispatch => {
     return {
         eraseJWT(jwt) {
             dispatch(eraseJWT(jwt));
+        },
+        deletephotourl(){
+            dispatch(deletephotourl())
         }
     };
 };

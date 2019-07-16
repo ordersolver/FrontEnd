@@ -95,9 +95,10 @@ class ShoppingCart extends Component {
                             <Container>
                                 <Row>
                                     <Col xs={9}>
-                                        <table className="table is-striped">
+                                        <table className="table is-striped is-narrow">
                                             <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Acciones</th>
@@ -106,6 +107,9 @@ class ShoppingCart extends Component {
                                             <tbody>
                                             {this.props.cart.map(product =>
                                                 <tr key={product.id}>
+                                                    <td><figure className="image is-128x128">
+                                                        <img alt={"Foto"} src={product.photo}/>
+                                                    </figure></td>
                                                     <td>{product.nombre}</td>
                                                     <td className="text-center">${product.valor}</td>
                                                     <td className="text-center"><Button variant="danger"
@@ -156,15 +160,18 @@ class ShoppingCart extends Component {
                                         <table className="table is-striped">
                                             <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Producto</th>
                                                 <th>Precio</th>
-                                                <th>Cantidad</th>
                                                 <th>Acciones</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             {this.props.cart.map(product =>
                                                 <tr key={product.id}>
+                                                    <td><figure className="image is-128x128">
+                                                        <img alt={"Foto"} src={product.photo}/>
+                                                    </figure></td>
                                                     <td>{product.nombre}</td>
                                                     <td className="text-center">${product.valor}</td>
                                                     <td className="text-center">xd</td>

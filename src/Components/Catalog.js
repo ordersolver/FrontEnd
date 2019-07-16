@@ -1,17 +1,19 @@
 /* eslint react/prop-types: 0 */
 import React, {Component} from 'react';
-import { Row, Col, Button, Container, Figure, Dropdown} from "react-bootstrap";
+import { Row, Col, Button, Container, Figure} from "react-bootstrap";
 import './All.css';
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-export default class Catalog extends Component {
+import {connect} from "react-redux"
+import {savephotourl} from "../Redux/ActionCreators";
+
+class Catalog extends Component {
 
     constructor(props){
         super(props);
@@ -42,7 +44,8 @@ export default class Catalog extends Component {
                 rols:[{
                     rolID: "",
                     rolName: ""
-                }]
+                }],
+                photo: null
             },
             loading: true,
             page: 3
@@ -70,16 +73,20 @@ export default class Catalog extends Component {
 
             );
         const jwt = getJWT();
-        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
-            .then(res=>{
-                this.user = res.data;
-                this.setState({
-                    user: res.data
-                });
-            })
-            .catch(function(){
-                }
-            );
+        if(jwt){
+            axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+                .then(res=>{
+                    this.user = res.data;
+                    this.setState({
+                        user: res.data
+                    });
+                    this.props.savephotourl(res.data.photo)
+                })
+                .catch(function(){
+                    }
+                );
+        }
+
     }
 
     pagemenosmenos(){
@@ -308,4 +315,21 @@ export default class Catalog extends Component {
     }
 
 }
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        savephotourl(photurl){
+            dispatch(savephotourl(photurl));
+        }
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Catalog);
+
 /* eslint react/prop-types: 0 */

@@ -109,12 +109,11 @@ class Log extends Component {
         this.setState({isLoading: true});
         let token= this.state.token;
         console.log(token);
-        response.preventDefault();
-        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', token)
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', {token: token})
             .then(res => {
-                    console.log(res.data.jwt);
-                    localStorage.setItem('the-JWT', res.data.jwt);
-                    this.props.history.push('/catalog')
+                    console.log(res.data);
+                    //localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.saveJWT(res.data);
                 }
             )
             .catch(function () {
