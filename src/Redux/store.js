@@ -46,9 +46,19 @@ const reducer = (state=initialState, action) => {
             ...state,
             page: state.page-1
         }
+    }else if (action.type === "SAVEUSER"){
+        return{
+            ...state,
+            user: action.user
+        }
+    } else if (action.type === "DELETEUSER"){
+        return {
+            ...state,
+            user: ""
+        }
     }
     return state;
 };
 
 
-export default createStore(reducer, {cart:[], jwt:"",photourl:"", page:1}, composeWithDevTools(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:"",photourl:"", page:1, user: ""}, composeWithDevTools(applyMiddleware(), persistState()));

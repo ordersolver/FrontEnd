@@ -30,4 +30,13 @@ const pagemenosmenos = () =>{
     return {type: "PAGEMENOSMENOS"}
 };
 
-export {addToCart, removeFromCart, saveJWT, eraseJWT, savephotourl, deletephotourl, pagemasmas, pagemenosmenos};
+const saveuser = (user) => {
+    return {type: "SAVEUSER", user}
+};
+
+const deleteuser = () => {
+    return {type: "DELETEUSER"}
+};
+
+
+export {addToCart, removeFromCart, saveJWT, eraseJWT, savephotourl, deletephotourl, pagemasmas, pagemenosmenos, saveuser, deleteuser};

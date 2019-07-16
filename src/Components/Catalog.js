@@ -10,7 +10,7 @@ import axios from 'axios';
 import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {connect} from "react-redux"
-import {pagemasmas, pagemenosmenos, savephotourl} from "../Redux/ActionCreators";
+import {pagemasmas, pagemenosmenos, savephotourl, saveuser} from "../Redux/ActionCreators";
 
 class Catalog extends Component {
 
@@ -77,6 +77,7 @@ class Catalog extends Component {
                     this.setState({
                         user: res.data
                     });
+                    this.props.saveuser(res.data);
                     this.props.savephotourl(res.data.photo)
                 })
                 .catch(function(){
@@ -241,10 +242,7 @@ class Catalog extends Component {
                     </Col>
                 )
             }
-
-
         });
-
 
         return (
             <div>
@@ -354,6 +352,9 @@ const mapDispatchToProps = dispatch =>{
         },
         pagemenosmenos(page){
             dispatch(pagemenosmenos(page));
+        },
+        saveuser(user){
+            dispatch(saveuser(user));
         }
     };
 };

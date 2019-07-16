@@ -4,7 +4,7 @@ import {Col, Row} from "react-bootstrap";
 import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
 import {connect} from "react-redux";
-import {eraseJWT, deletephotourl} from "../Redux/ActionCreators";
+import {eraseJWT, deletephotourl, deleteuser} from "../Redux/ActionCreators";
 import Badge from "react-bootstrap/Badge";
 class Header extends Component {
 
@@ -12,6 +12,7 @@ class Header extends Component {
         e.preventDefault();
         this.props.eraseJWT();
         this.props.deletephotourl();
+        this.props.deleteuser();
         deleteJWT();
         window.location.reload();
     }
@@ -89,6 +90,9 @@ const mapDispatchToProps = dispatch => {
         },
         deletephotourl(){
             dispatch(deletephotourl())
+        },
+        deleteuser(){
+            dispatch(deleteuser())
         }
     };
 };
