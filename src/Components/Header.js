@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import {eraseJWT} from "../Redux/ActionCreators";
 class Header extends Component {
 
-
     logout(e){
         e.preventDefault();
         this.props.eraseJWT();
@@ -17,7 +16,7 @@ class Header extends Component {
 
     render(){
         return (
-            <Navbar collapseOnSelect expand="lg" bg={"warning"} variant={"light"}>
+            <Navbar collapseOnSelect expand="lg" bg={"secondary"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
@@ -49,11 +48,8 @@ class Header extends Component {
                                 <NavDropdown.Item  onClick={e => this.logout(e)} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
-                        <Nav.Link eventKey={2} href="/catalog">
-                            Nuestros productos
-                        </Nav.Link>
                         <Nav.Link eventKey={2} href="/maps">
-                            Donde Estamos
+                            Dónde Estamos
                         </Nav.Link>
 
                         <Nav.Link href="/cart">
