@@ -140,8 +140,36 @@ export default class Catalog extends Component {
         }
     }
 
-    render(){
+    filterIt(e){
+        this.setState({searchword: e.target.value || ''});
+        console.log(this.state.searchword);
+        setTimeout(
+            function() {
+                if (this.state.searchword !== ''){
+                    this.setState({
+                        loading: true
+                    });
+                    axios.get('http://ordersolverdevelop.herokuapp.com/products/show?categoria='+this.state.searchword)
+                        .then(
+                            res=>{
+                                this.product=res.data;
+                                this.setState({
+                                    product: res.data,
+                                    loading: false
+                                });
+                            }
+                        )
+                        .catch(
 
+                        )
+                }
+            }
+                .bind(this),
+            100
+        );
+    }
+
+    render(){
         let ProductCards = this.state.product.map(product => {
             if ( this.state.user.rols[0].rolName === "administrador"){
                 return(
@@ -199,6 +227,8 @@ export default class Catalog extends Component {
 
 
         });
+
+
         return (
             <div>
                 <Container fluid>
@@ -242,52 +272,10 @@ export default class Catalog extends Component {
                                 <ListGroup as="ul">
                                     <ListGroup.Item as="li" active>Nuestros productos</ListGroup.Item>
                                     <ListGroup.Item as="li" >
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 1 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
+                                        <Button onClick={e => this.filterIt(e)} value = {"Colchón"} variant={"light"}>Colchones</Button>
                                     </ListGroup.Item>
-                                    <ListGroup.Item as="li" action>
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 2 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
-                                    </ListGroup.Item>
-                                    <ListGroup.Item as="li" action>
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 3 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
+                                    <ListGroup.Item as="li" >
+                                        <Button onClick={e => this.filterIt(e)} value = {"Colchoneta"} variant={"light"}>Colchonetas</Button>
                                     </ListGroup.Item>
                                     {this.state.user.rols[0].rolName === "administrador" ?
                                         <Button variant={"danger"} href="/newproduct">Añadir producto</Button>
@@ -318,7 +306,6 @@ export default class Catalog extends Component {
             </div>
         );
     }
-
 
 }
 /* eslint react/prop-types: 0 */
