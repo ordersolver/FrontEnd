@@ -13,7 +13,6 @@ import Spinner from "react-bootstrap/Spinner";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Dropdown from "react-bootstrap/Dropdown";
-import {Figure} from "react-bootstrap";
 
 export default class Catalog extends Component {
 

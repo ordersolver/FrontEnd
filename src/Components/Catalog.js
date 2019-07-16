@@ -149,7 +149,6 @@ class Catalog extends Component {
 
     filterIt(e){
         this.setState({searchword: e.target.value || ''});
-        console.log(this.state.searchword);
         setTimeout(
             function() {
                 if (this.state.searchword !== ''){

@@ -231,9 +231,7 @@ export default class Reg extends Component {
     }
     doSomething(){
         let jwt = getJWT();
-        console.log(jwt);
         if (jwt) {
-            console.log("So far so good");
             this.setState({
                 submit:{
                     error: "Bienvenido a nuestro servicio."
@@ -241,7 +239,6 @@ export default class Reg extends Component {
             })
         }
         if(!jwt){
-            console.log(JSON.parse(jwt));
 
         }
     }
@@ -262,7 +259,6 @@ export default class Reg extends Component {
             }
 
         };
-        console.log(data);
         this.setState({
             formSubmitted: true,
             submit: {

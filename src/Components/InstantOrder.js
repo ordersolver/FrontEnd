@@ -61,7 +61,6 @@ export default class InstantOrder extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.state.product)
                 }
             );
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
@@ -95,17 +94,7 @@ export default class InstantOrder extends Component {
         var year = new Date().getFullYear();
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
-        let order={
-            productos:[this.state.product[0].id],
-            fecha:date+"/"+month+"/"+year,
-            estado:"Activo",
-            direccion_entrega: this.state.user.direccion,
-            valor: JSON.stringify(this.state.product[0].valor),
-            user_id: this.state.user.no_id
-        };
-        console.log(order);
         const jwt = getJWT();
-        console.log(jwt);
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/create',
