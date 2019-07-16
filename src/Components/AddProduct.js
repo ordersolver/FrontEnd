@@ -8,8 +8,6 @@ import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/es/Button";
 import {FormControl, FormGroup, FormLabel, Overlay} from "react-bootstrap";
-import Image from "react-bootstrap/Image";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Alert from "react-bootstrap/Alert";
 
 export default class AddProduct extends Component{
@@ -69,7 +67,6 @@ export default class AddProduct extends Component{
                     rolName: ""
                 }]
             },
-            image: null,
             loading: true,
             formSubmitted: false,
             isLoading: false,
@@ -93,7 +90,6 @@ export default class AddProduct extends Component{
         this.setLamina = this.setLamina.bind(this);
         this.setCassata = this.setCassata.bind(this);
         this.setValor = this.setValor.bind(this);
-        this.setImage = this.setImage.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
@@ -278,12 +274,6 @@ export default class AddProduct extends Component{
         })
     }
 
-    setImage = event => {
-        this.setState({
-            image: event.target.files[0]
-        });
-        console.log(this.state.image);
-    };
 
     change(e){
         e.preventDefault();
@@ -321,13 +311,10 @@ export default class AddProduct extends Component{
         axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
             .then(res=>{
                     this.props.history.push('/');
-                    console.log("Oki");
             }
             )
             .catch(function () {
-                console.log("Ups")
             });
-        console.log(data);
         this.setState({
             formSubmitted: true,
             submit: {
@@ -408,6 +395,8 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setGrosor}
                                                             />
                                                         </FormGroup>
+                                                    </Col>
+                                                    <Col>
                                                         <FormGroup controlId="densidad">
                                                             <FormControl
                                                                 autoFocus
@@ -536,18 +525,7 @@ export default class AddProduct extends Component{
                                                 </form>
                                             </Jumbotron>
                                         </Col>
-                                        <Col>
-                                            <Container>
-                                                <Row className={"justify-content-md-center"}>
-                                                    <Col xs="" className={"justify-content-center"}><Image src="https://image.flaticon.com/icons/svg/1246/1246234.svg" rounded /></Col>
-                                                </Row>
-                                                <Row>
-                                                    <ButtonToolbar>
-                                                        <input type={"file"} onChange={this.setImage}/>
-                                                    </ButtonToolbar>
-                                                </Row>
-                                            </Container>
-                                        </Col>
+                                        <Col></Col>
                                     </Row>
                                 </Container>
                             </div>

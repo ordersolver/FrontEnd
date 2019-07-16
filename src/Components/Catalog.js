@@ -10,6 +10,7 @@ import ProductCard from './ProductCard';
 import axios from 'axios';
 import {getJWT} from "../Helpers/JWT";
 import Spinner from "react-bootstrap/Spinner";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 export default class Catalog extends Component {
 
     constructor(props){
@@ -28,7 +29,7 @@ export default class Catalog extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
-                image: null
+                photo: null
             }],
             user: {
                 no_id: "",
@@ -63,7 +64,6 @@ export default class Catalog extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.product);
                 }
             )
             .catch(
@@ -78,7 +78,6 @@ export default class Catalog extends Component {
                 });
             })
             .catch(function(){
-                    console.log("Try again xd")
                 }
             );
     }
@@ -89,7 +88,6 @@ export default class Catalog extends Component {
                 page: this.state.page - 1
             }
         );
-        console.log(this.state.page)
     }
 
     pagemmasmas(){
@@ -98,12 +96,10 @@ export default class Catalog extends Component {
                 page: this.state.page + 1
             }
         );
-        console.log(this.state.page)
     }
 
     borrarProducto(e) {
         e.preventDefault();
-        console.log(e.target.id);
         const jwt = getJWT();
         axios.request({
             method: 'DELETE',
@@ -136,7 +132,6 @@ export default class Catalog extends Component {
                             product: res.data,
                             loading: false
                         });
-                        //console.log(this.product);
                     }
                 )
                 .catch(
@@ -152,11 +147,13 @@ export default class Catalog extends Component {
                 return(
                     <Col md={"auto"}>
                         {!this.state.loading ?
-
                             <div>
                                 <ProductCard product={product}>
                                 </ProductCard>
-                                <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                                <ButtonToolbar>
+                                    <Button block={true} variant={"info"} href={"/productphoto/"+product.id}>Actualizar foto</Button>
+                                    <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                                </ButtonToolbar>
                                 <br/>
                                 <br/>
                             </div>

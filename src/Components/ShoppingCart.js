@@ -35,23 +35,17 @@ class ShoppingCart extends Component {
     }
 
     componentDidMount() {
-        this.props.cart.map(product=>{
-            return(console.log(product.id))
-            }
-        );
+
         const jwt = getJWT();
         if(jwt){
-            console.log("Logged");
             axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
                 .then(res=>{
                     this.user = res.data;
-                    console.log(this.user);
                     this.setState({
                         user: res.data
                     })
                 })
         }else{
-            console.log("non logged")
         }
     }
 
@@ -64,18 +58,6 @@ class ShoppingCart extends Component {
         var year = new Date().getFullYear();
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
-        let order={
-            productos:this.props.cart.map(product=>{
-                    return(product.id)
-                }
-            ),
-            fecha:date+"/"+month+"/"+year,
-            estado:"Activo",
-            direccion_entrega: this.state.user.direccion,
-            valor: JSON.stringify(this.props.cart.reduce((sum, product) => sum + product.valor, 0)),
-            user_id: this.state.user.id
-        };
-        console.log(order);
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/create',
@@ -136,7 +118,7 @@ class ShoppingCart extends Component {
                                     </Col>
                                     <Col>
                                         <Container>
-                                            <div class="box">
+                                            <div className="box">
                                                 <h3 className="subtitle is-4">Acciones</h3>
                                                 <ButtonToolbar>
                                                     <Button block={"true"}>Obtener cotización</Button>
@@ -196,7 +178,7 @@ class ShoppingCart extends Component {
                                     </Col>
                                     <Col>
                                         <Container>
-                                            <div class="box">
+                                            <div className="box">
                                                 <h3 className="subtitle is-4">Acciones</h3>
                                                 <ButtonToolbar>
                                                     <Button block={"true"}>Obtener cotización</Button>
