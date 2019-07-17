@@ -39,9 +39,15 @@ class Log extends Component {
     }
 
     componentWillMount() {
-        if(this.props.jwt){
-            this.props.history.push('/');
-        }
+        setTimeout(
+            function() {
+                if(this.props.jwt){
+                    this.props.history.push('/');
+                }
+            }
+                .bind(this),
+            50
+        );
     }
 
     constructor(props){
