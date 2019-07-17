@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {getJWT} from "../Helpers/JWT";
 import Row from "react-bootstrap/Row";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button";
@@ -13,8 +12,9 @@ import Spinner from "react-bootstrap/Spinner";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Dropdown from "react-bootstrap/Dropdown";
+import {connect} from "react-redux";
 
-export default class Catalog extends Component {
+class ProductPhoto extends Component {
 
 
     constructor(props) {
@@ -46,9 +46,9 @@ export default class Catalog extends Component {
     }
 
     componentDidMount() {
-        const jwt = getJWT();
-        if(!jwt){
-            this.props.history.push('/log');
+        console.log();
+        if(!this.props.user || this.props.user.rols[0].rolName!=="administrador"){
+            this.props.history.push('/');
         }
         axios.get('http://ordersolverdevelop.herokuapp.com/products/show?id='+this.props.match.params.id)
             .then(
@@ -91,7 +91,7 @@ export default class Catalog extends Component {
                 () => {
                     // complete function ....
                     storage.ref('images').child(image.name).getDownloadURL().then(url => {
-                        const jwt = getJWT();
+                        const jwt = this.props.jwt;
                         axios.put('http://ordersolverdevelop.herokuapp.com/products/updated',{id: this.props.match.params.id, photo: url}, { headers: { Authorization: 'Bearer ' + jwt}})
                             .then();
                         this.setState({url});
@@ -132,7 +132,7 @@ export default class Catalog extends Component {
 
     updateit=(e)=>{
         e.preventDefault();
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if (this.state.toupdate==="nombre"){
             const nombre = this.state.updatevalue;
             axios.put('http://ordersolverdevelop.herokuapp.com/products/updated',{id: this.props.match.params.id,nombre}, { headers: { Authorization: 'Bearer ' + jwt}})
@@ -476,3 +476,17 @@ export default class Catalog extends Component {
     }
 
 }
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt,
+        user: state.user
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (ProductPhoto);

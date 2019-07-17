@@ -11,7 +11,6 @@ import {saveJWT} from "../Redux/ActionCreators";
 
 class Log extends Component {
 
-
     static defaultState() {
         return {
             isLoggedIn: false,
@@ -36,6 +35,12 @@ class Log extends Component {
             isLoading: false,
             jwt: "",
             show: false
+        }
+    }
+
+    componentWillMount() {
+        if(this.props.jwt){
+            this.props.history.push('/');
         }
     }
 

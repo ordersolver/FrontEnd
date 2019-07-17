@@ -9,10 +9,9 @@ import {connect} from "react-redux";
 class Reg extends Component {
 
 
-    componentDidMount() {
-        const jwt = this.props.jwt;
-        if(jwt){
-            this.props.history.push('/')
+    componentWillMount() {
+        if(this.props.jwt){
+            this.props.history.push('/');
         }
     }
 
