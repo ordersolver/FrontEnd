@@ -34,7 +34,6 @@ class ShoppingCart extends Component {
     }
 
     componentDidMount() {
-
         const jwt = this.props.jwt;
         if(jwt){
             axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })

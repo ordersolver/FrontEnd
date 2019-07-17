@@ -367,11 +367,6 @@ class User extends Component{
                                 :
 
                                 <div>
-                                    <Container>
-                                        <Row className={"justify-content-md-center"}>
-                                            <h1>Eres un usuario promedio xd</h1>
-                                        </Row>
-                                    </Container>
 
                                 </div>
 

@@ -208,7 +208,7 @@ class InstantOrder extends Component {
                                 <Col></Col>
                                 <Col>
                                     <ButtonToolbar>
-                                        <Button variant={"warning"} size={"lg"} onClick={e=>this.realizarPedido(e)}> Realizar pedido </Button>
+                                        <Button variant={"primary"} size={"lg"} onClick={e=>this.realizarPedido(e)}> Realizar pedido </Button>
                                         {this.state.pedidorealizado ?
                                             <div>
                                                 <Alert variant={"success"}>Orden creada</Alert>
@@ -218,7 +218,7 @@ class InstantOrder extends Component {
 
                                             </div>
                                         }
-                                        <Button variant={"warning"} size={"lg"} onClick={e=>this.obtenerCotizacion(e)} > Obtener cotización </Button>
+                                        <Button variant={"primary"} size={"lg"} onClick={e=>this.obtenerCotizacion(e)} > Obtener cotización </Button>
                                     </ButtonToolbar>
                                 </Col>
                                 <Col></Col>
