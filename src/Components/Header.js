@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {eraseJWT, deletephotourl, deleteuser} from "../Redux/ActionCreators";
 import Badge from "react-bootstrap/Badge";
 class Header extends Component {
+    state = { isSignedIn: false };
 
     logout(e){
         e.preventDefault();
@@ -15,6 +16,9 @@ class Header extends Component {
         this.props.deleteuser();
         deleteJWT();
         window.location.reload();
+        this.setState({
+            isSignedIn: false,
+        });
     }
 
     render(){

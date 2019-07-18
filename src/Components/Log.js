@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
-import {saveJWT} from "../Redux/ActionCreators";
+import {saveJWT, eraseJWT} from "../Redux/ActionCreators";
 import {firebase} from './Firebase';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
@@ -15,16 +15,25 @@ class Log extends Component {
         signInFlow: "popup",
         signInOptions: [
             firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        ],
-        callbacks: {
-            signInSuccess: () => false
-        }
+        ]
     };
     componentDidMount = () => {
         firebase.auth().onAuthStateChanged(user => {
-            this.setState({ isSignedIn: !!user });
-            console.log("user", user)
-        })
+            this.setState(
+                { isSignedIn: !!user});
+            this.jwt = user.ra;
+            this.setState({
+                jwt: user.ra
+            });
+            if (this.state.jwt) {
+                this.setState({
+                    submit:{
+                        error: "Iniciaste sesión correctamente."
+                    }
+                });
+            }
+            console.log(this.state.submit.error);
+        });
     };
 
     static defaultState() {
@@ -79,12 +88,10 @@ class Log extends Component {
         this.logOut=this.logOut.bind(this);
     }
 
-
-    logOut (){
+    logOut(e){
+        e.preventDefault();
         this.setState({
-            isLoggedIn: false,
-            token: '',
-            user: null
+            isSignedIn: false,
         });
     };
 
@@ -369,15 +376,19 @@ class Log extends Component {
                                 <Row>
                                     {this.state.isSignedIn ? (
                                         <span>
-                                                <div>Signed In!</div>
-                                                <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
-
+                                            <div>Signed In!</div>
+                                            <Button
+                                                onClick={this.logOut}
+                                            >
+                                                Chao
+                                            </Button>
                                         </span>
                                        ) : (
-                                           <StyledFirebaseAuth
-                                               uiConfig={this.uiConfig}
-                                               firebaseAuth={firebase.auth()}
-                                           />
+                                               <StyledFirebaseAuth
+                                                   uiConfig={this.uiConfig}
+                                                   firebaseAuth={firebase.auth()}
+                                               />
+
                                     )}
                                 </Row>
                             </form>
