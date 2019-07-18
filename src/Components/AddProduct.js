@@ -1,4 +1,3 @@
-import {getJWT} from "../Helpers/JWT";
 import axios from "axios";
 import React, {Component} from 'react';
 import Container from "react-bootstrap/Container";
@@ -8,11 +7,10 @@ import Spinner from "react-bootstrap/Spinner";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/es/Button";
 import {FormControl, FormGroup, FormLabel, Overlay} from "react-bootstrap";
-import Image from "react-bootstrap/Image";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Alert from "react-bootstrap/Alert";
+import {connect} from "react-redux";
 
-export default class AddProduct extends Component{
+class AddProduct extends Component{
 
     defaultState(){
         return{
@@ -69,7 +67,6 @@ export default class AddProduct extends Component{
                     rolName: ""
                 }]
             },
-            image: null,
             loading: true,
             formSubmitted: false,
             isLoading: false,
@@ -93,13 +90,12 @@ export default class AddProduct extends Component{
         this.setLamina = this.setLamina.bind(this);
         this.setCassata = this.setCassata.bind(this);
         this.setValor = this.setValor.bind(this);
-        this.setImage = this.setImage.bind(this);
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -119,7 +115,7 @@ export default class AddProduct extends Component{
     getFormErrors() {
         let fields = ['nombreP', 'categoria','descripcion','medidas','grosor'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)
@@ -130,7 +126,7 @@ export default class AddProduct extends Component{
     getFormErrors2() {
         let fields2 = ['densidad','tipo_tela','lamina','cassata', 'valor'];
         let errors2 = [];
-        fields2.map(field => {
+        fields2.forEach(field => {
             let fieldError2 = this.state[field].error2 || '';
             if (fieldError2.length > 0) {
                 errors2.push(fieldError2)
@@ -278,12 +274,6 @@ export default class AddProduct extends Component{
         })
     }
 
-    setImage = event => {
-        this.setState({
-            image: event.target.files[0]
-        });
-        console.log(this.state.image);
-    };
 
     change(e){
         e.preventDefault();
@@ -321,13 +311,10 @@ export default class AddProduct extends Component{
         axios.post('http://ordersolverdevelop.herokuapp.com/products/create', data)
             .then(res=>{
                     this.props.history.push('/');
-                    console.log("Oki");
             }
             )
             .catch(function () {
-                console.log("Ups")
             });
-        console.log(data);
         this.setState({
             formSubmitted: true,
             submit: {
@@ -408,6 +395,8 @@ export default class AddProduct extends Component{
                                                                 onChange={this.setGrosor}
                                                             />
                                                         </FormGroup>
+                                                    </Col>
+                                                    <Col>
                                                         <FormGroup controlId="densidad">
                                                             <FormControl
                                                                 autoFocus
@@ -485,26 +474,30 @@ export default class AddProduct extends Component{
                                                                     }}
                                                                 >
                                                                     {(this.getFormErrors().length > 0 && this.state.formSubmitted) &&
-                                                                    <FormLabel >
+                                                                    <FormLabel>
                                                                         <Row>
                                                                             <Col>
                                                                                 {
                                                                                     this.getFormErrors().map((message) =>
-                                                                                        <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
+                                                                                        <Alert
+                                                                                            key={'error_message_' + 1}
+                                                                                            variant="danger">{message}</Alert>
                                                                                     )
                                                                                 }
                                                                             </Col>
                                                                             <Col>
-                                                                            {
-                                                                                this.getFormErrors2().map((message) =>
-                                                                                    <Alert key={'error_message_'+1} variant="danger">{message}</Alert>
-                                                                                )
-                                                                            }
+                                                                                {
+                                                                                    this.getFormErrors2().map((message) =>
+                                                                                        <Alert
+                                                                                            key={'error_message_' + 1}
+                                                                                            variant="danger">{message}</Alert>
+                                                                                    )
+                                                                                }
                                                                             </Col>
                                                                         </Row>
                                                                     </FormLabel>
-                                                                        ||
-                                                                    (this.getFormErrors2().length > 0 && this.state.formSubmitted) &&
+                                                                    }
+                                                                    {(this.getFormErrors2().length > 0 && this.state.formSubmitted) &&
                                                                     <FormLabel >
                                                                         <Row>
                                                                             <Col>
@@ -532,18 +525,7 @@ export default class AddProduct extends Component{
                                                 </form>
                                             </Jumbotron>
                                         </Col>
-                                        <Col>
-                                            <Container>
-                                                <Row className={"justify-content-md-center"}>
-                                                    <Col xs="" className={"justify-content-center"}><Image src="https://image.flaticon.com/icons/svg/1246/1246234.svg" rounded /></Col>
-                                                </Row>
-                                                <Row>
-                                                    <ButtonToolbar>
-                                                        <input type={"file"} onChange={this.setImage}/>
-                                                    </ButtonToolbar>
-                                                </Row>
-                                            </Container>
-                                        </Col>
+                                        <Col></Col>
                                     </Row>
                                 </Container>
                             </div>
@@ -562,3 +544,16 @@ export default class AddProduct extends Component{
 
     }
 }
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (AddProduct);

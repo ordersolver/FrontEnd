@@ -3,17 +3,13 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Overlay} from 
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import {clearLocal, getJWT} from "../Helpers/JWT";
-import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
-import {saveJWT, eraseJWT} from "../Redux/ActionCreators";
+import {saveJWT} from "../Redux/ActionCreators";
 
 
 class Log extends Component {
-
-    componentClicked = () => console.log("clicked");
 
     static defaultState() {
         return {
@@ -42,6 +38,18 @@ class Log extends Component {
         }
     }
 
+    componentWillMount() {
+        setTimeout(
+            function() {
+                if(this.props.jwt){
+                    this.props.history.push('/');
+                }
+            }
+                .bind(this),
+            50
+        );
+    }
+
     constructor(props){
         super(props);
         this.attachRef = target => this.setState({ target });
@@ -55,9 +63,6 @@ class Log extends Component {
         this.logOut=this.logOut.bind(this);
     }
 
-    componentDidMount() {
-        console.log("xd")
-    }
 
     logOut (){
         this.setState({
@@ -65,7 +70,6 @@ class Log extends Component {
             token: '',
             user: null
         });
-        console.log(this.state.token)
     };
 
 
@@ -91,7 +95,7 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
+
             });
         this.doSomething()
     };
@@ -112,6 +116,18 @@ class Log extends Component {
                 error: ''
             }
         });
+        this.setState({isLoading: true});
+        let token= this.state.token;
+        console.log(token);
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', {token: token})
+            .then(res => {
+                    console.log(res.data);
+                    //localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.saveJWT(res.data);
+                }
+            )
+            .catch(function () {
+            });
     };
 
     setEmail(e) {
@@ -126,7 +142,6 @@ class Log extends Component {
                 error: ''
             }
         });
-        console.log(this.state.email.value)
     }
     setPassword(e) {
         let newVal = e.target.value || '';
@@ -144,7 +159,7 @@ class Log extends Component {
     getFormErrors() {
         let fields = ['email', 'password', 'submit'];
         let errors = [];
-        fields.map(field => {
+        fields.forEach(field => {
             let fieldError = this.state[field].error || '';
             if (fieldError.length > 0) {
                 errors.push(fieldError)
@@ -161,10 +176,8 @@ class Log extends Component {
             });
     }
     doSomething(){
-        let jwt = getJWT();
-        console.log(jwt);
+        let jwt = this.props.jwt;
         if (jwt) {
-            console.log("So far so good")
             this.setState({
                 submit:{
                     error: "Iniciaste sesión correctamente."
@@ -172,7 +185,6 @@ class Log extends Component {
             })
         }
         if(!jwt){
-            console.log(JSON.parse(jwt));
             this.setState({
                 submit: {
                     error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
@@ -193,7 +205,6 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
             });
         this.doSomething()
     }
@@ -222,10 +233,7 @@ class Log extends Component {
                     this.setState({
                         jwt: res.data.jwt
                     });
-                    localStorage.setItem('the-JWT', res.data.jwt);
-                    console.log(this.state.jwt);
                     if (this.state.jwt) {
-                        console.log("So far so good");
                         this.setState({
                             submit:{
                                 error: "Iniciaste sesión correctamente."
@@ -334,47 +342,38 @@ class Log extends Component {
                                 <br/>
                                 <br/>
                                 <Row>
-                                    {!this.state.isLoggedIn &&
-                                    <FacebookLogin
-                                        appId="343238832957751"
-                                        fields="name,email,picture"
-                                        onClick={this.componentClicked}
-                                        callback={this.responseFacebook}
-                                    />
-                                    }
-                                </Row>
-                                <Row>
+
                                     {(!this.state.isLoggedIn) &&
                                     <GoogleLogin
                                         clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
-                                        buttonText="Login"
+                                        buttonText="Inicio de Sesion por Google"
                                         onSuccess={this.responseGoogle}
                                         onFailure={this.logOut}
                                         cookiePolicy={'single_host_origin'}
                                     />
+                                    }
+                                    {(this.state.isLoggedIn) &&
+                                        <Col>
+                                            <p>Bienvenido Google</p>
+                                            <div
+                                                style={{
+                                                    width: "400px",
+                                                    margin: "auto",
+                                                    background: "#f4f4f4",
+                                                    padding: "20px"
+                                                }}
+                                            >
+                                                <img src={this.state.provider_pic} alt={this.state.name}/>
+                                                <h2>Welcome {this.state.name}</h2>
+                                                Email: {this.state.email.value}
+                                            </div>
+                                            <div>
+                                                <button onClick={this.logOut} className="button">
+                                                    Log out
+                                                </button>
+                                            </div>
+                                        </Col>
 
-                                    ||
-
-                                    <Col>
-                                        <p>Bienvenido Google</p>
-                                        <div
-                                            style={{
-                                                width: "400px",
-                                                margin: "auto",
-                                                background: "#f4f4f4",
-                                                padding: "20px"
-                                            }}
-                                        >
-                                            <img src={this.state.provider_pic} alt={this.state.name}/>
-                                            <h2>Welcome {this.state.name}</h2>
-                                            Email: {this.state.email.value}
-                                        </div>
-                                        <div>
-                                            <button onClick={this.logOut} className="button">
-                                                Log out
-                                            </button>
-                                        </div>
-                                    </Col>
                                     }
                                 </Row>
                             </form>
@@ -383,7 +382,6 @@ class Log extends Component {
 
                 </Container>
                 <Container >
-
                 </Container>
             </div>
         );
