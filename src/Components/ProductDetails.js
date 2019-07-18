@@ -4,10 +4,8 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import axios from "axios";
-import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/es/Button";
-import Form from "react-bootstrap/Form"
 import {ButtonToolbar} from "react-bootstrap";
 import {addToCart} from "../Redux/ActionCreators";
 import connect from "react-redux/es/connect/connect";
@@ -29,6 +27,7 @@ class ProductDetails extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
+                photo: null
             },
             loading: true
         }
@@ -43,7 +42,6 @@ class ProductDetails extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.state.product);
                 }
             )
             .catch(
@@ -72,29 +70,9 @@ class ProductDetails extends Component {
                             <Row>
                                 <Col md={{span: 5, offset: 1}}>
                                     <Row>
-                                        <Carousel>
-                                            <Carousel.Item>
-                                                <img
-                                                    className="d-block w-60"
-                                                    src="https://simpur.eu/827/colchon-activador-celular.jpg"
-                                                    alt="First slide"
-                                                />
-                                            </Carousel.Item>
-                                            <Carousel.Item>
-                                                <img
-                                                    className="d-block w-60"
-                                                    src="https://simpur.eu/827/colchon-activador-celular.jpg"
-                                                    alt="Third slide"
-                                                />
-                                            </Carousel.Item>
-                                            <Carousel.Item>
-                                                <img
-                                                    className="d-block w-60"
-                                                    src="https://simpur.eu/827/colchon-activador-celular.jpg"
-                                                    alt="Third slide"
-                                                />
-                                            </Carousel.Item>
-                                        </Carousel>
+                                        <figure className="image is-320x480">
+                                            <img alt={"Foto"} src={this.state.product[0].photo}/>
+                                        </figure>
                                     </Row>
                                 </Col>
                                 <Col md={{span: 4, offset: 1}}>
@@ -131,13 +109,9 @@ class ProductDetails extends Component {
                                                 </Card.Footer>
                                                 <Card.Footer>
                                                 <form>
-                                                    <Form.Group>
-                                                        <Form.Label>Cantidad</Form.Label>
-                                                        <Form.Control type="text" placeholder="" />
-                                                    </Form.Group>
                                                     <ButtonToolbar>
-                                                        <Button variant="warning" onClick={()=> this.props.addToCart(this.state.product[0])}>Añadir al carrito</Button>
-                                                        <Button variant="warning" href={"/i_order/"+this.state.product[0].id} >Comprar ahora</Button>
+                                                        <Button variant="outline-primary" onClick={()=> this.props.addToCart(this.state.product[0])}>Añadir al carrito</Button>
+                                                        <Button variant="primary" href={"/i_order/"+this.state.product[0].id} >Comprar ahora</Button>
                                                     </ButtonToolbar>
                                                 </form>
                                                 </Card.Footer>
