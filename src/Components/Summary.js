@@ -298,6 +298,7 @@ class Summary extends Component{
     }
 
     componentDidMount(){
+        console.log(this.props.user.id);
         this.dineroGastado();
         this.productoMasComprado();
         this.pedidosRealizados();
