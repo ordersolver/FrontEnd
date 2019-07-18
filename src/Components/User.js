@@ -86,8 +86,9 @@ class User extends Component{
         }).then(res=>{
             this.orders = res.data;
             this.setState({
-                orders: res.data
+                orders: res.data.filter(order => order.estado !== "Finalizada")
             })
+
         });
 
 
@@ -353,8 +354,7 @@ class User extends Component{
                                                             <td><Button variant={"outline-success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.confirmarPedido(e)}>Confirmar orden</Button>
                                                             <Button variant={"outline-warning"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.problemaPedido(e)}>Notificar problema</Button></td>
                                                             <td><Button variant={"info"} size={"sm"} id={orders.id} href={"/order/"+orders.id}>Ver</Button>
-                                                            <Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar</Button>
-                                                            <Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button></td>
+                                                            <Button variant={"success"} size={"sm"} id={orders.id} value={orders.client.client_id} onClick={e=>this.terminarPedido(e)}>Terminar</Button></td>
                                                         </tr>
                                                     )}
                                                     </tbody>
@@ -381,6 +381,11 @@ class User extends Component{
 
     confirmarPedido(e){
         e.preventDefault();
+        const jwt = this.props.jwt;
+        axios.put('https://ordersolverdevelop.herokuapp.com/orders/updated',{id: e.target.id, estado: "En Proceso"},{ headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                window.location.reload();
+            });
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/confirmation_email',
@@ -400,6 +405,11 @@ class User extends Component{
 
     problemaPedido(e){
         e.preventDefault();
+        const jwt = this.props.jwt;
+        axios.put('https://ordersolverdevelop.herokuapp.com/orders/updated',{id: e.target.id, estado: "Problema"},{ headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                window.location.reload();
+            });
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/problem_email',
@@ -419,6 +429,11 @@ class User extends Component{
 
     terminarPedido(e){
         e.preventDefault();
+        const jwt = this.props.jwt;
+        axios.put('https://ordersolverdevelop.herokuapp.com/orders/updated',{id: e.target.id, estado: "Finalizada"},{ headers: { Authorization: 'Bearer ' + jwt} })
+            .then(res=>{
+                window.location.reload();
+            });
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/entregado_email',
@@ -433,21 +448,11 @@ class User extends Component{
             res=>{
             }
         );
-        const jwt = this.props.jwt;
-        axios.request({
-            method: 'DELETE',
-            url: 'http://ordersolverdevelop.herokuapp.com/orders/destroy',
-            headers: {
-                Authorization: 'Bearer ' + jwt
-            },
-            data:{
-                id: e.target.id
-            },
-        }).then(res=>{
-            window.location.reload();
-        })
+
     }
 
+    //<Button variant={"outline-danger"} size={"sm"} id={orders.id} onClick={e=>this.borrarPedido(e)}>Eliminar</Button>
+    /*
     borrarPedido(e) {
         const jwt = this.props.jwt;
         let orderid = e.target.id;
@@ -464,7 +469,7 @@ class User extends Component{
             window.location.reload();
         })
     }
-
+    */
 }
 
 const mapStateToProps = state =>{
