@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import axios from 'axios';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
-import {saveJWT, eraseJWT} from "../Redux/ActionCreators";
+import {saveJWT} from "../Redux/ActionCreators";
 import {firebase} from './Firebase';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
@@ -20,11 +20,12 @@ class Log extends Component {
     componentDidMount = () => {
         firebase.auth().onAuthStateChanged(user => {
             this.setState(
-                { isSignedIn: !!user});
+                { isSignedIn: true});
             this.jwt = user.ra;
             this.setState({
                 jwt: user.ra
             });
+            console.log(this.state.jwt);
             if (this.state.jwt) {
                 this.setState({
                     submit:{
@@ -90,9 +91,12 @@ class Log extends Component {
 
     logOut(e){
         e.preventDefault();
+        firebase.auth().signOut();
         this.setState({
             isSignedIn: false,
+            jwt:''
         });
+        console.log(this.state.jwt);
     };
 
 
