@@ -3,13 +3,29 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Overlay} from 
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
 import {saveJWT} from "../Redux/ActionCreators";
-
+import {firebase} from './Firebase';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 class Log extends Component {
+    state = { isSignedIn: false };
+    uiConfig = {
+        signInFlow: "popup",
+        signInOptions: [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+        callbacks: {
+            signInSuccess: () => false
+        }
+    };
+    componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(user => {
+            this.setState({ isSignedIn: !!user });
+            console.log("user", user)
+        })
+    };
 
     static defaultState() {
         return {
@@ -99,8 +115,16 @@ class Log extends Component {
             });
         this.doSomething()
     };
+
+
     responseGoogle(response){
-        console.log(response);
+        var profile = response.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        console.log('Token: ' + response.Zi.access_token);
+
         this.setState({
             isLoggedIn: true,
             name: response.w3.ig,
@@ -257,6 +281,7 @@ class Log extends Component {
 
     render(){
         const { show, target } = this.state;
+
         return (
             <div>
                 <div style={{'textAlign':'center'}}>
@@ -342,39 +367,18 @@ class Log extends Component {
                                 <br/>
                                 <br/>
                                 <Row>
+                                    {this.state.isSignedIn ? (
+                                        <span>
+                                                <div>Signed In!</div>
+                                                <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
 
-                                    {(!this.state.isLoggedIn) &&
-                                    <GoogleLogin
-                                        clientId="506919261604-1fkfc1b1kt8dgkgokajl67jq6576c1m0.apps.googleusercontent.com"
-                                        buttonText="Inicio de Sesion por Google"
-                                        onSuccess={this.responseGoogle}
-                                        onFailure={this.logOut}
-                                        cookiePolicy={'single_host_origin'}
-                                    />
-                                    }
-                                    {(this.state.isLoggedIn) &&
-                                        <Col>
-                                            <p>Bienvenido Google</p>
-                                            <div
-                                                style={{
-                                                    width: "400px",
-                                                    margin: "auto",
-                                                    background: "#f4f4f4",
-                                                    padding: "20px"
-                                                }}
-                                            >
-                                                <img src={this.state.provider_pic} alt={this.state.name}/>
-                                                <h2>Welcome {this.state.name}</h2>
-                                                Email: {this.state.email.value}
-                                            </div>
-                                            <div>
-                                                <button onClick={this.logOut} className="button">
-                                                    Log out
-                                                </button>
-                                            </div>
-                                        </Col>
-
-                                    }
+                                        </span>
+                                       ) : (
+                                           <StyledFirebaseAuth
+                                               uiConfig={this.uiConfig}
+                                               firebaseAuth={firebase.auth()}
+                                           />
+                                    )}
                                 </Row>
                             </form>
                         </Col>
