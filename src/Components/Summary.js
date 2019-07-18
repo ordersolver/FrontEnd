@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {getJWT} from "../Helpers/JWT";
 import axios from 'axios';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -18,6 +17,8 @@ import User from "./User";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import {connect} from "react-redux";
+
 class Summary extends Component{
 
     constructor(props) {
@@ -75,7 +76,7 @@ class Summary extends Component{
     }
 
     dineroGastado(){
-        axios.get('http://localhost:3000/user_spent_money?inicio="'+this.state.inicio.getFullYear()+'-'+(this.state.inicio.getMonth()+1)+'-'+this.state.inicio.getDate()+'"&fin="'+this.state.fin.getFullYear()+'-'+(this.state.fin.getMonth()+1)+'-'+this.state.fin.getDate()+'"&user_id=19')
+        axios.get('http://ordersolverdevelop.herokuapp.com/user_spent_money?inicio="'+this.state.inicio.getFullYear()+'-'+(this.state.inicio.getMonth()+1)+'-'+this.state.inicio.getDate()+'"&fin="'+this.state.fin.getFullYear()+'-'+(this.state.fin.getMonth()+1)+'-'+this.state.fin.getDate()+'"&user_id=19')
             .then(
                 res=>{
                     this.setState({
@@ -141,7 +142,7 @@ class Summary extends Component{
     }
 
     productoMasComprado(){
-        axios.get('http://localhost:3000/most_sold_product?inicio="'+this.state.inicio2.getFullYear()+'-'+(this.state.inicio2.getMonth()+1)+'-'+this.state.inicio2.getDate()+'"&fin="'+this.state.fin2.getFullYear()+'-'+(this.state.fin2.getMonth()+1)+'-'+this.state.fin2.getDate()+'"&user_id=19')
+        axios.get('http://ordersolverdevelop.herokuapp.com/most_sold_product?inicio="'+this.state.inicio2.getFullYear()+'-'+(this.state.inicio2.getMonth()+1)+'-'+this.state.inicio2.getDate()+'"&fin="'+this.state.fin2.getFullYear()+'-'+(this.state.fin2.getMonth()+1)+'-'+this.state.fin2.getDate()+'"&user_id=19')
             .then(
                 res=>{
                     this.setState({
@@ -461,4 +462,17 @@ class Summary extends Component{
     }
 }
 
-export default Summary;
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+
+    };
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps) (Summary);
