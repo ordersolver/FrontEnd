@@ -77,7 +77,13 @@ class ShoppingCart extends Component {
             this.setState({
                     pedidorealizado: true
                 }
-            )
+            );
+            setTimeout(
+                () => {
+                    this.props.history.push("/");
+                },
+                500
+            );
         });
     }
 
