@@ -6,7 +6,6 @@ import Container from "react-bootstrap/Container";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {getJWT} from "../Helpers/JWT";
 import axios from "axios";
 import Alert from "react-bootstrap/Alert";
 
@@ -35,47 +34,28 @@ class ShoppingCart extends Component {
     }
 
     componentDidMount() {
-        this.props.cart.map(product=>{
-            return(console.log(product.id))
-            }
-        );
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(jwt){
-            console.log("Logged");
             axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
                 .then(res=>{
                     this.user = res.data;
-                    console.log(this.user);
                     this.setState({
                         user: res.data
                     })
                 })
         }else{
-            console.log("non logged")
         }
     }
 
     realizarPedido(e){
         e.preventDefault();
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
         var year = new Date().getFullYear();
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
-        let order={
-            productos:this.props.cart.map(product=>{
-                    return(product.id)
-                }
-            ),
-            fecha:date+"/"+month+"/"+year,
-            estado:"Activo",
-            direccion_entrega: this.state.user.direccion,
-            valor: JSON.stringify(this.props.cart.reduce((sum, product) => sum + product.valor, 0)),
-            user_id: this.state.user.id
-        };
-        console.log(order);
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/create',
@@ -97,7 +77,13 @@ class ShoppingCart extends Component {
             this.setState({
                     pedidorealizado: true
                 }
-            )
+            );
+            setTimeout(
+                () => {
+                    this.props.history.push("/");
+                },
+                500
+            );
         });
     }
 
@@ -113,9 +99,10 @@ class ShoppingCart extends Component {
                             <Container>
                                 <Row>
                                     <Col xs={9}>
-                                        <table className="table is-striped">
+                                        <table className="table is-striped is-narrow">
                                             <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Acciones</th>
@@ -124,6 +111,9 @@ class ShoppingCart extends Component {
                                             <tbody>
                                             {this.props.cart.map(product =>
                                                 <tr key={product.id}>
+                                                    <td><figure className="image is-128x128">
+                                                        <img alt={"Foto"} src={product.photo}/>
+                                                    </figure></td>
                                                     <td>{product.nombre}</td>
                                                     <td className="text-center">${product.valor}</td>
                                                     <td className="text-center"><Button variant="danger"
@@ -136,7 +126,7 @@ class ShoppingCart extends Component {
                                     </Col>
                                     <Col>
                                         <Container>
-                                            <div class="box">
+                                            <div className="box">
                                                 <h3 className="subtitle is-4">Acciones</h3>
                                                 <ButtonToolbar>
                                                     <Button block={"true"}>Obtener cotización</Button>
@@ -174,15 +164,18 @@ class ShoppingCart extends Component {
                                         <table className="table is-striped">
                                             <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Producto</th>
                                                 <th>Precio</th>
-                                                <th>Cantidad</th>
                                                 <th>Acciones</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             {this.props.cart.map(product =>
                                                 <tr key={product.id}>
+                                                    <td><figure className="image is-128x128">
+                                                        <img alt={"Foto"} src={product.photo}/>
+                                                    </figure></td>
                                                     <td>{product.nombre}</td>
                                                     <td className="text-center">${product.valor}</td>
                                                     <td className="text-center">xd</td>
@@ -196,7 +189,7 @@ class ShoppingCart extends Component {
                                     </Col>
                                     <Col>
                                         <Container>
-                                            <div class="box">
+                                            <div className="box">
                                                 <h3 className="subtitle is-4">Acciones</h3>
                                                 <ButtonToolbar>
                                                     <Button block={"true"}>Obtener cotización</Button>
@@ -234,7 +227,8 @@ class ShoppingCart extends Component {
 
 const mapStateToProps = state =>{
     return{
-        cart: state.cart
+        cart: state.cart,
+        jwt: state.jwt
     };
 };
 

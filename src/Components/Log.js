@@ -3,31 +3,15 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Nav, Overlay} from 
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from 'axios';
-import {clearLocal, getJWT} from "../Helpers/JWT";
-import FacebookLogin from 'react-facebook-login';
 import {GoogleLogin} from 'react-google-login';
 import Alert from "react-bootstrap/Alert";
 import connect from "react-redux/es/connect/connect";
 import {saveJWT} from "../Redux/ActionCreators";
-import firebase from 'firebase';
 
 
 class Log extends Component {
 
-    componentClicked = () => console.log("clicked");
-
     static defaultState() {
-        const firebaseConfig = {
-            apiKey: "AIzaSyDttp9CwlzlluYPthO5NRSDoPAJyS4dnbU",
-            authDomain: "ordersolver-1560721244319.firebaseapp.com",
-            databaseURL: "https://ordersolver-1560721244319.firebaseio.com",
-            projectId: "ordersolver-1560721244319",
-            storageBucket: "",
-            messagingSenderId: "506919261604",
-            appId: "1:506919261604:web:f6037b5db7be9144"
-        };
-
-        firebase.initializeApp(firebaseConfig);
         return {
             isLoggedIn: false,
             userID: '',
@@ -54,6 +38,18 @@ class Log extends Component {
         }
     }
 
+    componentWillMount() {
+        setTimeout(
+            function() {
+                if(this.props.jwt){
+                    this.props.history.push('/');
+                }
+            }
+                .bind(this),
+            50
+        );
+    }
+
     constructor(props){
         super(props);
         this.attachRef = target => this.setState({ target });
@@ -67,9 +63,6 @@ class Log extends Component {
         this.logOut=this.logOut.bind(this);
     }
 
-    componentDidMount() {
-        console.log("xd")
-    }
 
     logOut (){
         this.setState({
@@ -77,7 +70,6 @@ class Log extends Component {
             token: '',
             user: null
         });
-        console.log(this.state.token)
     };
 
 
@@ -103,7 +95,7 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
+
             });
         this.doSomething()
     };
@@ -127,16 +119,14 @@ class Log extends Component {
         this.setState({isLoading: true});
         let token= this.state.token;
         console.log(token);
-        response.preventDefault();
-        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', token)
+        axios.post('https://ordersolverdevelop.herokuapp.com/google_token', {token: token})
             .then(res => {
-                    console.log(res.data.jwt);
-                    localStorage.setItem('the-JWT', res.data.jwt);
-                    this.props.history.push('/catalog')
+                    console.log(res.data);
+                    //localStorage.setItem('the-JWT', res.data.jwt);
+                    this.props.saveJWT(res.data);
                 }
             )
             .catch(function () {
-                clearLocal()
             });
     };
 
@@ -152,7 +142,6 @@ class Log extends Component {
                 error: ''
             }
         });
-        console.log(this.state.email.value)
     }
     setPassword(e) {
         let newVal = e.target.value || '';
@@ -187,10 +176,8 @@ class Log extends Component {
             });
     }
     doSomething(){
-        let jwt = getJWT();
-        console.log(jwt);
+        let jwt = this.props.jwt;
         if (jwt) {
-            console.log("So far so good")
             this.setState({
                 submit:{
                     error: "Iniciaste sesión correctamente."
@@ -198,7 +185,6 @@ class Log extends Component {
             })
         }
         if(!jwt){
-            console.log(JSON.parse(jwt));
             this.setState({
                 submit: {
                     error: 'No pudimos iniciar sesion, por favor intente de nuevo.'
@@ -219,7 +205,6 @@ class Log extends Component {
                 }
             )
             .catch(function () {
-                clearLocal()
             });
         this.doSomething()
     }
@@ -248,10 +233,7 @@ class Log extends Component {
                     this.setState({
                         jwt: res.data.jwt
                     });
-                    localStorage.setItem('the-JWT', res.data.jwt);
-                    console.log(this.state.jwt);
                     if (this.state.jwt) {
-                        console.log("So far so good");
                         this.setState({
                             submit:{
                                 error: "Iniciaste sesión correctamente."

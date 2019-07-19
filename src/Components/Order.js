@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {getJWT} from "../Helpers/JWT";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button";
+import {connect} from "react-redux";
 
 class Order extends Component{
 
@@ -34,7 +34,7 @@ class Order extends Component{
     }
 
     componentDidMount(){
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(jwt){
 
         }else{
@@ -153,4 +153,17 @@ class Order extends Component{
     }
 
 }
-export default Order;
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt,
+        user: state.user
+    };
+};
+
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Order);

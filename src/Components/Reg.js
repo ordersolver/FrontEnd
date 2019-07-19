@@ -3,17 +3,22 @@ import {Button, FormGroup, FormControl, FormLabel, Row, Col, Figure, Overlay} fr
 import './All.css';
 import Container from "react-bootstrap/Container";
 import axios from "axios";
-import {getJWT} from "../Helpers/JWT";
 import Alert from "react-bootstrap/Alert";
+import {connect} from "react-redux";
 
-export default class Reg extends Component {
+class Reg extends Component {
 
 
-    componentDidMount() {
-        const jwt = getJWT();
-        if(jwt){
-            this.props.history.push('/')
-        }
+    componentWillMount() {
+        setTimeout(
+            function() {
+                if(this.props.jwt){
+                this.props.history.push('/');
+                }
+            }
+                .bind(this),
+            50
+        );
     }
 
     defaultState(){
@@ -230,10 +235,8 @@ export default class Reg extends Component {
             );
     }
     doSomething(){
-        let jwt = getJWT();
-        console.log(jwt);
+        let jwt = this.props.jwt;
         if (jwt) {
-            console.log("So far so good");
             this.setState({
                 submit:{
                     error: "Bienvenido a nuestro servicio."
@@ -241,7 +244,6 @@ export default class Reg extends Component {
             })
         }
         if(!jwt){
-            console.log(JSON.parse(jwt));
 
         }
     }
@@ -262,7 +264,6 @@ export default class Reg extends Component {
             }
 
         };
-        console.log(data);
         this.setState({
             formSubmitted: true,
             submit: {
@@ -457,3 +458,18 @@ export default class Reg extends Component {
         );
     }
 }
+
+const mapStateToProps = state =>{
+    return{
+        cart: state.cart,
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Reg);

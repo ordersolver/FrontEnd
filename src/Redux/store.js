@@ -26,9 +26,39 @@ const reducer = (state=initialState, action) => {
             ...state,
             jwt: ""
         }
+    } else if (action.type === "SAVE_PHOTOURL"){
+        return{
+            ...state,
+            photourl: action.photourl
+        }
+    } else if (action.type === "DELETE_PHOTOURL"){
+        return{
+            ...state,
+            photourl: ""
+        }
+    } else if (action.type === "PAGEMASMAS"){
+        return {
+            ...state,
+            page: state.page+1
+        }
+    } else if (action.type === "PAGEMENOSMENOS"){
+        return {
+            ...state,
+            page: state.page-1
+        }
+    }else if (action.type === "SAVEUSER"){
+        return{
+            ...state,
+            user: action.user
+        }
+    } else if (action.type === "DELETEUSER"){
+        return {
+            ...state,
+            user: ""
+        }
     }
     return state;
 };
 
 
-export default createStore(reducer, {cart:[], jwt:""}, composeWithDevTools(applyMiddleware(), persistState()));
+export default createStore(reducer, {cart:[], jwt:"",photourl:"", page:1, user: ""}, composeWithDevTools(applyMiddleware(), persistState()));

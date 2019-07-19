@@ -1,16 +1,18 @@
 /* eslint react/prop-types: 0 */
 import React, {Component} from 'react';
-import { Row, Col, Button, Container, Figure, Dropdown} from "react-bootstrap";
+import { Row, Col, Button, Container, Figure} from "react-bootstrap";
 import './All.css';
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import ProductCard from './ProductCard';
 import axios from 'axios';
-import {getJWT} from "../Helpers/JWT";
 import Spinner from "react-bootstrap/Spinner";
-export default class Catalog extends Component {
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import {connect} from "react-redux"
+import {pagemasmas, pagemenosmenos, savephotourl, saveuser} from "../Redux/ActionCreators";
+
+class Catalog extends Component {
 
     constructor(props){
         super(props);
@@ -28,7 +30,7 @@ export default class Catalog extends Component {
                 lamina: "",
                 medidas: "",
                 tipo_tela: "",
-                image: null
+                photo: null
             }],
             user: {
                 no_id: "",
@@ -41,19 +43,19 @@ export default class Catalog extends Component {
                 rols:[{
                     rolID: "",
                     rolName: ""
-                }]
+                }],
+                photo: null
             },
             loading: true,
-            page: 3
+            page: 1
         };
-        this.pageselect = React.createRef();
         this.setSearchword = this.setSearchword.bind(this);
     }
 
     componentDidMount() {
         let items = {
-            page: this.state.page,
-            per_page: 15,
+            page: this.props.page,
+            per_page: 20,
         };
         axios.get('http://ordersolverdevelop.herokuapp.com/products/index', {params:items})
             .then(
@@ -63,48 +65,61 @@ export default class Catalog extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.product);
                 }
             )
             .catch(
+            );
+        const jwt = this.props.jwt;
+        if(jwt){
+            axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
+                .then(res=>{
+                    this.user = res.data;
+                    this.setState({
+                        user: res.data
+                    });
+                    this.props.saveuser(res.data);
+                    this.props.savephotourl(res.data.photo)
+                })
+                .catch(function(){
+                    }
+                );
+        }
 
-            );
-        const jwt = getJWT();
-        axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
-            .then(res=>{
-                this.user = res.data;
-                this.setState({
-                    user: res.data
-                });
-            })
-            .catch(function(){
-                    console.log("Try again xd")
-                }
-            );
     }
 
-    pagemenosmenos(){
-        this.setState(
-            {
-                page: this.state.page - 1
-            }
-        );
-        console.log(this.state.page)
-    }
-
-    pagemmasmas(){
+    pagemasmas(e){
+        e.preventDefault();
         this.setState(
             {
                 page: this.state.page + 1
             }
         );
-        console.log(this.state.page)
+        this.props.pagemasmas(this.state.page);
+        setTimeout(
+            function () {
+                window.location.reload();
+            }, 200
+        );
+    }
+
+    pagemenosmenos(e){
+        e.preventDefault();
+        this.setState(
+            {
+                page: this.state.page - 1
+            }
+        );
+        this.props.pagemenosmenos(this.state.page);
+        setTimeout(
+            function () {
+                window.location.reload();
+            }, 200
+        );
     }
 
     borrarProducto(e) {
         e.preventDefault();
-        console.log(e.target.id);
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         axios.request({
             method: 'DELETE',
             url: 'http://ordersolverdevelop.herokuapp.com/products/destroy',
@@ -136,7 +151,6 @@ export default class Catalog extends Component {
                             product: res.data,
                             loading: false
                         });
-                        //console.log(this.product);
                     }
                 )
                 .catch(
@@ -145,18 +159,47 @@ export default class Catalog extends Component {
         }
     }
 
-    render(){
+    filterIt(e){
+        this.setState({searchword: e.target.value || ''});
+        setTimeout(
+            function() {
+                if (this.state.searchword !== ''){
+                    this.setState({
+                        loading: true
+                    });
+                    axios.get('http://ordersolverdevelop.herokuapp.com/products/show?categoria='+this.state.searchword)
+                        .then(
+                            res=>{
+                                this.product=res.data;
+                                this.setState({
+                                    product: res.data,
+                                    loading: false
+                                });
+                            }
+                        )
+                        .catch(
 
+                        )
+                }
+            }
+                .bind(this),
+            100
+        );
+    }
+
+    render(){
         let ProductCards = this.state.product.map(product => {
             if ( this.state.user.rols[0].rolName === "administrador"){
                 return(
                     <Col md={"auto"}>
                         {!this.state.loading ?
-
                             <div>
                                 <ProductCard product={product}>
                                 </ProductCard>
-                                <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                                <ButtonToolbar>
+                                    <Button block={true} variant={"info"} href={"/productphoto/"+product.id}>Actualizar</Button>
+                                    <Button block={true} variant={"danger"} id={product.id} onClick={e=>this.borrarProducto(e)}>Eliminar</Button>
+                                </ButtonToolbar>
                                 <br/>
                                 <br/>
                             </div>
@@ -199,16 +242,15 @@ export default class Catalog extends Component {
                     </Col>
                 )
             }
-
-
         });
+
         return (
             <div>
                 <Container fluid>
                     <Row>
-                        <Col></Col>
-                        <Col></Col>
-                        <Col></Col>
+                        <Col> </Col>
+                        <Col> </Col>
+                        <Col> </Col>
                         <Col xs={8}>
                             <InputGroup className="mb-3">
                                 <FormControl
@@ -232,12 +274,14 @@ export default class Catalog extends Component {
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>
-                        <Col></Col>
-                        <Col></Col>
-                        <Col></Col>
+                        <Col> </Col>
+                        <Col> </Col>
+                        <Col> </Col>
                     </Row>
                 </Container>
-                <hr></hr>
+                <hr>
+
+                </hr>
                 <Container className={"Menu"}>
                     <Row>
                         <Col>
@@ -245,52 +289,19 @@ export default class Catalog extends Component {
                                 <ListGroup as="ul">
                                     <ListGroup.Item as="li" active>Nuestros productos</ListGroup.Item>
                                     <ListGroup.Item as="li" >
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 1 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
+                                        <Button onClick={e => this.filterIt(e)} value = {"Colchón"} variant={"light"}>Colchones</Button>
                                     </ListGroup.Item>
-                                    <ListGroup.Item as="li" action>
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 2 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
+                                    <ListGroup.Item as="li" >
+                                        <Button onClick={e => this.filterIt(e)} value = {"Colchoneta"} variant={"light"}>Colchonetas</Button>
                                     </ListGroup.Item>
-                                    <ListGroup.Item as="li" action>
-                                        {['right'].map(direction => (
-                                            <DropdownButton
-                                                drop={direction}
-                                                variant="light"
-                                                title={` Categoría 3 `}
-                                                id={`dropdown-button-drop-${direction}`}
-                                                key={direction}
-                                            >
-                                                <Dropdown.Item eventKey="1">Producto 1</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 2</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 3</Dropdown.Item>
-                                                <Dropdown.Item eventKey="1">Producto 4</Dropdown.Item>
-                                            </DropdownButton>
-                                        ))}
+                                    <ListGroup.Item as="li" >
+                                        <Button onClick={e => this.filterIt(e)} value = {"Lámina"} variant={"light"}>Láminas</Button>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item as="li" >
+                                        <ButtonToolbar>
+                                            <Button onClick={e=>this.pagemenosmenos(e)}>Anterior</Button>
+                                            <Button onClick={e=>this.pagemasmas(e)}>Siguiente</Button>
+                                        </ButtonToolbar>
                                     </ListGroup.Item>
                                     {this.state.user.rols[0].rolName === "administrador" ?
                                         <Button variant={"danger"} href="/newproduct">Añadir producto</Button>
@@ -322,6 +333,32 @@ export default class Catalog extends Component {
         );
     }
 
-
 }
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt,
+        page: state.page
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        savephotourl(photurl){
+            dispatch(savephotourl(photurl));
+        },
+        pagemasmas(page){
+            dispatch(pagemasmas(page));
+        },
+        pagemenosmenos(page){
+            dispatch(pagemenosmenos(page));
+        },
+        saveuser(user){
+            dispatch(saveuser(user));
+        }
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Catalog);
+
 /* eslint react/prop-types: 0 */

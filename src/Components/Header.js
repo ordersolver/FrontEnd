@@ -4,20 +4,22 @@ import {Col, Row} from "react-bootstrap";
 import {deleteJWT} from "../Helpers/JWT";
 import './All.css';
 import {connect} from "react-redux";
-import {eraseJWT} from "../Redux/ActionCreators";
+import {eraseJWT, deletephotourl, deleteuser} from "../Redux/ActionCreators";
+import Badge from "react-bootstrap/Badge";
 class Header extends Component {
-
 
     logout(e){
         e.preventDefault();
         this.props.eraseJWT();
+        this.props.deletephotourl();
+        this.props.deleteuser();
         deleteJWT();
         window.location.reload();
     }
 
     render(){
         return (
-            <Navbar collapseOnSelect expand="lg" bg={"warning"} variant={"light"}>
+            <Navbar collapseOnSelect expand="lg" bg={"secondary"}>
                 <Navbar.Brand href="/">
                         <Figure.Image
                             width={180}
@@ -41,19 +43,21 @@ class Header extends Component {
                     </Nav>
                     <Nav>
                         {this.props.jwt &&
+                        <figure className="image is-48x48">
+                            <img className="is-rounded" alt={"Foto"} src={this.props.photourl}/>
+                        </figure>
+                        }
+                        {this.props.jwt &&
                             < NavDropdown title="Mi cuenta" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#summary">Resumen</NavDropdown.Item>
+                                <NavDropdown.Item href="/sum">Resumen</NavDropdown.Item>
                                 <NavDropdown.Item href="/user">Perfil</NavDropdown.Item>
                                 <NavDropdown.Item href="#purchases">Mis compras</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item  onClick={e => this.logout(e)} href="/" >Cerrar Sesion </NavDropdown.Item>
                             </NavDropdown>
                         }
-                        <Nav.Link eventKey={2} href="/catalog">
-                            Nuestros productos
-                        </Nav.Link>
                         <Nav.Link eventKey={2} href="/maps">
-                            Donde Estamos
+                            Dónde Estamos
                         </Nav.Link>
 
                         <Nav.Link href="/cart">
@@ -62,6 +66,7 @@ class Header extends Component {
                                 height={35}
                                 src="https://i.ibb.co/Yp19KLQ/Cart.png"
                             />
+                            <Badge variant={"danger"}>{this.props.cart.length}</Badge>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -72,7 +77,9 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        jwt: state.jwt
+        cart: state.cart,
+        jwt: state.jwt,
+        photourl: state.photourl
     };
 };
 
@@ -80,6 +87,12 @@ const mapDispatchToProps = dispatch => {
     return {
         eraseJWT(jwt) {
             dispatch(eraseJWT(jwt));
+        },
+        deletephotourl(){
+            dispatch(deletephotourl())
+        },
+        deleteuser(){
+            dispatch(deleteuser())
         }
     };
 };

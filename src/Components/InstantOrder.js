@@ -4,14 +4,15 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
-import {getJWT} from "../Helpers/JWT";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import {ButtonToolbar} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import {removeFromCart} from "../Redux/ActionCreators";
+import {connect} from "react-redux";
 
-export default class InstantOrder extends Component {
+class InstantOrder extends Component {
 
     constructor() {
         super();
@@ -49,7 +50,7 @@ export default class InstantOrder extends Component {
     }
 
     componentDidMount() {
-        const jwt = getJWT();
+        const jwt = this.props.jwt;
         if(!jwt){
             this.props.history.push('/log')
         }
@@ -61,7 +62,6 @@ export default class InstantOrder extends Component {
                         product: res.data,
                         loading: false
                     });
-                    console.log(this.state.product)
                 }
             );
         axios.get('https://ordersolverdevelop.herokuapp.com/users/current', { headers: { Authorization: 'Bearer ' + jwt} })
@@ -95,17 +95,7 @@ export default class InstantOrder extends Component {
         var year = new Date().getFullYear();
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
-        let order={
-            productos:[this.state.product[0].id],
-            fecha:date+"/"+month+"/"+year,
-            estado:"Activo",
-            direccion_entrega: this.state.user.direccion,
-            valor: JSON.stringify(this.state.product[0].valor),
-            user_id: this.state.user.no_id
-        };
-        console.log(order);
-        const jwt = getJWT();
-        console.log(jwt);
+        const jwt = this.props.jwt;
         axios.request({
             method: 'POST',
             url: 'http://ordersolverdevelop.herokuapp.com/orders/create',
@@ -125,7 +115,13 @@ export default class InstantOrder extends Component {
             this.setState({
                 pedidorealizado: true
                 }
-            )
+            );
+            setTimeout(
+                () => {
+                    this.props.history.push("/");
+                },
+                500
+            );
         });
     }
 
@@ -218,7 +214,7 @@ export default class InstantOrder extends Component {
                                 <Col></Col>
                                 <Col>
                                     <ButtonToolbar>
-                                        <Button variant={"warning"} size={"lg"} onClick={e=>this.realizarPedido(e)}> Realizar pedido </Button>
+                                        <Button variant={"primary"} size={"lg"} onClick={e=>this.realizarPedido(e)}> Realizar pedido </Button>
                                         {this.state.pedidorealizado ?
                                             <div>
                                                 <Alert variant={"success"}>Orden creada</Alert>
@@ -228,7 +224,7 @@ export default class InstantOrder extends Component {
 
                                             </div>
                                         }
-                                        <Button variant={"warning"} size={"lg"} onClick={e=>this.obtenerCotizacion(e)} > Obtener cotización </Button>
+                                        <Button variant={"primary"} size={"lg"} onClick={e=>this.obtenerCotizacion(e)} > Obtener cotización </Button>
                                     </ButtonToolbar>
                                 </Col>
                                 <Col></Col>
@@ -241,3 +237,19 @@ export default class InstantOrder extends Component {
     }
 
 }
+
+const mapStateToProps = state =>{
+    return{
+        jwt: state.jwt
+    };
+};
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        removeFromCart(product){
+            dispatch(removeFromCart(product));
+        }
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (InstantOrder)

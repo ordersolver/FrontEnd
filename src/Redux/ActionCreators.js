@@ -12,6 +12,31 @@ const saveJWT = (jwt) => {
 
 const eraseJWT = () => {
     return {type: "DELETE_JWT"}
-}
+};
 
-export {addToCart, removeFromCart, saveJWT, eraseJWT};
+const savephotourl = (photourl) => {
+    return {type: "SAVE_PHOTOURL", photourl}
+};
+
+const deletephotourl = () => {
+    return {type: "DELETE_PHOTOURL"}
+};
+
+const pagemasmas = () => {
+    return {type: "PAGEMASMAS"}
+};
+
+const pagemenosmenos = () =>{
+    return {type: "PAGEMENOSMENOS"}
+};
+
+const saveuser = (user) => {
+    return {type: "SAVEUSER", user}
+};
+
+const deleteuser = () => {
+    return {type: "DELETEUSER"}
+};
+
+
+export {addToCart, removeFromCart, saveJWT, eraseJWT, savephotourl, deletephotourl, pagemasmas, pagemenosmenos, saveuser, deleteuser};
